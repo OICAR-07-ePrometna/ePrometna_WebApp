@@ -1,0 +1,21 @@
+.header {
+    margin-top: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 5rem;
+  }
+  h1 {
+    text-align: center;
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  img.logo {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    display: block;
+  }
