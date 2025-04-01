@@ -1,7 +1,6 @@
 <template>
-  <v-app>
-    <v-container>
-      <v-navigation-drawer>
+    <v-container >
+      <v-navigation-drawer >
         <v-list-item class="title"> {{ items[0] }} </v-list-item>
         <v-divider></v-divider>
         <v-list-item
@@ -18,7 +17,6 @@
         <v-list-item item class="logout">Odjava</v-list-item>
       </v-navigation-drawer>
     </v-container>
-  </v-app>
 </template>
 
 <script lang="ts" setup>
