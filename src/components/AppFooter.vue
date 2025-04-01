@@ -13,7 +13,7 @@
         :icon="item.icon"
         :size="item.icon === '$vuetify' ? 24 : 16"
       />
-      <span v-if="item.text" class="ml-1 small-text">{{ item.text }}</span> <!-- Added class for smaller font -->
+      <span v-if="item.text" class="ml-1 small-text">{{ item.text }}</span> 
     </a>
 
     <div
