@@ -16,31 +16,47 @@
         prepend-inner-icon="mdi-lock-outline" variant="outlined" :error-messages="passwordError ? [passwordError] : []"
         @click:append-inner="visible = !visible" @focus="passwordError = ''"></v-text-field>
 
-      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="isLoading" :disabled="isLoading"
+      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="authStorage.loading" :disabled="authStorage.loading"
         @click="handleLogin">
-        {{ isLoading ? 'Logging in...' : 'Log In' }}
+        {{ authStorage.loading ? 'Logging in...' : 'Log In' }}
       </v-btn>
 
-      <v-alert v-if="loginError" type="error" variant="tonal" class="mb-0" closable @click:close="loginError = ''">
-        {{ loginError }}
+      <v-alert v-if="authStorage.error" type="error" variant="tonal" class="mb-0" closable @click:close="authStorage.clearError()">
+        {{ authStorage.error }}
+      </v-alert>
+
+      <v-btn class="mt-4" color="grey" variant="text" size="small" block 
+        :loading="isPinging" :disabled="isPinging"
+        @click="testConnection">
+        {{ isPinging ? 'Testing...' : 'Test Connection' }}
+      </v-btn>
+      
+      <v-alert v-if="pingResult" :type="pingSuccess ? 'success' : 'error'" 
+        variant="tonal" class="mt-2" density="compact">
+        {{ pingResult }}
       </v-alert>
     </v-card>
   </div>
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+import { ref } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useAuthStorage } from '@/storage/auth';
+  import { apiClient } from '@/services/auth.service';
 
-  // Reactive state
+  const router = useRouter();
+  const authStorage = useAuthStorage();
+
   const email = ref('');
   const password = ref('');
   const emailError = ref('');
   const passwordError = ref('');
-  const loginError = ref('');
-  const isLoading = ref(false);
   const visible = ref(false);
+  const isPinging = ref(false);
+  const pingResult = ref('');
+  const pingSuccess = ref(false);
 
-  // Methods
   const validateForm = () => {
     let isValid = true;
 
@@ -61,38 +77,35 @@
   };
 
   const handleLogin = async () => {
-    // Reset previous errors
-    loginError.value = '';
+    authStorage.clearError();
 
     if (!validateForm()) {
       return;
     }
 
     try {
-      isLoading.value = true;
-
-      // Here you would typically call your authentication API
-      // Example:
-      // const response = await authService.login(account.value, password.value);
-
-      // Simulate API call with timeout
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // For demonstration: check if account/password match a test account
-      if (email.value === 'test@example.com' && password.value === 'password123') {
-        // Success! Redirect or set authenticated state
-        console.log('Login successful');
-        // In a real app, you might:
-        // router.push('/dashboard');
-        // or store auth tokens:
-        // localStorage.setItem('token', response.token);
-      } else {
-        loginError.value = 'Invalid e-mail or password';
-      }
+      await authStorage.login(email.value, password.value);
+      
+      router.push('/dashboard');
     } catch (error) {
-      loginError.value = error.message || 'Login failed. Please try again.';
-    } finally {
-      isLoading.value = false;
+      console.error('Login failed:', error);
     }
   };
+
+  const testConnection = async () => {
+    isPinging.value = true;
+    pingResult.value = '';
+    
+    try {
+      const response = await apiClient.get('/test/');
+      pingResult.value = 'Connection successful';
+      pingSuccess.value = true;
+    } catch (error) {
+      pingResult.value = 'Connection failed: ' + error.message;
+      pingSuccess.value = false;
+    } finally {
+      isPinging.value = false;
+    }
+  };
+
 </script>
