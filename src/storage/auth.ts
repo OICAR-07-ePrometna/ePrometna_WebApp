@@ -37,20 +37,14 @@ export const useAuthStorage = defineStore('auth', {
       }
     },
 
-    tokenExpiration: (state: AuthState): number | null => {
-      if (!state.accessToken) return null;
+    isTokenExpired: (state: AuthState): boolean => {
+      if (!state.accessToken) return true;
       try {
         const decoded = jwtDecode<TokenClaims>(state.accessToken);
-        return decoded.exp * 1000;
+        return Date.now() >= decoded.exp * 1000;
       } catch {
-        return null;
+        return true;
       }
-    },
-
-    isTokenExpired: (state: AuthState): boolean => {
-      const expiration = useAuthStorage().tokenExpiration;
-      if (!expiration) return true;
-      return Date.now() >= expiration;
     }
   },
 
@@ -71,7 +65,7 @@ export const useAuthStorage = defineStore('auth', {
         if (axios.isAxiosError(error)) {
           this.error = error.response?.data;
         } else {
-          this.error = 'An unexpected error occurred';
+          this.error = 'Invalid credentials';
         }
         throw error;
       } finally {
