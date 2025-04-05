@@ -1,7 +1,8 @@
+import axios from 'axios';
 import { defineStore } from 'pinia';
 import { jwtDecode } from 'jwt-decode';
 import AuthService from '@/services/auth.service';
-import type { TokenResponse} from '@/dtos/dtos';
+import type { TokenResponse } from '@/dtos/dtos';
 import type { AuthState, User, TokenClaims } from '@/models/models';
 import type { UserRole } from '@/enums/enums';
 
@@ -16,7 +17,7 @@ export const useAuthStorage = defineStore('auth', {
 
   getters: {
     isAuthenticated: (state: AuthState): boolean => !!state.accessToken,
-    
+
     userRole: (state: AuthState): UserRole | null => {
       if (!state.accessToken) return null;
       try {
@@ -58,22 +59,26 @@ export const useAuthStorage = defineStore('auth', {
     async login(email: string, password: string): Promise<TokenResponse> {
       this.loading = true;
       this.error = null;
-      
+
       try {
         const response = await AuthService.login({ email, password });
-        
+
         this.setTokens(response.accessToken, response.refreshToken);
         this.user = jwtDecode<TokenClaims>(response.accessToken) as unknown as User;
-        
+
         return response;
-      } catch (error: any) {
-        this.error = error.response?.data;
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          this.error = error.response?.data;
+        } else {
+          this.error = 'An unexpected error occurred';
+        }
         throw error;
       } finally {
         this.loading = false;
       }
     },
-    
+
     async refreshTokens(): Promise<TokenResponse> {
       if (!this.refreshToken) {
         this.logout();
@@ -94,7 +99,7 @@ export const useAuthStorage = defineStore('auth', {
     setTokens(accessToken: string, refreshToken: string): void {
       this.accessToken = accessToken;
       this.refreshToken = refreshToken;
-      
+
       localStorage.setItem('accessToken', accessToken);
       localStorage.setItem('refreshToken', refreshToken);
     },
@@ -103,7 +108,7 @@ export const useAuthStorage = defineStore('auth', {
       this.accessToken = null;
       this.refreshToken = null;
       this.user = null;
-      
+
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
     },
