@@ -25,4 +25,10 @@ export interface AuthState {
     user: User | null;
     loading: boolean;
     error: string | null;
-  }
+}
+
+export interface ApiError {
+    message: string;
+    statusCode: number;
+    timestamp: string;
+}
