@@ -7,6 +7,6 @@
 </template>
 
 <script setup lang="ts">
-    import LoginView from '@/components/LoginView.vue';
-    import '../styles/login.css';
+import LoginView from '@/components/LoginView.vue';
+import '../styles/login.css';
 </script>
