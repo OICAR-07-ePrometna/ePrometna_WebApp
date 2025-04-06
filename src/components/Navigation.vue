@@ -1,18 +1,13 @@
 <template>
-  <Header @toggle-drawer="drawer = !drawer" />
   <v-container>
-    <v-navigation-drawer v-model="drawer" width="200" mobile-breakpoint="lg" app>
-      <template v-for="(item, index) in filteredItems" :key="index">
-        <v-list-item v-if="item.IsTitle" class="title">
+    <v-navigation-drawer v-model="drawer.open" width="200" mobile-breakpoint="lg" app>
+      <template v-for="item in filteredItems" :key="item.Name">
+        <v-list-item class="title">
           {{ item.Name }}
         </v-list-item>
-        <v-divider v-if="item.IsTitle"></v-divider>
-        <v-list-item
-          v-else
-          @click="navigateTo(item.Route)"
-          link
-        >
-          {{ item.Name }}
+        <v-divider />
+        <v-list-item v-for="link in item.Links" @click="router.push({ name: link.Route as any })" link>
+          {{ link.Name }}
         </v-list-item>
       </template>
       <v-list-item class="title">Profil</v-list-item>
@@ -21,122 +16,112 @@
       <v-list-item link item class="logout">Odjava</v-list-item>
     </v-navigation-drawer>
   </v-container>
-  <Footer />
+  <slot></slot>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue';
+import { computed } from 'vue';
 import { useRouter } from 'vue-router';
-import Header from '@/components/Header.vue';
-import Footer from '@/components/AppFooter.vue';
+import { useDrawer } from '@/stores/drawer'
+
+
+const drawer = useDrawer();
+
+interface NavigationGroup {
+  Name: string;
+  Links: NavigationLink[]
+}
 
 interface NavigationLink {
   Name: string;
-  IsTitle: boolean;
   AllowRoles: string[];
   Route: string;
 }
 
-const currentUserRole = 'driver';
-const drawer = ref(false);
-const router = useRouter();
-
-const items = ref<NavigationLink[]>([
+const items: NavigationGroup[] = ([
   {
     Name: "Vozilo",
-    IsTitle: true,
-    AllowRoles: ['hak'],
-    Route: ''
+    Links: [
+
+      {
+        Name: "Promjena vlasništva",
+        AllowRoles: ['hak'],
+        Route: '/ownership-change'
+      },
+      {
+        Name: "Novo vozilo",
+        AllowRoles: ['hak'],
+        Route: '/new-vehicle'
+      },
+      {
+        Name: "Tehnički pregled",
+        AllowRoles: ['hak'],
+        Route: '/technical-check'
+      },
+      {
+        Name: "Odjava vozila",
+        AllowRoles: ['hak'],
+        Route: '/vehicle-deregistration'
+      },]
   },
   {
     Name: "Službenici",
-    IsTitle: true,
-    AllowRoles: ['mupAdmin'],
-    Route: ''
+    Links: [
+      {
+        Name: "Pregled službenika",
+        AllowRoles: ['mupAdmin'],
+        Route: '/officer-overview'
+      },
+      {
+        Name: "Novi službenik",
+        AllowRoles: ['mupAdmin'],
+        Route: '/new-officer'
+      },
+    ]
   },
   {
     Name: "Promet",
-    IsTitle: true,
-    AllowRoles: ['driver', 'firma'],
-    Route: ''
+    Links: [
+      {
+        Name: "Prometna dozvola",
+        AllowRoles: ['driver'],
+        Route: '/traffic-license'
+      },
+      {
+        Name: "Vozačka dozvola",
+        AllowRoles: ['driver'],
+        Route: '/driver-license'
+      },
+      {
+        Name: "Uređaji",
+        AllowRoles: ['driver'],
+        Route: '/devices'
+      },
+      {
+        Name: "Vozila",
+        AllowRoles: ['driver', 'firma'],
+        Route: '/vehicles'
+      }
+    ]
   },
   {
     Name: "Akcije",
-    IsTitle: true,
-    AllowRoles: ['superAdmin'],
-    Route: ''
+    Links: []
   },
-  {
-    Name: "Promjena vlasništva",
-    IsTitle: false,
-    AllowRoles: ['hak'],
-    Route: 'ownership-change'
-  },
-  {
-    Name: "Novo vozilo",
-    IsTitle: false,
-    AllowRoles: ['hak'],
-    Route: 'new-vehicle'
-  },
-  {
-    Name: "Tehnički pregled",
-    IsTitle: false,
-    AllowRoles: ['hak'],
-    Route: 'technical-check'
-  },
-  {
-    Name: "Odjava vozila",
-    IsTitle: false,
-    AllowRoles: ['hak'],
-    Route: 'vehicle-deregistration'
-  },
-  {
-    Name: "Pregled službenika",
-    IsTitle: false,
-    AllowRoles: ['mupAdmin'],
-    Route: 'officer-overview'
-  },
-  {
-    Name: "Novi službenik",
-    IsTitle: false,
-    AllowRoles: ['mupAdmin'],
-    Route: 'new-officer'
-  },
-  {
-    Name: "Prometna dozvola",
-    IsTitle: false,
-    AllowRoles: ['driver'],
-    Route: 'traffic-license'
-  },
-  {
-    Name: "Vozačka dozvola",
-    IsTitle: false,
-    AllowRoles: ['driver'],
-    Route: 'driver-license'
-  },
-  {
-    Name: "Uređaji",
-    IsTitle: false,
-    AllowRoles: ['driver'],
-    Route: 'devices'
-  },
-  {
-    Name: "Vozila",
-    IsTitle: false,
-    AllowRoles: ['driver', 'firma'],
-    Route: 'vehicles'
-  }
+
+
 ]);
 
-const filteredItems = computed(() =>
-  items.value.filter(item => item.AllowRoles.includes(currentUserRole))
-);
+const currentUserRole = 'driver';
+const router = useRouter();
+const filteredItems = computed(() => {
+  items.forEach(item => {
+    item.Links = item.Links.filter(link => link.AllowRoles.includes(currentUserRole))
+  })
 
-const navigateTo = (route: string) => {
-  if (route) {
-    router.push({ path: `/${route}` });
-  }
-};
+  return items.filter(item => item.Links.length != 0)
+})
+
 </script>
 
 <style lang="css" scoped>
@@ -146,12 +131,5 @@ const navigateTo = (route: string) => {
 
 .logout {
   color: lightcoral;
-}
-
-.toggle-drawer-btn {
-  position: fixed;
-  top: 30px;
-  left: 16px;
-  z-index: 1000;
 }
 </style>
