@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <v-navigation-drawer :elevation="3" v-model="drawer.open" width="200" mobile-breakpoint="lg" app class="drawerStyle">
+    <v-navigation-drawer :elevation="3" v-model="drawer.open" width="200" mobile-breakpoint="lg" app
+      class="drawerStyle">
       <template v-for="item in filteredItems" :key="item.Name">
         <v-list-item class="title">
           {{ item.Name }}
@@ -32,11 +33,10 @@ const drawer = useDrawer();
 const router = useRouter();
 
 const filteredItems = computed<NavigationGroup[]>(() => {
-  navigationLinks.forEach(item => {
-    item.Links = item.Links.filter(link => link.AllowRoles.includes(currentUserRole))
-  })
-
-  return navigationLinks.filter(item => item.Links.length != 0)
+  return navigationLinks.map(item => ({
+    ...item,
+    Links: item.Links.filter(link => link.AllowRoles.includes(currentUserRole))
+  })).filter(item => item.Links.length !== 0)
 })
 
 
@@ -51,7 +51,7 @@ const filteredItems = computed<NavigationGroup[]>(() => {
   color: lightcoral;
 }
 
-.drawerStyle{
+.drawerStyle {
   background: rgb(248, 249, 249);
 }
 </style>
