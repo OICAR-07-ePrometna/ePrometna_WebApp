@@ -12,7 +12,7 @@
       </template>
       <v-list-item class="title">Profil</v-list-item>
       <v-divider></v-divider>
-      <v-list-item link item>Detalji</v-list-item>
+      <v-list-item link item @click="router.push({ name: '/details'})" >Detalji</v-list-item>
       <v-list-item link item class="logout">Odjava</v-list-item>
     </v-navigation-drawer>
   </v-container>
