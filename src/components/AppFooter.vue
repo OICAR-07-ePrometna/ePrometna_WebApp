@@ -1,20 +1,21 @@
 <template>
   <v-footer height="40" app>
-    <a
-      v-for="item in items"
-      :key="item.title"
-      :href="item.href"
-      :title="item.title"
-      class="d-inline-block mx-2 social-link"
-      rel="noopener noreferrer"
-      target="_blank"
+    <div
+      class="text-caption text-disabled"
+      style="position: absolute; left: 16px;"
     >
-      <v-icon
-        :icon="item.icon"
-        :size="item.icon === '$vuetify' ? 24 : 16"
-      />
-      <span v-if="item.text" class="ml-1 small-text">{{ item.text }}</span> 
-    </a>
+    <v-icon icon="$vuetify" size="16" />
+      <a
+        class="text-decoration-none on-surface"
+        href="https://github.com/OICAR-07-ePrometn"
+        rel="noopener noreferrer"
+        target="_blank"
+        title="Organisation GitHub"
+      >
+        <v-icon icon="mdi-github" size="16" />
+        <span class="d-none d-sm-inline-block">Visit our GitHub organisation page</span>
+      </a>
+    </div>
 
     <div
       class="text-caption text-disabled"
@@ -34,16 +35,7 @@
   </v-footer>
 </template>
 
-<script setup lang="ts">
-const items = [
-    {
-      title: 'Organisation GitHub',
-      text: 'Visit our GitHub organisation page',
-      icon: `mdi-github`,
-      href: 'https://github.com/OICAR-07-ePrometna',
-    }
-  ]
-</script>
+<script setup lang="ts"></script>
 
 <style scoped lang="sass">
   .social-link :deep(.v-icon)
