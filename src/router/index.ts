@@ -1,17 +1,33 @@
 /**
  * router/index.ts
  *
- * Automatic routes for `./src/pages/*.vue`
+ * Routes setup with regex-based layout assignment.
  */
 
 // Composables
-import { createRouter, createWebHistory } from 'vue-router/auto'
-import { setupLayouts } from 'virtual:generated-layouts'
-import { routes } from 'vue-router/auto-routes'
+import { createRouter, createWebHistory } from 'vue-router'
+
+const pages = import.meta.glob('../pages/*.vue')
+
+const routes = Object.keys(pages).map((path) => {
+  const name = path.match(/\.\.\/pages\/(.*)\.vue$/)?.[1]
+  const component = pages[path]
+
+  return {
+    path: `/${name === 'index' ? '' : name}`,
+    name,
+    component,
+    meta: {
+      layout: ['login', 'login-hak', 'login-mup'].includes(name || '')
+        ? 'loginLayout'
+        : 'default',
+    },
+  }
+})
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: setupLayouts(routes),
+  routes,
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

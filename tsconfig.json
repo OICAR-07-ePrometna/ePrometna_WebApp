@@ -1,3 +1,4 @@
+// @eslint ignore
 {
     "files": [
         "./typed-router.d.ts"
