@@ -18,7 +18,7 @@ export const useDrawer = defineStore('drawer', () => {
   onMounted(() => {
     const mediaQuery = window.matchMedia('(min-width: 1280px)');
     mediaQuery.addEventListener('change', updateOpenState);
-    updateOpenState(); // Set initial state
+    updateOpenState();
   });
 
   onUnmounted(() => {

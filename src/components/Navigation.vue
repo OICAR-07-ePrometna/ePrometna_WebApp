@@ -6,7 +6,7 @@
           {{ item.Name }}
         </v-list-item>
         <v-divider />
-        <v-list-item v-for="link in item.Links" @click="router.push({ name: link.Route as any })" link>
+        <v-list-item v-for="link in item.Links" @click="router.push({ path: link.Route })" link>
           {{ link.Name }}
         </v-list-item>
       </template>
@@ -90,7 +90,7 @@ const items: NavigationGroup[] = ([
       {
         Name: "Vozačka dozvola",
         AllowRoles: ['driver'],
-        Route: '/driver-license'
+        Route: '/driver-license' // Ensure this matches the route name
       },
       {
         Name: "Uređaji",
