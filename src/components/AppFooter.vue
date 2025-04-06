@@ -7,7 +7,7 @@
     <v-icon icon="$vuetify" size="16" />
       <a
         class="text-decoration-none on-surface"
-        href="https://github.com/OICAR-07-ePrometn"
+        href="https://github.com/OICAR-07-ePrometna"
         rel="noopener noreferrer"
         target="_blank"
         title="Organisation GitHub"
