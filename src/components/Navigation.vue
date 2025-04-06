@@ -12,7 +12,7 @@
       </template>
       <v-list-item class="title">Profil</v-list-item>
       <v-divider></v-divider>
-      <v-list-item link item @click="router.push({ name: '/details'})" >Detalji</v-list-item>
+      <v-list-item link item @click="router.push({ name: 'details' })">Detalji</v-list-item>
       <v-list-item link item class="logout">Odjava</v-list-item>
     </v-navigation-drawer>
   </v-container>
@@ -23,6 +23,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDrawer } from '@/stores/drawer'
+import { UserRole } from '@/enums/enums';
 
 
 const drawer = useDrawer();
@@ -34,7 +35,7 @@ interface NavigationGroup {
 
 interface NavigationLink {
   Name: string;
-  AllowRoles: string[];
+  AllowRoles: UserRole[];
   Route: string;
 }
 
@@ -45,22 +46,22 @@ const items: NavigationGroup[] = ([
 
       {
         Name: "Promjena vlasništva",
-        AllowRoles: ['hak'],
+        AllowRoles: [UserRole.HAK],
         Route: '/ownership-change'
       },
       {
         Name: "Novo vozilo",
-        AllowRoles: ['hak'],
+        AllowRoles: [UserRole.HAK],
         Route: '/new-vehicle'
       },
       {
         Name: "Tehnički pregled",
-        AllowRoles: ['hak'],
+        AllowRoles: [UserRole.HAK],
         Route: '/technical-check'
       },
       {
         Name: "Odjava vozila",
-        AllowRoles: ['hak'],
+        AllowRoles: [UserRole.HAK],
         Route: '/vehicle-deregistration'
       },]
   },
@@ -69,12 +70,12 @@ const items: NavigationGroup[] = ([
     Links: [
       {
         Name: "Pregled službenika",
-        AllowRoles: ['mupAdmin'],
+        AllowRoles: [UserRole.Admin],
         Route: '/officer-overview'
       },
       {
         Name: "Novi službenik",
-        AllowRoles: ['mupAdmin'],
+        AllowRoles: [UserRole.Admin],
         Route: '/new-officer'
       },
     ]
@@ -84,35 +85,41 @@ const items: NavigationGroup[] = ([
     Links: [
       {
         Name: "Prometna dozvola",
-        AllowRoles: ['driver'],
+        AllowRoles: [UserRole.Osoba],
         Route: '/traffic-license'
       },
       {
         Name: "Vozačka dozvola",
-        AllowRoles: ['driver'],
-        Route: '/driver-license' // Ensure this matches the route name
+        AllowRoles: [UserRole.Osoba],
+        Route: '/driver-license' 
       },
       {
         Name: "Uređaji",
-        AllowRoles: ['driver'],
+        AllowRoles: [UserRole.Osoba],
         Route: '/devices'
       },
       {
         Name: "Vozila",
-        AllowRoles: ['driver', 'firma'],
+        AllowRoles: [UserRole.Osoba, UserRole.Firma],
         Route: '/vehicles'
       }
     ]
   },
   {
     Name: "Akcije",
-    Links: []
+    Links: [
+    {
+        Name: "Novi korisnik",
+        AllowRoles: [UserRole.SuperAdmin],
+        Route: '/new-user'
+      }
+    ]
   },
 
 
 ]);
 
-const currentUserRole = 'driver';
+const currentUserRole = UserRole.Osoba;
 const router = useRouter();
 const filteredItems = computed(() => {
   items.forEach(item => {

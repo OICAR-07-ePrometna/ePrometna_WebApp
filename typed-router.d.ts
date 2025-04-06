@@ -27,6 +27,7 @@ declare module 'vue-router/auto-routes' {
     '/login-hak': RouteRecordInfo<'/login-hak', '/login-hak', Record<never, never>, Record<never, never>>,
     '/login-mup': RouteRecordInfo<'/login-mup', '/login-mup', Record<never, never>, Record<never, never>>,
     '/new-officer': RouteRecordInfo<'/new-officer', '/new-officer', Record<never, never>, Record<never, never>>,
+    '/new-user': RouteRecordInfo<'/new-user', '/new-user', Record<never, never>, Record<never, never>>,
     '/new-vehicle': RouteRecordInfo<'/new-vehicle', '/new-vehicle', Record<never, never>, Record<never, never>>,
     '/officer-overview': RouteRecordInfo<'/officer-overview', '/officer-overview', Record<never, never>, Record<never, never>>,
     '/ownership-change': RouteRecordInfo<'/ownership-change', '/ownership-change', Record<never, never>, Record<never, never>>,
