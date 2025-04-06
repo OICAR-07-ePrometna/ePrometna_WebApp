@@ -15,7 +15,7 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig({
   plugins: [
     VueRouter({
-      dts: 'src/typed-router.d.ts',
+      dts: './typed-router.d.ts',
     }),
     Layouts(),
     AutoImport({
@@ -32,7 +32,7 @@ export default defineConfig({
       vueTemplate: true,
     }),
     Components({
-      dts: 'src/components.d.ts',
+      dts: './components.d.ts',
     }),
     Vue({
       template: { transformAssetUrls },
@@ -46,7 +46,7 @@ export default defineConfig({
     }),
     Fonts({
       google: {
-        families: [ {
+        families: [{
           name: 'Roboto',
           styles: 'wght@100;300;400;500;700;900',
         }],
