@@ -1,7 +1,7 @@
 <template>
-    <div>
-        Hello from dashboard
-    </div>
+  <div>
+    Hello from dashboard
+  </div>
 </template>
 
 <script lang="ts" setup>
