@@ -1,7 +1,7 @@
 <template>
-  <div class="header">
+  <div class="login-header">
     <h1>ePrometna</h1>
-    <img src="@/assets/mup_logo.png" alt="hak_logo" class="logo" />
+    <img src="@/assets/hak_logo.png" alt="hak_logo" class="logo" />
   </div>
   <LoginView />
 </template>

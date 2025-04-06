@@ -20,8 +20,19 @@ declare module 'vue-router/auto-routes' {
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
     '/dashboard': RouteRecordInfo<'/dashboard', '/dashboard', Record<never, never>, Record<never, never>>,
+    '/details': RouteRecordInfo<'/details', '/details', Record<never, never>, Record<never, never>>,
+    '/devices': RouteRecordInfo<'/devices', '/devices', Record<never, never>, Record<never, never>>,
+    '/driver-license': RouteRecordInfo<'/driver-license', '/driver-license', Record<never, never>, Record<never, never>>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,
-    '/loginHak': RouteRecordInfo<'/loginHak', '/loginHak', Record<never, never>, Record<never, never>>,
-    '/loginMup': RouteRecordInfo<'/loginMup', '/loginMup', Record<never, never>, Record<never, never>>,
+    '/login-hak': RouteRecordInfo<'/login-hak', '/login-hak', Record<never, never>, Record<never, never>>,
+    '/login-mup': RouteRecordInfo<'/login-mup', '/login-mup', Record<never, never>, Record<never, never>>,
+    '/new-officer': RouteRecordInfo<'/new-officer', '/new-officer', Record<never, never>, Record<never, never>>,
+    '/new-vehicle': RouteRecordInfo<'/new-vehicle', '/new-vehicle', Record<never, never>, Record<never, never>>,
+    '/officer-overview': RouteRecordInfo<'/officer-overview', '/officer-overview', Record<never, never>, Record<never, never>>,
+    '/ownership-change': RouteRecordInfo<'/ownership-change', '/ownership-change', Record<never, never>, Record<never, never>>,
+    '/techical-check': RouteRecordInfo<'/techical-check', '/techical-check', Record<never, never>, Record<never, never>>,
+    '/traffic-license': RouteRecordInfo<'/traffic-license', '/traffic-license', Record<never, never>, Record<never, never>>,
+    '/vehicle-deregistration': RouteRecordInfo<'/vehicle-deregistration', '/vehicle-deregistration', Record<never, never>, Record<never, never>>,
+    '/vehicles': RouteRecordInfo<'/vehicles', '/vehicles', Record<never, never>, Record<never, never>>,
   }
 }
