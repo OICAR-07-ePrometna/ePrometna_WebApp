@@ -5,7 +5,7 @@ export interface NavigationGroup {
     Links: NavigationLink[]
   }
   
-  interface NavigationLink {
+export interface NavigationLink {
     Name: string;
     AllowRoles: UserRole[];
     Route: string;
