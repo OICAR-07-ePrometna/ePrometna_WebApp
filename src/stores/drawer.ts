@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useDrawer = defineStore('drawer', () => {
-  const open = ref(window.matchMedia('(min-width: 1280px)').matches);
+  const DESKTOP_MEDIA_QUERY = '(min-width: 1280px)';
+  const open = ref(false);
+  let mediaQuery: MediaQueryList | null = null;
 
   const updateOpenState = () => {
     open.value = window.matchMedia('(min-width: 1280px)').matches;
@@ -16,14 +18,16 @@ export const useDrawer = defineStore('drawer', () => {
   };
 
   onMounted(() => {
-    const mediaQuery = window.matchMedia('(min-width: 1280px)');
+    mediaQuery = window.matchMedia(DESKTOP_MEDIA_QUERY);
     mediaQuery.addEventListener('change', updateOpenState);
     updateOpenState();
   });
 
   onUnmounted(() => {
-    const mediaQuery = window.matchMedia('(min-width: 1280px)');
-    mediaQuery.removeEventListener('change', updateOpenState);
+    if (mediaQuery) {
+      mediaQuery.removeEventListener('change', updateOpenState);
+      mediaQuery = null;
+      }
   });
   return {
     open,
