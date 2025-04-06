@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-navigation-drawer v-model="drawer.open" width="200" mobile-breakpoint="lg" app>
+    <v-navigation-drawer :elevation="3" v-model="drawer.open" width="200" mobile-breakpoint="lg" app class="drawerStyle">
       <template v-for="item in filteredItems" :key="item.Name">
         <v-list-item class="title">
           {{ item.Name }}
@@ -131,5 +131,9 @@ const filteredItems = computed(() => {
 
 .logout {
   color: lightcoral;
+}
+
+.drawerStyle{
+  background: rgb(248, 249, 249);
 }
 </style>
