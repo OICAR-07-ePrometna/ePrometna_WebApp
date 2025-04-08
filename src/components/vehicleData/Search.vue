@@ -7,7 +7,6 @@
             :label="label" variant="solo" hide-details single-line @click:append-inner="onClick"></v-text-field>
     </v-row>
     </div>
-    <br>
     <v-divider thickness="2" class="my-2"></v-divider>
 </template>
 
