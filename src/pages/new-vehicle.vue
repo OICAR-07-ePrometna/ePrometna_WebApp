@@ -4,7 +4,6 @@
     <Page2 />
     <Page3 />
     <div>
-        hi from new vehicle
     </div>
 </template>
 
@@ -16,3 +15,8 @@ import Page2 from '@/components/vehicleData/Page2.vue';
 import Page3 from '@/components/vehicleData/Page3.vue';
 
 </script>
+
+prometna 
+vozac 
+vozilo 
+sluzbenika
