@@ -58,8 +58,7 @@
               variant="outlined"
               density="compact"
               class="mb-2"
-              :value="fieldMap['A']"
-              readonly
+              v-model="fieldMap['A']"
             >
               <template #prepend-inner>
                 <span>A:</span>
@@ -96,8 +95,7 @@
               variant="outlined"
               density="compact"
               class="mb-2"
-              :value="fieldMap['Dozvolu izdao']"
-              readonly
+              v-model="fieldMap['Dozvolu izdao']"
             >
               <template #prepend-inner>
                 <span>Dozvolu izdao:</span>
@@ -125,7 +123,7 @@
 import { ref } from 'vue';
 
 const currentDate = ref(new Date().toLocaleDateString());
-
+// TODO: implement regex '^(?:[A-Z]{2})(?:[\s-])(?:(?:\d{1,4}[A-Z]{0,2})|(?:[A-Z]{1,2}\d{1,4}))$'
 const fieldMap = ref({
   "C.1.1": "IVO",
   "C.1.2": "IVIC",
