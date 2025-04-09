@@ -1,8 +1,8 @@
 <template>
-    <div>
-        hi from new user
-    </div>
+    <CreateUser />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import CreateUser from '@/components/CreateUser.vue';
+import '../styles/createUser.css';
 </script>

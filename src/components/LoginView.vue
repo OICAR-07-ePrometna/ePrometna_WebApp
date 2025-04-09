@@ -101,7 +101,7 @@ const testConnection = async () => {
     pingResult.value = 'Connection successful';
     pingSuccess.value = true;
   } catch (error) {
-    pingResult.value = 'Connection failed: ' + error.message;
+    pingResult.value = 'Connection failed: ' + (error as any).message;
     pingSuccess.value = false;
   } finally {
     isPinging.value = false;
