@@ -1,10 +1,21 @@
 .error-top .v-messages {
-    order: -1;
-    margin-bottom: 4px;
-    margin-top: 0;
-  }
-  
-  .error-top {
-    display: flex;
-    flex-direction: column;
-  }
+  order: -1;
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.error-top {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-top .v-messages {
+  order: -1;
+  margin-bottom: 4px;
+  margin-top: 0;
+}
+
+.error-top {
+  display: flex;
+  flex-direction: column;
+}

@@ -66,6 +66,7 @@
   import userService from '@/services/user.service';
   import UserForm from '@/components/CreateUserForm.vue';
   import type { FormErrors } from '@/models/models';
+  import { isOibValid } from '@/utils/oib.util';
   
   const user = ref<User>({
     uuid: '',
@@ -116,8 +117,8 @@
     if (!user.value.oib.trim()) {
       errors.oib = 'OIB is required';
       isValid = false;
-    } else if (!/^\d{11}$/.test(user.value.oib)) {
-      errors.oib = 'OIB must be exactly 11 digits';
+    } else if (!isOibValid(user.value.oib)) {
+      errors.oib = 'Invalid OIB';
       isValid = false;
     }
   
