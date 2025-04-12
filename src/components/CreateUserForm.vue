@@ -20,31 +20,19 @@
       @focus="clearError('residence')" @update:modelValue="updateUser('residence', $event)" required
       class="mb-4 error-top"></v-text-field>
 
-      <div class="mb-4">
-    <v-menu v-model="dateMenu" :close-on-content-click="false" 
-      transition="scale-transition" min-width="auto">
-      <template v-slot:activator="{ props }">
-        <v-text-field 
-          v-model="birthDateFormatted" 
-          label="Birth Date" 
-          prepend-inner-icon="mdi-calendar" 
-          readonly
-          v-bind="props" 
-          density="compact" 
-          variant="outlined"
-          :error-messages="errors.birthDate ? [errors.birthDate] : []"
-          @focus="clearError('birthDate')" 
-          required
-          class="error-top">
-        </v-text-field>
-      </template>
-      <v-date-picker 
-        v-model="birthDateInput"
-        :max="maxDate"
-        @update:model-value="updateBirthDate">
-      </v-date-picker>
-    </v-menu>
-  </div>
+    <div class="mb-4">
+      <v-menu v-model="dateMenu" :close-on-content-click="false" transition="scale-transition" min-width="auto">
+        <template v-slot:activator="{ props }">
+          <v-text-field v-model="birthDateFormatted" label="Birth Date" prepend-inner-icon="mdi-calendar" readonly
+            v-bind="props" density="compact" variant="outlined"
+            :error-messages="errors.birthDate ? [errors.birthDate] : []" @focus="clearError('birthDate')" required
+            class="error-top">
+          </v-text-field>
+        </template>
+        <v-date-picker v-model="birthDateInput" :max="firstValidDoB" @update:model-value="updateBirthDate">
+        </v-date-picker>
+      </v-menu>
+    </div>
 
     <v-text-field v-model="localUser.email" density="compact" label="Email" type="email" variant="outlined"
       prepend-inner-icon="mdi-email-outline" :error-messages="errors.email ? [errors.email] : []"
@@ -69,7 +57,7 @@ import { ref, watch, computed } from 'vue';
 import type { User } from '@/models/models';
 import type { FormErrors } from '@/models/models';
 import { UserRole } from '@/enums/enums';
-import { formatDateForApi, isAtLeastEighteen } from '@/utils/date.util';
+import { formatDate, isAtLeastEighteen } from '@/utils/date.util';
 
 const props = defineProps<{
   user: User;
@@ -95,13 +83,13 @@ const localPassword = computed({
 
 const visible = ref(false);
 const dateMenu = ref(false);
-const birthDateInput = ref(props.user.birthDate || formatDateForApi(new Date()));
-const birthDateFormatted = ref(formatDateForDisplay(props.user.birthDate || new Date()));
+const birthDateInput = ref(props.user.birthDate || formatDate(new Date()));
+const birthDateFormatted = ref(formatDate(props.user.birthDate || new Date()));
 
-const maxDate = computed(() => {
+const firstValidDoB = computed(() => {
   const date = new Date();
   date.setFullYear(date.getFullYear() - 18);
-  return formatDateForApi(date);
+  return formatDate(date);
 });
 
 const roles = [
@@ -112,24 +100,6 @@ const roles = [
   { title: 'Policija', value: UserRole.Policija },
   { title: 'Super Admin', value: UserRole.SuperAdmin }
 ];
-
-function formatDateForDisplay(date: Date | string | null): string {
-  if (!date) return '';
-
-  const d = new Date(date);
-
-  if (isNaN(d.getTime())) {
-    return '';
-  }
-
-  const options: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit'
-  };
-
-  return d.toLocaleDateString(undefined, options);
-}
 
 function updateUser(field: keyof User, value: any) {
   const newUser = { ...localUser.value, [field]: value };
@@ -149,15 +119,15 @@ function updateBirthDate(newValue: string) {
 
   if (newValue) {
     const selectedDate = new Date(newValue);
-    
+
     if (!isAtLeastEighteen(selectedDate)) {
       emit('update:errors', 'birthDate', 'User must be at least 18 years old');
       return;
     }
 
-    const formattedDate = formatDateForApi(selectedDate);
+    const formattedDate = formatDate(selectedDate);
     updateUser('birthDate', formattedDate);
-    birthDateFormatted.value = formatDateForDisplay(selectedDate);
+    birthDateFormatted.value = formatDate(selectedDate);
   } else {
     updateUser('birthDate', '');
     birthDateFormatted.value = '';
@@ -167,7 +137,7 @@ function updateBirthDate(newValue: string) {
 watch(() => props.user.birthDate, (newValue) => {
   if (newValue && newValue !== birthDateInput.value) {
     birthDateInput.value = newValue;
-    birthDateFormatted.value = formatDateForDisplay(new Date(newValue));
+    birthDateFormatted.value = formatDate(new Date(newValue));
   }
 });
 </script>
