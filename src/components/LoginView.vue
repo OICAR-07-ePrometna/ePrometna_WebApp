@@ -42,12 +42,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiClient } from '@/services/auth.service';
-import { useAuthStorage } from '@/stores/auth';
+import { apiClient } from '@/services/authService';
+import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
+import { useUserStore } from '@/stores/user';
 
 const router = useRouter();
-const authStorage = useAuthStorage();
+const authStorage = useAuthStore();
 const snackbar = useSnackbar()
 
 const email = ref('');
@@ -78,29 +79,27 @@ const validateForm = () => {
   return isValid;
 };
 
-const handleLogin = async () => {
-  authStorage.clearError();
-
+async function handleLogin() {
   if (!validateForm()) {
     return;
   }
-
   try {
     await authStorage.login(email.value, password.value);
-
+    const userStore = useUserStore();
+    await userStore.fetchLoggedInUser();
     router.push('/');
   } catch (error) {
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
   }
-};
+}
 
 const testConnection = async () => {
   isPinging.value = true;
   pingResult.value = '';
 
   try {
-    const response = await apiClient.get('/test/');
+    await apiClient.get('/test/');
     pingResult.value = 'Connection successful';
     pingSuccess.value = true;
   } catch (error) {

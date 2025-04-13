@@ -29,13 +29,13 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
-import type { User } from '@/models/models';
-import { UserRole } from '@/enums/enums';
-import userService from '@/services/user.service';
+import type { User } from '@/models/user';
+import { UserRole } from '@/enums/userRole';
+import userService from '@/services/userService';
 import UserForm from '@/components/CreateUserForm.vue';
-import type { FormErrors } from '@/models/models';
-import { isOibValid } from '@/utils/oib.util';
-import { isEmailValid } from '@/utils/email.util';
+import type { FormErrors } from '@/models/formErrors';
+import { isOibValid } from '@/utils/validateOIB';
+import { isEmailValid } from '@/utils/validateEmail';
 
 const user = ref<User>({
   uuid: '',

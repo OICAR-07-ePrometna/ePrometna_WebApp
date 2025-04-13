@@ -1,6 +1,8 @@
 import axios from 'axios';
-import type { LoginDto, TokenResponse, RefreshDto } from '@/dtos/dtos';
-import { useAuthStorage } from '@/stores/auth';
+import type { LoginDto } from '@/dtos/loginDto';
+import type { TokenResponse } from '@/models/tokenResponse';
+import type { RefreshDto } from '@/dtos/refreshDto';
+import { useAuthStore } from '@/stores/auth';
 
 const API_URL = 'http://localhost:8090/api';
 
@@ -13,7 +15,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const authStore = useAuthStorage();
+    const authStore = useAuthStore();
     if (authStore.accessToken) {
       config.headers['Authorization'] = `Bearer ${authStore.accessToken}`;
     }
@@ -28,7 +30,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const authStore = useAuthStorage();
+    const authStore = useAuthStore();
 
     if (
       error.response?.status === 401 &&
