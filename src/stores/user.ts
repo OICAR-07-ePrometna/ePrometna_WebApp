@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', {
         const user = await UserService.getLoggedInUser(authStore.accessToken);
         this.currentUser = user;
         return user;
-      } catch (error) {
+      } catch {
         this.error = 'Failed to fetch user data';
         return null;
       }
