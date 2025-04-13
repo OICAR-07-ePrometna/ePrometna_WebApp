@@ -11,7 +11,11 @@
 
 <script lang="ts">
 export const useSnackbar = (): SnackbarProvider => {
-  return inject(key)!
+  const snackbar = inject(key)
+  if (!snackbar) {
+    throw new Error('useSnackbar must be used within a SnackbarProvider')
+  }
+  return snackbar
 }
 
 const key = Symbol() as InjectionKey<SnackbarProvider>
