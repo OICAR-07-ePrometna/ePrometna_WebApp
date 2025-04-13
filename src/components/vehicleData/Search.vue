@@ -10,7 +10,7 @@
             </v-tooltip>
             <span class="spacing" v-if="label">{{ label }}</span>
             <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-                v-bind="props" placeholder="{{ placeholder }}" variant="solo" hide-details single-line
+                :placeholder="placeholder" variant="solo" hide-details single-line
                 @click:append-inner="search"></v-text-field>
         </v-row>
     </div>
@@ -37,10 +37,6 @@ const props = defineProps({
 // const loaded = ref(false)
 const loading = ref(false)
 const showTooltip = ref(false)
-
-
-// changables
-const searchItem = 'vozaca'
 
 async function search() {
     loading.value = true

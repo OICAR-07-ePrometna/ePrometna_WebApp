@@ -1,5 +1,5 @@
 <template>
-    <SearchBar label="Pretraga vozaca" tooltip="bokic" :on-click="fu" />
+    <SearchBar label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678" :on-click="fu" />
     <Page1 />
     <Page2 />
     <Page3 />
