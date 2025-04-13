@@ -12,8 +12,8 @@
 <script lang="ts" setup>
 
 import SearchBar from '@/components/vehicleData/Search.vue';
-import Page1 from '@/components/vehicleData/VehicleSummary.vue';
-import Page2 from '@/components/vehicleData/Page2.vue';
+import Page1 from '@/components/vehicleData/VehicleOwnerSummary.vue';
+import Page2 from '@/components/vehicleData/VehicleSummary.vue';
 import Page3 from '@/components/vehicleData/RegistrationLogs.vue';
 import { ref } from 'vue';
 import type { VehicleSummary, RegistrationLogs } from '@/models/vehicleDataModels';

@@ -23,6 +23,7 @@ declare module 'vue' {
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
     Search: typeof import('./src/components/vehicleData/Search.vue')['default']
+    VehicleOwnerSummary: typeof import('./src/components/vehicleData/VehicleOwnerSummary.vue')['default']
     VehicleSummary: typeof import('./src/components/vehicleData/VehicleSummary.vue')['default']
   }
 }
