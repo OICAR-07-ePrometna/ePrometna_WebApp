@@ -10,7 +10,7 @@
             </v-tooltip>
             <span class="spacing" v-if="label">{{ label }}</span>
             <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-                :placeholder="placeholder" variant="solo" hide-details single-line
+                v-bind="props" placeholder="{{ placeholder }}" variant="solo" hide-details single-line
                 @click:append-inner="search"></v-text-field>
         </v-row>
     </div>
@@ -24,6 +24,7 @@ import { ref } from 'vue'
 const props = defineProps({
     label: String,
     tooltip: String,
+    placeholder: String,
     onClick: {
         type: Function,
         required: true,
@@ -39,16 +40,20 @@ const showTooltip = ref(false)
 
 
 // changables
-const placeholder = 'tobegiven'
 const searchItem = 'vozaca'
 
 async function search() {
     loading.value = true
-    await props.onClick()
-    const rez = await setTimeout(() => {
+    try{
+        await props.onClick()
+    }
+    catch{
 
-    }, 2000)
-    loading.value = false
+    }
+    finally{
+        loading.value = false   
+    }
+    
 }
 </script>
 
