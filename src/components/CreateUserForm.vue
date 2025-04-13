@@ -54,11 +54,10 @@
 
 <script lang="ts" setup>
 import { ref, watch, computed } from 'vue';
-import type { User } from '@/models/models';
-import type { FormErrors } from '@/models/models';
-import { UserRole } from '@/enums/enums';
-import { formatDate, isAtLeastEighteen } from '@/utils/date.util';
-import { USER_ROLES } from '@/constants/constants';
+import type { User } from '@/models/user';
+import type { FormErrors } from '@/models/formErrors';
+import { formatDate, isAtLeastEighteen } from '@/utils/formatDate';
+import { USER_ROLES } from '@/constants/userRoles';
 
 const props = defineProps<{
   user: User;

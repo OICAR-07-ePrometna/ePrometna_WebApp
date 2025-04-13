@@ -1,8 +1,8 @@
 import axios from 'axios';
-import type { User } from '@/models/models';
-import { createNewUserDto, type TokenResponse } from '@/dtos/dtos';
-import { UserRole } from '@/enums/enums';
-import { formatDate } from '@/utils/date.util';
+import type { User } from '@/models/user';
+import { createNewUserDto} from '@/dtos/newUserDto';
+import { UserRole } from '@/enums/userRole';
+import { formatDate } from '@/utils/formatDate';
 
 const API_URL = 'http://localhost:8090/api';
 

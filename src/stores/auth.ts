@@ -1,10 +1,10 @@
 import axios from 'axios';
 import { defineStore } from 'pinia';
-import AuthService from '@/services/auth.service';
-import type { TokenResponse} from '@/dtos/dtos';
-import type { AuthState} from '@/models/models';
+import AuthService from '@/services/authService';
+import type { TokenResponse} from '@/models/tokenResponse';
+import type { AuthState} from '@/models/authState';
 
-export const useAuthStorage = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     accessToken: localStorage.getItem('accessToken') || null,
     refreshToken: localStorage.getItem('refreshToken') || null,

@@ -1,6 +1,8 @@
 import axios, { AxiosError } from 'axios';
-import type { LoginDto, TokenResponse, RefreshDto } from '@/dtos/dtos';
-import type { ApiError } from '@/models/models';
+import type { LoginDto } from '@/dtos/loginDto';
+import type { TokenResponse } from '@/models/tokenResponse';
+import type { RefreshDto } from '@/dtos/refreshDto';
+import type { ApiError } from '@/models/apiError';
 
 const API_URL = 'http://localhost:8090/api';
 

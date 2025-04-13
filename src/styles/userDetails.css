@@ -1,0 +1,13 @@
+.v-text-field :deep(.v-field__input) {
+    font-size: 1.1em;
+    color: rgba(0, 0, 0, 0.87);
+  }
+  
+  .v-text-field :deep(.v-field__outline) {
+    color: rgba(0, 0, 0, 0.12);
+  }
+  
+  .v-text-field :deep(.v-label) {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.6);
+  }

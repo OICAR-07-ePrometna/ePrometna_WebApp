@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import UserService from '@/services/user.service';
-import type { UserState } from '@/models/models';
-import { useAuthStorage } from '@/stores/auth';
+import UserService from '@/services/userService';
+import type { UserState } from '@/models/userState';
+import { useAuthStore } from '@/stores/auth';
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => ({
@@ -17,7 +17,7 @@ export const useUserStore = defineStore('user', {
     async fetchLoggedInUser() {
       this.error = null;
       try {
-        const authStore = useAuthStorage();
+        const authStore = useAuthStore();
         
         if (!authStore.accessToken) {
           throw new Error('Access token is missing');
@@ -32,7 +32,7 @@ export const useUserStore = defineStore('user', {
     },
 
     async refreshUserData() {
-      const authStore = useAuthStorage();
+      const authStore = useAuthStore();
       
       if (authStore.isAuthenticated) {
         return this.fetchLoggedInUser();

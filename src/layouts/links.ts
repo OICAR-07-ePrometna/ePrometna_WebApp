@@ -1,4 +1,4 @@
-import { UserRole } from "@/enums/enums";
+import { UserRole } from "@/enums/userRole";
 
 export interface NavigationGroup {
     Name: string;

@@ -42,16 +42,13 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiClient } from '@/services/auth.service';
-import { useAuthStorage } from '@/stores/auth';
-<<<<<<< HEAD
+import { apiClient } from '@/services/authService';
+import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
-=======
 import { useUserStore } from '@/stores/user';
->>>>>>> ecf88af (O7E-176 get user data)
 
 const router = useRouter();
-const authStorage = useAuthStorage();
+const authStorage = useAuthStore();
 const snackbar = useSnackbar()
 
 const email = ref('');
@@ -92,11 +89,8 @@ async function handleLogin() {
     await userStore.fetchLoggedInUser();
     router.push('/');
   } catch (error) {
-<<<<<<< HEAD
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
-=======
->>>>>>> ecf88af (O7E-176 get user data)
   }
 }
 
@@ -105,7 +99,7 @@ const testConnection = async () => {
   pingResult.value = '';
 
   try {
-    const response = await apiClient.get('/test/');
+    await apiClient.get('/test/');
     pingResult.value = 'Connection successful';
     pingSuccess.value = true;
   } catch (error) {

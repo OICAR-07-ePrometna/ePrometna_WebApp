@@ -24,7 +24,7 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDrawer } from '@/stores/drawer'
-import { UserRole } from '@/enums/enums';
+import { UserRole } from '@/enums/userRole';
 import { navigationLinks, type NavigationGroup } from '@/layouts/links';
 
 const currentUserRole = UserRole.Osoba;
