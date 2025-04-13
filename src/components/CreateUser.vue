@@ -102,7 +102,9 @@ const validateForm = (): boolean => {
   if (!user.value.email.trim()) {
     errors.email = 'Email is required';
     isValid = false;
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(user.value.email)) {
+    
+    //email regex
+  } else if (!/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim.test(user.value.email)) {
     errors.email = 'Enter a valid email address';
     isValid = false;
   }

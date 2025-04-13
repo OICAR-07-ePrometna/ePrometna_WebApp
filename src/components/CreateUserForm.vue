@@ -83,14 +83,15 @@ const localPassword = computed({
 
 const visible = ref(false);
 const dateMenu = ref(false);
-const birthDateInput = ref(props.user.birthDate || formatDate(new Date()));
-const birthDateFormatted = ref(formatDate(props.user.birthDate || new Date()));
 
 const firstValidDoB = computed(() => {
   const date = new Date();
   date.setFullYear(date.getFullYear() - 18);
   return formatDate(date);
 });
+
+const birthDateInput = ref(firstValidDoB.value);
+const birthDateFormatted = ref(formatDate(new Date(firstValidDoB.value)));
 
 const roles = [
   { title: 'HAK', value: UserRole.HAK },
