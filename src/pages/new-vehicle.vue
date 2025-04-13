@@ -1,10 +1,10 @@
 <template>
     <SearchBar label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678" :on-click="fu" />
-    <Page1 :summary="summary" />
-    <Page2 />
+    <VehicleOwnerSummaryPage :summary="summary" />
+    <VehicleSummaryPage />
      <!-- TODO: add to page 2  -->
     <v-divider thickness="2" class="my-2"></v-divider>
-    <Page3 :registrationLogs="registrationLogs" />
+    <RegistrationLogsPage :registrationLogs="registrationLogs" />
     <div>
     </div>
 </template>
@@ -12,9 +12,9 @@
 <script lang="ts" setup>
 
 import SearchBar from '@/components/vehicleData/Search.vue';
-import Page1 from '@/components/vehicleData/VehicleOwnerSummary.vue';
-import Page2 from '@/components/vehicleData/VehicleSummary.vue';
-import Page3 from '@/components/vehicleData/RegistrationLogs.vue';
+import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
+import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
+import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
 import { ref } from 'vue';
 import type { VehicleOwnerSummary, RegistrationLogs } from '@/models/vehicleDataModels';
 
