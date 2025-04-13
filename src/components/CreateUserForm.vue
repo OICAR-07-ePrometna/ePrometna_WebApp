@@ -58,6 +58,7 @@ import type { User } from '@/models/models';
 import type { FormErrors } from '@/models/models';
 import { UserRole } from '@/enums/enums';
 import { formatDate, isAtLeastEighteen } from '@/utils/date.util';
+import { USER_ROLES } from '@/constants/constants';
 
 const props = defineProps<{
   user: User;
@@ -93,14 +94,7 @@ const firstValidDoB = computed(() => {
 const birthDateInput = ref(firstValidDoB.value);
 const birthDateFormatted = ref(formatDate(new Date(firstValidDoB.value)));
 
-const roles = [
-  { title: 'HAK', value: UserRole.HAK },
-  { title: 'Admin', value: UserRole.Admin },
-  { title: 'Osoba', value: UserRole.Osoba },
-  { title: 'Firma', value: UserRole.Firma },
-  { title: 'Policija', value: UserRole.Policija },
-  { title: 'Super Admin', value: UserRole.SuperAdmin }
-];
+const roles = USER_ROLES;
 
 function updateUser(field: keyof User, value: any) {
   const newUser = { ...localUser.value, [field]: value };

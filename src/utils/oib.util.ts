@@ -1,4 +1,5 @@
 // This file is part of the `@domagojpa/oib-validation` package.
+// Licensed under the MIT License. See https://github.com/domagojpa/oib-validation/blob/main/LICENSE for details.
 export function isOibValid(input: string): boolean {
     const oib = input.toString();
 

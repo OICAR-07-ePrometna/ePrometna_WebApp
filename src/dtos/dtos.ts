@@ -1,4 +1,5 @@
 import type { User } from '@/models/models';
+import { formatDate } from '@/utils/date.util';
 
 export interface LoginDto {
   email: string;
@@ -34,7 +35,7 @@ export function createNewUserDto(
     LastName: user.lastName,
     OIB: user.oib,
     Residence: user.residence,
-    BirthDate: user.birthDate,
+    BirthDate: formatDate(user.birthDate),
     Email: user.email,
     Password: password,
     Role: user.role

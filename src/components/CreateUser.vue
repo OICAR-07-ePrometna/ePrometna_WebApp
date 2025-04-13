@@ -35,6 +35,7 @@ import userService from '@/services/user.service';
 import UserForm from '@/components/CreateUserForm.vue';
 import type { FormErrors } from '@/models/models';
 import { isOibValid } from '@/utils/oib.util';
+import { isEmailValid } from '@/utils/email.util';
 
 const user = ref<User>({
   uuid: '',
@@ -102,9 +103,7 @@ const validateForm = (): boolean => {
   if (!user.value.email.trim()) {
     errors.email = 'Email is required';
     isValid = false;
-    
-    //email regex
-  } else if (!/^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim.test(user.value.email)) {
+  } else if (!isEmailValid(user.value.email)) {
     errors.email = 'Enter a valid email address';
     isValid = false;
   }
