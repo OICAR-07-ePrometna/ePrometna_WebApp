@@ -121,11 +121,11 @@
 </template>
 
 <script setup lang="ts">
-import type { VehicleSummary } from '@/models/vehicleDataModels';
+import type { VehicleOwnerSummary } from '@/models/vehicleDataModels';
 
 defineProps({
   summary: {
-    type: Object as () => VehicleSummary,
+    type: Object as () => VehicleOwnerSummary,
     required: true,
   },
 });

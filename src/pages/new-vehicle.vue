@@ -16,11 +16,11 @@ import Page1 from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import Page2 from '@/components/vehicleData/VehicleSummary.vue';
 import Page3 from '@/components/vehicleData/RegistrationLogs.vue';
 import { ref } from 'vue';
-import type { VehicleSummary, RegistrationLogs } from '@/models/vehicleDataModels';
+import type { VehicleOwnerSummary, RegistrationLogs } from '@/models/vehicleDataModels';
 
 const currentDate = ref(new Date().toLocaleDateString());
 
-const summary = ref<VehicleSummary>({
+const summary = ref<VehicleOwnerSummary>({
   firstName: "IVO",
   lastName: "IVIC",
   residence: "ADRESA 12, ZAGREB",

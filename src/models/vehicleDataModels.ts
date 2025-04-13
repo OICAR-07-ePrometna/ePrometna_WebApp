@@ -1,5 +1,5 @@
 
-export interface VehicleSummary {
+export interface VehicleOwnerSummary {
     firstName: string;
     lastName: string;
     residence: string;
@@ -17,3 +17,4 @@ export interface VehicleSummary {
     mileage: string;
     note: string
   }
+
