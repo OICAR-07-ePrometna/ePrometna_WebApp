@@ -1,4 +1,4 @@
-name: Build and Lint Vue.js Project
+name: Build  Vue.ts Project
 
 on:
   push:
