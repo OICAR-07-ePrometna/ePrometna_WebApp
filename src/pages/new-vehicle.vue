@@ -25,7 +25,10 @@ const fu = () => {
 
 </script>
 
-prometna 
-vozac 
-vozilo 
-sluzbenika
+<!-- 
+Values
+label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678"
+label="Pretraga prometne" tooltip="Unsite registracijsku oznaku vozila" placeholder="ZG-0000-AA"
+label="Pretraga vozila" tooltip="Unsite registracijsku oznaku vozila" placeholder="ZG-0000-AA"
+label="Pretraga službenika" tooltip="Unsite ime i prezime službenika" placeholder="Ivo Ivić"
+-->
