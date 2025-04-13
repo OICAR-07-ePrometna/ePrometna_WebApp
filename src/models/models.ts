@@ -44,3 +44,8 @@ export interface FormErrors {
   password: string;
   role: string;
 }
+
+export interface UserState {
+  currentUser: User | null;
+  error: string | null;
+}

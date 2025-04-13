@@ -44,7 +44,11 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiClient } from '@/services/auth.service';
 import { useAuthStorage } from '@/stores/auth';
+<<<<<<< HEAD
 import { useSnackbar } from './SnackbarProvider.vue';
+=======
+import { useUserStore } from '@/stores/user';
+>>>>>>> ecf88af (O7E-176 get user data)
 
 const router = useRouter();
 const authStorage = useAuthStorage();
@@ -78,22 +82,23 @@ const validateForm = () => {
   return isValid;
 };
 
-const handleLogin = async () => {
-  authStorage.clearError();
-
+async function handleLogin() {
   if (!validateForm()) {
     return;
   }
-
   try {
     await authStorage.login(email.value, password.value);
-
+    const userStore = useUserStore();
+    await userStore.fetchLoggedInUser();
     router.push('/');
   } catch (error) {
+<<<<<<< HEAD
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
+=======
+>>>>>>> ecf88af (O7E-176 get user data)
   }
-};
+}
 
 const testConnection = async () => {
   isPinging.value = true;
