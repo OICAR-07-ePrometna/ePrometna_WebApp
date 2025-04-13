@@ -1,4 +1,4 @@
-import type { User } from '@/models/models';
+import type { User } from '@/models/user';
 import { formatDate } from '@/utils/formatDate';
 
 export interface NewUserDto {
