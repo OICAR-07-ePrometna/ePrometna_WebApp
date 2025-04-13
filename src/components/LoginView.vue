@@ -44,9 +44,11 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { apiClient } from '@/services/auth.service';
 import { useAuthStorage } from '@/stores/auth';
+import { useSnackbar } from './SnackbarProvider.vue';
 
 const router = useRouter();
 const authStorage = useAuthStorage();
+const snackbar = useSnackbar()
 
 const email = ref('');
 const password = ref('');
@@ -89,6 +91,7 @@ const handleLogin = async () => {
     router.push('/');
   } catch (error) {
     console.error('Login failed:', error);
+    snackbar.Error(`Failed to login`)
   }
 };
 
