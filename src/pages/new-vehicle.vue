@@ -2,7 +2,9 @@
     <SearchBar label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678" :on-click="fu" />
     <Page1 :summary="summary" />
     <Page2 />
-    <Page3 />
+     <!-- TODO: add to page 2  -->
+    <v-divider thickness="2" class="my-2"></v-divider>
+    <Page3 :registrationLogs="registrationLogs" />
     <div>
     </div>
 </template>
@@ -14,7 +16,7 @@ import Page1 from '@/components/vehicleData/VehicleSummary.vue';
 import Page2 from '@/components/vehicleData/Page2.vue';
 import Page3 from '@/components/vehicleData/RegistrationLogs.vue';
 import { ref } from 'vue';
-import type { VehicleSummary } from '@/models/vehicleDataModels';
+import type { VehicleSummary, RegistrationLogs } from '@/models/vehicleDataModels';
 
 const currentDate = ref(new Date().toLocaleDateString());
 
@@ -29,6 +31,21 @@ const summary = ref<VehicleSummary>({
   issuedBy: "PTS H840 ZG",
   issuedDate: currentDate.value,
 });
+
+const registrationLogs = ref<RegistrationLogs[]>([
+  {
+    dateOfValidation: new Date(),
+    expirationDate: new Date(2025, 4, 20),
+    mileage: '150000',
+    note: 'Nema'
+  },
+  {
+    dateOfValidation: new Date(2024, 4, 20),
+    expirationDate: new Date(2025, 4, 20),
+    mileage: '150000',
+    note: 'Nema'
+  }
+]);
 
 // TODO: this is a placeholder function for actual loading functions
 const fu = () => {
