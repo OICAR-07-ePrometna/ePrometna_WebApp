@@ -17,10 +17,12 @@ declare module 'vue' {
     Page1: typeof import('./src/components/vehicleData/Page1.vue')['default']
     Page2: typeof import('./src/components/vehicleData/Page2.vue')['default']
     Page3: typeof import('./src/components/vehicleData/Page3.vue')['default']
+    RegistrationLogs: typeof import('./src/components/vehicleData/RegistrationLogs.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
     Search: typeof import('./src/components/vehicleData/Search.vue')['default']
+    VehicleSummary: typeof import('./src/components/vehicleData/VehicleSummary.vue')['default']
   }
 }

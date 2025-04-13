@@ -120,7 +120,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps } from 'vue';
 import type { VehicleSummary } from '@/models/models';
 
 defineProps({
