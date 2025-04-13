@@ -19,15 +19,15 @@ import type { VehicleSummary } from '@/models/models';
 const currentDate = ref(new Date().toLocaleDateString());
 
 const summary = ref<VehicleSummary>({
-  "firstName": "IVO",
-  "lastName": "IVIC",
-  "residence": "ADRESA 12, ZAGREB",
-  "licenceHolderType": "A-VLASNIK",
-  "registrationPlate": "ZG-0000-AA",
-  "dateOfRegistration": currentDate.value,
-  "oib": "12345678901",
-  "issuedBy": "PTS H840 ZG",
-  "issuedDate": currentDate.value,
+  firstName: "IVO",
+  lastName: "IVIC",
+  residence: "ADRESA 12, ZAGREB",
+  licenceHolderType: "A-VLASNIK",
+  registrationPlate: "ZG-0000-AA",
+  dateOfRegistration: currentDate.value,
+  oib: "12345678901",
+  issuedBy: "PTS H840 ZG",
+  issuedDate: currentDate.value,
 });
 
 // TODO: this is a placeholder function for actual loading functions
