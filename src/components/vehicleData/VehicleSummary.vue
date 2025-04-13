@@ -120,7 +120,7 @@
 </template>
 
 <script setup lang="ts">
-import type { VehicleSummary } from '@/models/models';
+import type { VehicleSummary } from '@/models/vehicleDataModels';
 
 defineProps({
   summary: {

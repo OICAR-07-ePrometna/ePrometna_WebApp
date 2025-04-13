@@ -44,15 +44,3 @@ export interface FormErrors {
   password: string;
   role: string;
 }
-
-export interface VehicleSummary {
-  firstName: string;
-  lastName: string;
-  residence: string;
-  licenceHolderType: string;
-  registrationPlate: string;
-  dateOfRegistration: string;
-  oib: string;
-  issuedBy: string;
-  issuedDate: string;
-}

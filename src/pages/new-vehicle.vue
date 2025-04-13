@@ -14,7 +14,7 @@ import Page1 from '@/components/vehicleData/VehicleSummary.vue';
 import Page2 from '@/components/vehicleData/Page2.vue';
 import Page3 from '@/components/vehicleData/RegistrationLogs.vue';
 import { ref } from 'vue';
-import type { VehicleSummary } from '@/models/models';
+import type { VehicleSummary } from '@/models/vehicleDataModels';
 
 const currentDate = ref(new Date().toLocaleDateString());
 
