@@ -86,7 +86,7 @@ const handleLogin = async () => {
   try {
     await authStorage.login(email.value, password.value);
 
-    router.push('/dashboard');
+    router.push('/');
   } catch (error) {
     console.error('Login failed:', error);
   }
@@ -101,7 +101,7 @@ const testConnection = async () => {
     pingResult.value = 'Connection successful';
     pingSuccess.value = true;
   } catch (error) {
-    pingResult.value = 'Connection failed: ' + error.message;
+    pingResult.value = 'Connection failed: ' + (error as any).message;
     pingSuccess.value = false;
   } finally {
     isPinging.value = false;
