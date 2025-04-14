@@ -14,9 +14,13 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginView: typeof import('./src/components/LoginView.vue')['default']
     Navigation: typeof import('./src/components/Navigation.vue')['default']
+    Page1: typeof import('./src/components/vehicleData/Page1.vue')['default']
+    Page2: typeof import('./src/components/vehicleData/Page2.vue')['default']
+    Page3: typeof import('./src/components/vehicleData/Page3.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
+    Search: typeof import('./src/components/vehicleData/Search.vue')['default']
   }
 }
