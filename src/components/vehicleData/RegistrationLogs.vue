@@ -13,7 +13,7 @@
                 <v-text-field
                   variant="underlined"
                   density="compact"
-                  :value="formatDate(typeof item.dateOfValidation === 'string' ? item.dateOfValidation : item.dateOfValidation.toISOString())"
+                  :value="item.dateOfValidation.toLocaleDateString('hr')"
                   readonly
                 >
                 <template #prepend-inner>
@@ -24,7 +24,7 @@
                 <v-text-field
                   variant="underlined"
                   density="compact"
-                  :value="formatDate(typeof item.expirationDate === 'string' ? item.expirationDate : item.expirationDate.toISOString())"
+                  :value="item.dateOfValidation.toLocaleDateString('hr')"
                   readonly
                 >
                 <template #prepend-inner>
@@ -63,14 +63,6 @@
   
   <script setup lang="ts">
   import type { RegistrationLogs } from '@/models/vehicleDataModels';
-
-  const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear();
-  return `${day}.${month}.${year}`;
-};
 
   defineProps({
     registrationLogs: {

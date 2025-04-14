@@ -20,9 +20,9 @@ declare module 'vue' {
     RegistrationLogs: typeof import('./src/components/vehicleData/RegistrationLogs.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Search: typeof import('./src/components/vehicleData/Search.vue')['default']
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
-    Search: typeof import('./src/components/vehicleData/Search.vue')['default']
     VehicleOwnerSummary: typeof import('./src/components/vehicleData/VehicleOwnerSummary.vue')['default']
     VehicleSummary: typeof import('./src/components/vehicleData/VehicleSummary.vue')['default']
   }
