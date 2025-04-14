@@ -1,22 +1,23 @@
 <template>
-    <SearchBar label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678" :on-click="fu" />
-    <VehicleOwnerSummaryPage :summary="summary" />
-    <VehicleSummaryPage />
-     <!-- TODO: add to page 2  -->
-    <v-divider thickness="2" class="my-2"></v-divider>
-    <RegistrationLogsPage :registrationLogs="registrationLogs" />
-    <div>
-    </div>
+  <SearchBar :label="SearchOption.driver.label" :tooltip="SearchOption.driver.tooltip"
+    :placeholder="SearchOption.driver.placeholder" :on-click="fu" />
+  <VehicleOwnerSummaryPage :summary="summary" />
+  <VehicleSummaryPage />
+  <!-- TODO: add to page 2  -->
+  <v-divider thickness="2" class="my-2"></v-divider>
+  <RegistrationLogsPage :registrationLogs="registrationLogs" />
+  <div>
+  </div>
 </template>
 
 <script lang="ts" setup>
-
+import { ref } from 'vue';
 import SearchBar from '@/components/vehicleData/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
-import { ref } from 'vue';
 import type { VehicleOwnerSummary, RegistrationLogs } from '@/models/vehicleDataModels';
+import { SearchOption } from '@/constants/searchOptions'
 
 const currentDate = ref(new Date().toLocaleDateString());
 
@@ -49,11 +50,11 @@ const registrationLogs = ref<RegistrationLogs[]>([
 
 // TODO: this is a placeholder function for actual loading functions
 const fu = () => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve('Promise resolved');
-        }, 2000);
-    });
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve('Promise resolved');
+    }, 2000);
+  });
 };
 
 </script>
