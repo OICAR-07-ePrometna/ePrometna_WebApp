@@ -36,8 +36,8 @@ const summary = ref<VehicleOwnerSummary>({
 const registrationLogs = ref<RegistrationLogs[]>([
   {
     dateOfValidation: new Date(),
-    expirationDate: new Date(2025, 4, 20),
-    mileage: '150000',
+    expirationDate: new Date(2026, 4, 20),
+    mileage: '300000',
     note: 'Nema'
   },
   {
