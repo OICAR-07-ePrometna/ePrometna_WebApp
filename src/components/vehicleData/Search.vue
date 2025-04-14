@@ -10,8 +10,8 @@
             </v-tooltip>
             <span class="spacing" v-if="label">{{ label }}</span>
             <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
-                :placeholder="placeholder" variant="solo" hide-details single-line
-                @click:append-inner="search"></v-text-field>
+                :placeholder="placeholder" variant="solo" hide-details single-line @click:append-inner="search"
+                @keyup.enter="search"></v-text-field>
         </v-row>
     </div>
     <v-divider thickness="2" class="my-2"></v-divider>
@@ -40,16 +40,16 @@ const showTooltip = ref(false)
 
 async function search() {
     loading.value = true
-    try{
+    try {
         await props.onClick()
     }
-    catch{
+    catch {
 
     }
-    finally{
-        loading.value = false   
+    finally {
+        loading.value = false
     }
-    
+
 }
 </script>
 
