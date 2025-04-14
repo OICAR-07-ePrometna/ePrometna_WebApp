@@ -27,7 +27,7 @@ import { useDrawer } from '@/stores/drawer'
 import { UserRole } from '@/enums/userRole';
 import { navigationLinks, type NavigationGroup } from '@/layouts/links';
 
-const currentUserRole = UserRole.Osoba;
+const currentUserRole = UserRole.HAK;
 
 const drawer = useDrawer();
 const router = useRouter();

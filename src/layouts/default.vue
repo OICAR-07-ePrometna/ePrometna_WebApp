@@ -2,7 +2,7 @@
   <SnackbarProvider>
     <Header />
     <Navigation>
-      <v-main style="--v-layout-right: 10px; --v-layout-top: 10px; --v-layout-bottom: 50px;">
+      <v-main style="--v-layout-right: 0px; --v-layout-top: 0px; --v-layout-bottom: 50px;" >
         <router-view class="content-padding" />
       </v-main>
     </Navigation>
@@ -17,7 +17,9 @@ import AppFooter from '@/components/AppFooter.vue'
 </script>
 
 <style lang="css" scoped>
-.content-padding {
-  padding: 0 2vw 0;
+
+.content-padding{
+  padding: 10px 2vw 0;
+  overflow-y: auto;
 }
 </style>
