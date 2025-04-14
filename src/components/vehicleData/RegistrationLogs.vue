@@ -1,10 +1,14 @@
 <template>
     <div>
       <h2>Podaci o važenju prometne dozvole</h2>
+      <div v-if="registrationLogs.length === 0" class="text-center pa-4">
+      <p>Nema podataka o važenju prometne dozvole</p>
+      </div>
       <v-virtual-scroll
         :items="registrationLogs"
         height="400"
         item-height="100"
+        v-else
       >
         <template v-slot="{ item }">
           <v-container class="bordered-container">
