@@ -53,9 +53,9 @@ async function search() {
 }
 </script>
 
-<style lang="css">
+<style scoped lang="css">
 .search {
-    padding: 15px;
+    padding: 30px;
 }
 
 .spacing {
