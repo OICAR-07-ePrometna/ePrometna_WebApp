@@ -20,6 +20,6 @@ import AppFooter from '@/components/AppFooter.vue'
 
 .content-padding{
   padding: 10px 2vw 0;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 </style>
