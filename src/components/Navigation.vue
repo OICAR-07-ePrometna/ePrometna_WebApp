@@ -14,7 +14,7 @@
       <v-list-item class="title">Profil</v-list-item>
       <v-divider></v-divider>
       <v-list-item link item @click="router.push({ name: 'details' })">Detalji</v-list-item>
-      <v-list-item link item class="logout">Odjava</v-list-item>
+      <v-list-item link item class="logout" @click="authStore.Logout">Odjava</v-list-item>
     </v-navigation-drawer>
   </v-container>
   <slot></slot>
@@ -25,16 +25,16 @@ import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDrawer } from '@/stores/drawer'
 import { navigationLinks, type NavigationGroup } from '@/layouts/links';
-import { useUserStore } from '@/stores/user';
+import { useAuthStore } from '@/stores/auth';
 
 const drawer = useDrawer();
 const router = useRouter();
-const userStore = useUserStore()
+const authStore = useAuthStore()
 
 const filteredItems = computed<NavigationGroup[]>(() =>
   navigationLinks.map(item => ({
     ...item,
-    Links: item.Links.filter(link => link.AllowRoles.includes(userStore.userRole!))
+    Links: item.Links.filter(link => link.AllowRoles.includes(authStore.UserRole!))
   })).filter(item => item.Links.length !== 0)
 )
 

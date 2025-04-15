@@ -5,26 +5,9 @@
  */
 
 // Composables
+import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
-import {navigationLinks} from '@/layouts/links'
-import { UserRole } from '@/enums/userRole'
-const pages = import.meta.glob('../pages/*.vue')
-
-const routes = Object.keys(pages).map((path) => {
-  const name = path.match(/\.\.\/pages\/(.*)\.vue$/)?.[1]
-  const component = pages[path]
-
-  return {
-    path: `/${name === 'index' ? '' : name}`,
-    name,
-    component,
-    meta: {
-      layout: ['login', 'login-hak', 'login-mup'].includes(name || '')
-        ? 'loginLayout'
-        : 'default',
-    },
-  }
-})
+import {routes} from '@/router/routes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +28,33 @@ router.onError((err, to) => {
     console.error(err)
   }
 })
+
+router.beforeEach((route) =>{
+  const auth = useAuthStore()
+ 
+  if(!auth.IsAuthenticated){
+    //TODO: reroute
+    console.log("unuotirzed")
+    return
+  }
+  
+  // @ts-ignore
+  if(route.meta.allowedRoles?.length === 0){
+    //TODO: reroute
+
+    console.log("unuotirzed")
+
+    return
+  }
+  // @ts-ignore
+  if(route.meta.allowedRoles?.every(role => role != auth.UserRole)){
+    //TODO: reroute
+
+    console.log("unuotirzed")
+    return
+  }
+
+}) 
 
 router.isReady().then(() => {
   localStorage.removeItem('vuetify:dynamic-reload')
