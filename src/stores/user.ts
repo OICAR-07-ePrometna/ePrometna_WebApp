@@ -11,20 +11,18 @@ export const useUserStore = defineStore('user', {
 
   getters: {
     isLoggedIn: (state) => !!state.currentUser,
+    userRole: (state) => state.currentUser?.role
   },
 
   actions: {
     async fetchLoggedInUser() {
       this.error = null;
       try {
-        const authStore = useAuthStore();
-        
-        if (!authStore.accessToken) {
-          throw new Error('Access token is missing');
+        if (this.currentUser == null) {
+          const user = await UserService.getLoggedInUser();
+          this.currentUser = user;
         }
-        const user = await UserService.getLoggedInUser(authStore.accessToken);
-        this.currentUser = user;
-        return user;
+        return this.currentUser;
       } catch {
         this.error = 'Failed to fetch user data';
         return null;
@@ -32,12 +30,15 @@ export const useUserStore = defineStore('user', {
     },
 
     async refreshUserData() {
-      const authStore = useAuthStore();
-      
-      if (authStore.isAuthenticated) {
-        return this.fetchLoggedInUser();
+      try {
+        const user = await UserService.getLoggedInUser();
+        this.currentUser = user;
+        return this.currentUser;
+      } catch {
+        this.error = 'Failed to fetch user data';
+        return null;
       }
-      
+
       return null;
     }
   }

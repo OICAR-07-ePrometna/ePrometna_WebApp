@@ -3,6 +3,7 @@ import type { User } from '@/models/user';
 import { createNewUserDto} from '@/dtos/newUserDto';
 import { UserRole } from '@/enums/userRole';
 import { formatDate } from '@/utils/formatDate';
+import { useAuthStore } from '@/stores/auth';
 
 const API_URL = 'http://localhost:8090/api';
 
@@ -34,15 +35,17 @@ export default {
     }
   },
 
-  async getLoggedInUser(token: string): Promise<User | null> {
-    if (!token) {
-      throw new Error('Token is required');
+  async getLoggedInUser(): Promise<User | null> {
+    const authStore = useAuthStore();
+        
+    if (!authStore.accessToken) {
+      throw new Error('Access token is missing');
     }
 
     try {
       const response = await axios.get(`${API_URL}/user/my-data`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${authStore.accessToken}`
         }
       });
 

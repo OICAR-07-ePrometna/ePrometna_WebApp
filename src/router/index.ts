@@ -6,7 +6,8 @@
 
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-
+import {navigationLinks} from '@/layouts/links'
+import { UserRole } from '@/enums/userRole'
 const pages = import.meta.glob('../pages/*.vue')
 
 const routes = Object.keys(pages).map((path) => {

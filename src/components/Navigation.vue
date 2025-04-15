@@ -24,21 +24,19 @@
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDrawer } from '@/stores/drawer'
-import { UserRole } from '@/enums/userRole';
 import { navigationLinks, type NavigationGroup } from '@/layouts/links';
-
-const currentUserRole = UserRole.HAK;
+import { useUserStore } from '@/stores/user';
 
 const drawer = useDrawer();
 const router = useRouter();
+const userStore = useUserStore()
 
-const filteredItems = computed<NavigationGroup[]>(() => {
-  return navigationLinks.map(item => ({
+const filteredItems = computed<NavigationGroup[]>(() =>
+  navigationLinks.map(item => ({
     ...item,
-    Links: item.Links.filter(link => link.AllowRoles.includes(currentUserRole))
+    Links: item.Links.filter(link => link.AllowRoles.includes(userStore.userRole!))
   })).filter(item => item.Links.length !== 0)
-})
-
+)
 
 </script>
 
