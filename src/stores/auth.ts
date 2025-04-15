@@ -26,12 +26,15 @@ export const useAuthStore = defineStore('auth', () => {
     set: (val: string) => localStorage.setItem('refreshToken', val)
   })
 
-  const IsAuthenticated = computed(() => AccessToken != null)
+  const IsAuthenticated = computed(() =>  localStorage.getItem('accessToken') != null)
 
   function Logout(): void {
     localStorage.removeItem('user')
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+
+    //NOTE: use this becouse router is undefined
+    document.location.replace('/login')
   }
 
   async function Login(email: string, password: string) {

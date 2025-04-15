@@ -8,6 +8,7 @@
 import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
 import {routes} from '@/router/routes'
+import type { UserRole } from '@/enums/userRole'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,32 +30,41 @@ router.onError((err, to) => {
   }
 })
 
-router.beforeEach((route) =>{
-  const auth = useAuthStore()
- 
-  if(!auth.IsAuthenticated){
-    //TODO: reroute
-    console.log("unuotirzed")
-    return
-  }
-  
-  // @ts-ignore
-  if(route.meta.allowedRoles?.length === 0){
-    //TODO: reroute
 
-    console.log("unuotirzed")
+router.beforeEach((to, from) => {
+  const auth = useAuthStore();
+  const isAuthenticated = auth.IsAuthenticated; 
+  const userRole = auth.UserRole;
 
-    return
-  }
-  // @ts-ignore
-  if(route.meta.allowedRoles?.every(role => role != auth.UserRole)){
-    //TODO: reroute
-
-    console.log("unuotirzed")
-    return
+  if (!isAuthenticated) {
+    if (to.name === 'login') {
+      return true;
+    } else {
+      console.log("Unauthorized: Not authenticated. Redirecting to login.");
+      return { name: 'login' };
+    }
   }
 
-}) 
+  if (to.name === 'login') {
+      console.log("Authenticated user trying to access login. Redirecting to login.");
+      return { path: '/login' };
+  }
+  const allowedRoles = to.meta?.allowedRoles as Array<UserRole> | undefined;
+
+  if (allowedRoles) { 
+    if (allowedRoles.length === 0) {
+      return true;
+    }
+
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      //TODO: implement back
+      console.log(`Unauthorized: User role "${userRole}" not in allowed roles [${allowedRoles.join(', ')}]. Redirecting back to ${from.path}.`);
+      return { path: from.path };
+    }
+  }
+  return true;
+});
+
 
 router.isReady().then(() => {
   localStorage.removeItem('vuetify:dynamic-reload')

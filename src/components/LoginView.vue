@@ -82,14 +82,15 @@ async function handleLogin() {
   try {
     await authStore.Login(email.value, password.value);
     await authStore.GetLoggedInUser()
-    router.push('/');
   } catch (error) {
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
+    return
   }
   finally {
     loading.value = false
   }
+  router.push('/');
 }
 
 const testConnection = async () => {

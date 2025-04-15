@@ -16,7 +16,6 @@ export const routes = [
     component: () => import('@/pages/login.vue'),
     meta: {
       layout: 'loginLayout',
-      allowedRoles: []
     },
   },
   {
@@ -25,7 +24,6 @@ export const routes = [
     component: () => import('@/pages/login-hak.vue'),
     meta: {
       layout: 'loginLayout',
-      allowedRoles: []
     },
   },
   {
@@ -34,7 +32,6 @@ export const routes = [
     component: () => import('@/pages/login-mup.vue'),
     meta: {
       layout: 'loginLayout',
-      allowedRoles: []
     },
   },
   // Routes previously generated from "Vozilo" group
