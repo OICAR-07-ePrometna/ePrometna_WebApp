@@ -1,78 +1,68 @@
-import axios from 'axios';
 import { defineStore } from 'pinia';
-import AuthService from '@/services/authService';
-import type { TokenResponse} from '@/models/tokenResponse';
-import type { AuthState} from '@/models/authState';
+import { login } from '@/services/authService';
+import { getLoggedInUser } from '@/services/userService'
+import type { User } from '@/models/user';
+export const useAuthStore = defineStore('auth', () => {
+  const User = computed({
+    get: () => {
+      const data = localStorage.getItem('user')
+      if (data == null)
+        return undefined
 
-export const useAuthStore = defineStore('auth', {
-  state: (): AuthState => ({
-    accessToken: localStorage.getItem('accessToken') || null,
-    refreshToken: localStorage.getItem('refreshToken') || null,
-    user: null,
-    loading: false,
-    error: null
-  }),
-
-  getters: {
-    isAuthenticated: (state: AuthState): boolean => !!state.accessToken
-  },
-
-  actions: {
-    async login(email: string, password: string): Promise<TokenResponse> {
-      this.loading = true;
-      this.error = null;
-    
-      try {
-        const response = await AuthService.login({ email, password });
-        this.setTokens(response.accessToken, response.refreshToken);
-        return response;
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error)) {
-          this.error = error.response?.data;
-        } else {
-          this.error = 'Invalid credentials';
-        }
-        throw error;
-      } finally {
-        this.loading = false;
-      }
+      return JSON.parse(data) as User
     },
+    set: (val: User) => localStorage.setItem('user', JSON.stringify(val))
+  })
 
-    async refreshTokens(): Promise<TokenResponse> {
-      if (!this.refreshToken) {
-        this.logout();
-        throw new Error(this.error || 'Missing refresh token');
-      }
-    
-      try {
-        const response = await AuthService.refreshToken({ refreshToken: this.refreshToken });
-        this.setTokens(response.accessToken, response.refreshToken);    
-        return response;
-      } catch (error) {
-        this.logout();
-        throw error;
-      }
-    },
+  const UserRole = computed(() => User.value?.role)
 
-    setTokens(accessToken: string, refreshToken: string): void {
-      this.accessToken = accessToken;
-      this.refreshToken = refreshToken;
+  const AccessToken = computed({
+    get: () => localStorage.getItem('accessToken'),
+    set: (val: string) => localStorage.setItem('accessToken', val)
+  })
 
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-    },
+  const RefreshToken = computed({
+    get: () => localStorage.getItem('refreshToken'),
+    set: (val: string) => localStorage.setItem('refreshToken', val)
+  })
 
-    logout(): void {
-      this.accessToken = null;
-      this.refreshToken = null;
-      this.user = null;
+  const IsAuthenticated = computed(() =>  localStorage.getItem('accessToken') != null)
 
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
-    },
+  function Logout(): void {
+    localStorage.removeItem('user')
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
 
-    clearError(): void {
-      this.error = null;
-    }
+    //NOTE: use this becouse router is undefined
+    document.location.replace('/login')
   }
-});
+
+  async function Login(email: string, password: string) {
+    const response = await login({ email, password });
+    SetTokens(response.accessToken, response.refreshToken);
+    return response;
+  }
+
+  async function GetLoggedInUser() {
+    const user = await getLoggedInUser();
+    User.value = user!;
+  }
+
+  function SetTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem('accessToken', accessToken);
+    localStorage.setItem('refreshToken', refreshToken);
+  }
+
+
+  return {
+    User,
+    UserRole,
+    IsAuthenticated,
+    AccessToken,
+    RefreshToken,
+    Logout,
+    Login,
+    GetLoggedInUser,
+    SetTokens,
+  }
+})

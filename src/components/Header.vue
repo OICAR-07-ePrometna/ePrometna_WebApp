@@ -11,12 +11,12 @@
 </template>
 
 <script lang="ts" setup>
+import { useAuthStore } from '@/stores/auth';
 import { useDrawer } from '@/stores/drawer';
 import { useRouter } from 'vue-router';
-import { useUserStore } from '@/stores/user';
 
-const user = useUserStore();
-const userEmail = user.currentUser?.email || '';
+const authStore = useAuthStore();
+const userEmail = authStore.User?.email ?? "No email :("
 
 const drawer = useDrawer();
 const router = useRouter();

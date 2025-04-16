@@ -16,15 +16,9 @@
         prepend-inner-icon="mdi-lock-outline" variant="outlined" :error-messages="passwordError ? [passwordError] : []"
         @click:append-inner="visible = !visible" @focus="passwordError = ''"></v-text-field>
 
-      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="authStorage.loading"
-        :disabled="authStorage.loading" @click="handleLogin">
-        {{ authStorage.loading ? 'Logging in...' : 'Log In' }}
+      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="loading" @click="handleLogin">
+        Log In
       </v-btn>
-
-      <v-alert v-if="authStorage.error" type="error" variant="tonal" class="mb-0" closable
-        @click:close="authStorage.clearError()">
-        {{ authStorage.error }}
-      </v-alert>
 
       <v-btn class="mt-4" color="grey" variant="text" size="small" block :loading="isPinging" :disabled="isPinging"
         @click="testConnection">
@@ -42,13 +36,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { apiClient } from '@/services/authService';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
-import { useUserStore } from '@/stores/user';
+import axiosInstance from '@/services/axios';
 
 const router = useRouter();
-const authStorage = useAuthStore();
+const authStore = useAuthStore();
 const snackbar = useSnackbar()
 
 const email = ref('');
@@ -59,6 +52,8 @@ const visible = ref(false);
 const isPinging = ref(false);
 const pingResult = ref('');
 const pingSuccess = ref(false);
+
+const loading = ref(false)
 
 const validateForm = () => {
   let isValid = true;
@@ -83,15 +78,19 @@ async function handleLogin() {
   if (!validateForm()) {
     return;
   }
+  loading.value = true
   try {
-    await authStorage.login(email.value, password.value);
-    const userStore = useUserStore();
-    await userStore.fetchLoggedInUser();
-    router.push('/');
+    await authStore.Login(email.value, password.value);
+    await authStore.GetLoggedInUser()
   } catch (error) {
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
+    return
   }
+  finally {
+    loading.value = false
+  }
+  router.push('/');
 }
 
 const testConnection = async () => {
@@ -99,7 +98,7 @@ const testConnection = async () => {
   pingResult.value = '';
 
   try {
-    await apiClient.get('/test/');
+    await axiosInstance.get('/test/');
     pingResult.value = 'Connection successful';
     pingSuccess.value = true;
   } catch (error) {

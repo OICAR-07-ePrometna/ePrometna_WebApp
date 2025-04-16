@@ -31,11 +31,11 @@
 import { ref, reactive } from 'vue';
 import type { User } from '@/models/user';
 import { UserRole } from '@/enums/userRole';
-import userService from '@/services/userService';
 import UserForm from '@/components/CreateUserForm.vue';
 import type { FormErrors } from '@/models/formErrors';
 import { isOibValid } from '@/utils/validateOIB';
 import { isEmailValid } from '@/utils/validateEmail';
+import { createUser } from '@/services/userService';
 
 const user = ref<User>({
   uuid: '',
@@ -135,7 +135,7 @@ const submitForm = async () => {
   try {
     isSubmitting.value = true;
 
-    const createdUser = await userService.createUser(user.value, password.value);
+    const createdUser = await createUser(user.value, password.value);
 
     if (createdUser) {
       successMessage.value = `User ${createdUser.email} created successfully!`;
