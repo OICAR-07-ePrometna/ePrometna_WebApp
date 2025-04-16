@@ -39,6 +39,8 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
 import axiosInstance from '@/services/axios';
+import { getLoggedInUser } from '@/services/userService';
+import { login } from '@/services/authService';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -80,8 +82,11 @@ async function handleLogin() {
   }
   loading.value = true
   try {
-    await authStore.Login(email.value, password.value);
-    await authStore.GetLoggedInUser()
+    const rez = await login({ email: email.value, password: password.value });
+    authStore.SetTokens(rez.accessToken, rez.refreshToken)
+
+    const userRez = await getLoggedInUser()
+    authStore.User = userRez
   } catch (error) {
     console.error('Login failed:', error);
     snackbar.Error(`Failed to login`)
