@@ -1,9 +1,7 @@
-import axios from 'axios';
 import type { User } from '@/models/user';
 import { createNewUserDto } from '@/dtos/newUserDto';
 import { UserRole } from '@/enums/userRole';
 import { formatDate } from '@/utils/formatDate';
-import { useAuthStore } from '@/stores/auth';
 import axiosInstance from './axios';
 
 const API_URL = 'http://localhost:8090/api';
@@ -34,13 +32,8 @@ export async function createUser(user: User, password: string): Promise<User | u
 }
 
 export async function getLoggedInUser(): Promise<User | undefined> {
-  const authStore = useAuthStore();
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/my-data`, {
-      headers: {
-        'Authorization': `Bearer ${authStore.AccessToken}`
-      }
-    });
+    const response = await axiosInstance.get(`${API_URL}/user/my-data`);
 
     //NOTE: this abomination is to be left here at all cost
     return {

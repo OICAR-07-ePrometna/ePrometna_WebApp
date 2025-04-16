@@ -7,7 +7,7 @@
 // Composables
 import { useAuthStore } from '@/stores/auth'
 import { createRouter, createWebHistory } from 'vue-router'
-import {routes} from '@/router/routes'
+import { routes } from '@/router/routes'
 import type { UserRole } from '@/enums/userRole'
 
 const router = createRouter({
@@ -33,7 +33,7 @@ router.onError((err, to) => {
 
 router.beforeEach((to, from) => {
   const auth = useAuthStore();
-  const isAuthenticated = auth.IsAuthenticated; 
+  const isAuthenticated = auth.IsAuthenticated;
   const userRole = auth.UserRole;
 
   if (!isAuthenticated) {
@@ -46,12 +46,12 @@ router.beforeEach((to, from) => {
   }
 
   if (to.name === 'login') {
-      console.log("Authenticated user trying to access login. Redirecting to login.");
-      return { path: '/login' };
+    console.log("Authenticated user trying to access login. Redirecting to login.");
+    return { path: '/' };
   }
   const allowedRoles = to.meta?.allowedRoles as Array<UserRole> | undefined;
 
-  if (allowedRoles) { 
+  if (allowedRoles) {
     if (allowedRoles.length === 0) {
       return true;
     }
