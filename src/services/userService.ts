@@ -13,17 +13,7 @@ export async function createUser(user: User, password: string): Promise<User | u
   try {
     const response = await axiosInstance.post(`${API_URL}/user/`, userDto);
 
-    return {
-      uuid: response.data.Uuid,
-      firstName: response.data.FirstName,
-      lastName: response.data.LastName,
-      oib: response.data.OIB,
-      residence: response.data.Residence,
-      birthDate: response.data.BirthDate,
-      email: response.data.Email,
-      role: response.data.Role as UserRole
-    };
-
+    return response.data
 
   } catch (error) {
     console.error('Error creating user:', error);
@@ -36,18 +26,7 @@ export async function getLoggedInUser(): Promise<User | undefined> {
     const response = await axiosInstance.get(`${API_URL}/user/my-data`);
 
     //NOTE: this abomination is to be left here at all cost
-    return {
-      uuid: response.data.Uuid,
-      firstName: response.data.FirstName,
-      lastName: response.data.LastName,
-      oib: response.data.OIB,
-      residence: response.data.Residence,
-      birthDate: response.data.BirthDate,
-      email: response.data.Email,
-      role: response.data.Role as UserRole
-    };
-
-
+    return response.data
   } catch (error) {
     console.error('Error fetching current user:', error);
     throw error;

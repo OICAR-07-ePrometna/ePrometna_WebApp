@@ -1,6 +1,4 @@
 import { defineStore } from 'pinia';
-import { login } from '@/services/authService';
-import { getLoggedInUser } from '@/services/userService'
 import type { User } from '@/models/user';
 export const useAuthStore = defineStore('auth', () => {
   const User = computed({
@@ -26,7 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
     set: (val: string) => localStorage.setItem('refreshToken', val)
   })
 
-  const IsAuthenticated = computed(() =>  localStorage.getItem('accessToken') != null)
+  const IsAuthenticated = computed(() => localStorage.getItem('accessToken') != null)
 
   function Logout(): void {
     localStorage.removeItem('user')
@@ -35,17 +33,6 @@ export const useAuthStore = defineStore('auth', () => {
 
     //NOTE: use this becouse router is undefined
     document.location.replace('/login')
-  }
-
-  async function Login(email: string, password: string) {
-    const response = await login({ email, password });
-    SetTokens(response.accessToken, response.refreshToken);
-    return response;
-  }
-
-  async function GetLoggedInUser() {
-    const user = await getLoggedInUser();
-    User.value = user!;
   }
 
   function SetTokens(accessToken: string, refreshToken: string): void {
@@ -61,8 +48,6 @@ export const useAuthStore = defineStore('auth', () => {
     AccessToken,
     RefreshToken,
     Logout,
-    Login,
-    GetLoggedInUser,
     SetTokens,
   }
 })
