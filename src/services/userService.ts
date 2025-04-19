@@ -34,7 +34,7 @@ export async function getLoggedInUser(): Promise<User | undefined> {
 
 export async function searchUsers(query: string): Promise<User[] | undefined> {
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/search?query=${query}`);
+    const response = await axiosInstance.get(`${API_URL}/user/search?query=${encodeURIComponent(query)}`);
 
     const data = Array.isArray(response.data) ? response.data.map((user: User) => ({
       ...user,
