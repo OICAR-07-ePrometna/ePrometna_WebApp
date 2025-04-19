@@ -42,8 +42,9 @@ export async function searchUsers(query: string): Promise<User[] | undefined> {
     })) : [];
 
     return data
-  } catch (error) {
-    console.error('Error fetching all users', error);
+  } catch (error : any) {
+    const errorMessage = error.response?.data?.message || 'Unknown error';
+    console.error(`Error fetching users with query "${query}": ${errorMessage}`, error);
     throw error;
   }
 }
