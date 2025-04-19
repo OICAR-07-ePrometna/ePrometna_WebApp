@@ -9,7 +9,6 @@ export async function getVehicle(guid: string): Promise<vehicleDetails | undefin
     return rez.data
   }
   catch (error) {
-    alert(error)
-    return undefined
+    throw error
   }
 }

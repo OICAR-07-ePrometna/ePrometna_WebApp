@@ -33,6 +33,7 @@ import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue'
 import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetails } from '@/models/vehicleDataModels';
 import { SearchOption } from '@/constants/searchOptions'
 import { getVehicle } from '@/services/vehicleService';
+import { useSnackbar } from '@/components/SnackbarProvider.vue';
 
 const steps = ["Owner", "Car", "Registrations"]
 const currentDate = ref(new Date().toLocaleDateString());
@@ -67,18 +68,16 @@ const registrationLogs = ref<RegistrationLogs[]>([
 ]);
 
 const vehicleData = ref<vehicleDetails | undefined>(undefined)
+const snackbar = useSnackbar()
 
 async function GetVechileDetails() {
   try {
     const rez = await getVehicle("71e99c7a-797d-4e49-9927-dbd6cc7cba95")
-    if (!rez) {
-      console.error("No vehicle data returned");
-      return;
-    }
     vehicleData.value = rez;
+    snackbar.Success("Success fetching vehicel")
   } catch (error) {
+    snackbar.Error("Error fetching vehicle")
     console.error("Error fetching vehicle data:", error);
-    // Consider adding user-facing error handling here
   }
 }
 
