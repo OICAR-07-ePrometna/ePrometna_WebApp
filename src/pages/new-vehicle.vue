@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue';
-import SearchBar from '@/components/vehicleData/Search.vue';
+import SearchBar from '@/components/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';

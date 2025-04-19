@@ -80,10 +80,15 @@ export interface NavigationLink {
     {
       Name: "Akcije",
       Links: [
-      {
+         {
           Name: "Novi korisnik",
           AllowRoles: [UserRole.SuperAdmin],
           Route: '/new-user'
+        },
+        {
+          Name: "Korisnici",
+          AllowRoles: [UserRole.SuperAdmin],
+          Route: '/users'
         }
       ]
     },

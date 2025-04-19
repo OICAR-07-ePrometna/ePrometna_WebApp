@@ -33,6 +33,7 @@ declare module 'vue-router/auto-routes' {
     '/ownership-change': RouteRecordInfo<'/ownership-change', '/ownership-change', Record<never, never>, Record<never, never>>,
     '/techical-check': RouteRecordInfo<'/techical-check', '/techical-check', Record<never, never>, Record<never, never>>,
     '/traffic-license': RouteRecordInfo<'/traffic-license', '/traffic-license', Record<never, never>, Record<never, never>>,
+    '/users': RouteRecordInfo<'/users', '/users', Record<never, never>, Record<never, never>>,
     '/vehicle-deregistration': RouteRecordInfo<'/vehicle-deregistration', '/vehicle-deregistration', Record<never, never>, Record<never, never>>,
     '/vehicles': RouteRecordInfo<'/vehicles', '/vehicles', Record<never, never>, Record<never, never>>,
   }
