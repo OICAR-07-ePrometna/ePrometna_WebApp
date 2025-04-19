@@ -32,15 +32,15 @@ export async function getLoggedInUser(): Promise<User | undefined> {
   }
 }
 
-export async function searchUsers(query: string): Promise<User[] | undefined>{ 
+export async function searchUsers(query: string): Promise<User[] | undefined> {
   try {
     const response = await axiosInstance.get(`${API_URL}/user/search?query=${query}`);
 
-    const data = response.data.map((user:User) => ({
+    const data = Array.isArray(response.data) ? response.data.map((user: User) => ({
       ...user,
       birthDate: user.birthDate ? formatDate(new Date(user.birthDate)) : ''
-    }));
-    
+    })) : [];
+
     return data
   } catch (error) {
     console.error('Error fetching all users', error);
@@ -48,7 +48,7 @@ export async function searchUsers(query: string): Promise<User[] | undefined>{
   }
 }
 
-export async function updateUser(uuid: string, model: User): Promise<User[] | undefined>{ 
+export async function updateUser(uuid: string, model: User): Promise<User[] | undefined> {
   try {
     const response = await axiosInstance.put(`${API_URL}/user/${uuid}`,
       JSON.stringify(model)
@@ -61,10 +61,10 @@ export async function updateUser(uuid: string, model: User): Promise<User[] | un
   }
 }
 
-export async function deleteUser(uuid: string): Promise<{success: boolean} | undefined>{ 
+export async function deleteUser(uuid: string): Promise<{ success: boolean } | undefined> {
   try {
     const response = await axiosInstance.delete(`${API_URL}/user/${uuid}`)
-    
+
     return response.data
   } catch (error) {
     console.error('Error deleting user', error);
