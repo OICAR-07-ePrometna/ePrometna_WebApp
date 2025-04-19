@@ -69,11 +69,17 @@ const registrationLogs = ref<RegistrationLogs[]>([
 const vehicleData = ref<vehicleDetials | undefined>(undefined)
 
 async function GetVechileDetails() {
-  const rez = await getVehicle("71e99c7a-797d-4e49-9927-dbd6cc7cba95")
-  if (!rez) {
-    return
+  try {
+    const rez = await getVehicle("71e99c7a-797d-4e49-9927-dbd6cc7cba95")
+    if (!rez) {
+      console.error("No vehicle data returned");
+      return;
+    }
+    vehicleData.value = rez;
+  } catch (error) {
+    console.error("Error fetching vehicle data:", error);
+    // Consider adding user-facing error handling here
   }
-  vehicleData.value = rez
 }
 
 // TODO: this is a placeholder function for actual loading functions
