@@ -1,5 +1,13 @@
+import type { User } from "./user"
 
 export interface vehicleDetials {
+  uuid: string
+  registration: string
+  owner: User
+  drivers: User[]
+  pastOwners: User[]
+  // Registration   RegistrationDto
+  // PastRegistratins []RegistrationDto
   summary: VehicleSummary,
 }
 

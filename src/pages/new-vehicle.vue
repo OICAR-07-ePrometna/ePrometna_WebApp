@@ -6,7 +6,7 @@
       <v-card>
         <SearchBar :label="SearchOption.driver.label" :tooltip="SearchOption.driver.tooltip"
           :placeholder="SearchOption.driver.placeholder" :on-click="fu" />
-        <VehicleOwnerSummaryPage :summary="summary" />
+        <VehicleOwnerSummaryPage :summary="owner" />
       </v-card>
     </template>
 
@@ -37,7 +37,8 @@ import { getVehicle } from '@/services/vehicleService';
 const steps = ["Owner", "Car", "Registrations"]
 const currentDate = ref(new Date().toLocaleDateString());
 
-const summary = ref<VehicleOwnerSummary>({
+// TODO: Neko to treba fixat
+const owner = ref<VehicleOwnerSummary>({
   firstName: "IVO",
   lastName: "IVIC",
   residence: "ADRESA 12, ZAGREB",
@@ -49,6 +50,7 @@ const summary = ref<VehicleOwnerSummary>({
   issuedDate: currentDate.value,
 });
 
+// TODO: OVO je idalje mock
 const registrationLogs = ref<RegistrationLogs[]>([
   {
     dateOfValidation: new Date(),
