@@ -53,6 +53,7 @@
             </v-card>
         </v-dialog>
     </div>
+    <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script lang="ts" setup>
@@ -61,6 +62,7 @@ import Search from '@/components/Search.vue';
 import { searchUsers, updateUser, deleteUser } from '@/services/userService';
 import type { User } from '@/models/user';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
+import ConfirmDialog from '@/components/confirmDialog.vue';
 
 const headers = [
     { title: 'Ime', key: 'firstName' },
@@ -72,6 +74,7 @@ const headers = [
     { title: 'Role', key: 'role' },
     { title: '', key: 'actions', sortable: false },
 ];
+const confirmDialog = shallowRef(ConfirmDialog)
 const snackbar = useSnackbar()
 const users = ref<User[]>([])
 const dialog = ref(false);
@@ -109,6 +112,15 @@ const editItem = async (item: User) => {
 };
 
 const deleteItem = async (item: User) => {
+    
+    const ok = await confirmDialog.value.Open({
+        Title: "Brisanje korisnika",
+        Message: "Jeste li sigurni da želite obrisati korisnika",
+        Options: { noCancel: false }
+    });
+
+    if (!ok) return
+
     try {
         if (item.uuid) {
             await deleteUser(item.uuid);
