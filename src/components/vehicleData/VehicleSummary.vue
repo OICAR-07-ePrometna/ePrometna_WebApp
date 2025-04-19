@@ -316,19 +316,16 @@ const emit = defineEmits(["update:data"])
 
 watch([summary], () => {
   emit("update:data", summary.value)
-}, { deep: true }) // Added deep watch for nested object changes if necessary
+}, { deep: true })
 
 </script>
 
 <style scoped>
 .v-text-field {
   max-height: 40px;
-  /* Consider if density="compact" already handles this */
   white-space: nowrap;
-  /* Ensure text doesn't wrap */
 }
 
-/* Optional: Style for better alignment */
 .v-text-field :deep(.v-field__prepend-inner) {
   align-items: center;
   padding-right: 8px;

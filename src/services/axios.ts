@@ -33,6 +33,7 @@ axiosInstance.interceptors.request.use(
 // Flag to track if a token refresh is currently in progress
 let isRefreshing = false;
 // Array to hold requests that failed while refreshing token
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
 
 // Helper function to process the queue
@@ -62,11 +63,10 @@ axiosInstance.interceptors.response.use(
 
       // If a refresh is already in progress, queue the original request
       if (isRefreshing) {
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(token => {
           // When refresh is done, retry the original request with the new token
-          debugger;
           originalRequest.headers['Authorization'] = 'Bearer ' + token;
           return axiosInstance(originalRequest); // Retry
         }).catch(err => {

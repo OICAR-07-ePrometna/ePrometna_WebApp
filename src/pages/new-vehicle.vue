@@ -30,7 +30,7 @@ import SearchBar from '@/components/vehicleData/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
-import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetials } from '@/models/vehicleDataModels';
+import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetails } from '@/models/vehicleDataModels';
 import { SearchOption } from '@/constants/searchOptions'
 import { getVehicle } from '@/services/vehicleService';
 
@@ -66,7 +66,7 @@ const registrationLogs = ref<RegistrationLogs[]>([
   }
 ]);
 
-const vehicleData = ref<vehicleDetials | undefined>(undefined)
+const vehicleData = ref<vehicleDetails | undefined>(undefined)
 
 async function GetVechileDetails() {
   try {
@@ -98,12 +98,3 @@ const fu = async () => {
   height: 100%;
 }
 </style>
-
-
-<!--
-Values
-label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678"
-label="Pretraga prometne" tooltip="Unsite registracijsku oznaku vozila" placeholder="ZG-0000-AA"
-label="Pretraga vozila" tooltip="Unsite registracijsku oznaku vozila" placeholder="ZG-0000-AA"
-label="Pretraga službenika" tooltip="Unsite ime i prezime službenika" placeholder="Ivo Ivić"
--->
