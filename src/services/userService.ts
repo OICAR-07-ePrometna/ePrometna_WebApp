@@ -1,8 +1,7 @@
 import type { User } from '@/models/user';
 import { createNewUserDto } from '@/dtos/newUserDto';
-import { UserRole } from '@/enums/userRole';
 import { formatDate } from '@/utils/formatDate';
-import axiosInstance from './axios';
+import axiosInstance from '@/services/axios';
 
 const API_URL = 'http://localhost:8090/api';
 
