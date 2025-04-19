@@ -60,7 +60,6 @@ import { ref } from 'vue';
 import Search from '@/components/Search.vue';
 import { searchUsers, updateUser, deleteUser } from '@/services/userService';
 import type { User } from '@/models/user';
-import { formatDate } from '@/utils/formatDate';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 
 const headers = [
