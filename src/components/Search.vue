@@ -11,7 +11,7 @@
             <span class="spacing" v-if="label">{{ label }}</span>
             <v-text-field :loading="loading" append-inner-icon="mdi-magnify" density="compact"
                 :placeholder="placeholder" variant="solo" hide-details single-line @click:append-inner="search"
-                @keyup.enter="search"></v-text-field>
+                @keyup.enter="search" v-model="searchQuery"></v-text-field>
         </v-row>
     </div>
     <v-divider thickness="2" class="my-2"></v-divider>
@@ -31,17 +31,18 @@ const props = defineProps({
     }
 })
 
-// TODO: 
-// Here lies loaded 
+// TODO:
+// Here lies loaded
 // depricated by fran
 // const loaded = ref(false)
 const loading = ref(false)
 const showTooltip = ref(false)
+const searchQuery = ref(''); 
 
 async function search() {
     loading.value = true
     try {
-        await props.onClick()
+        await props.onClick(searchQuery.value); 
     }
     catch {
 
