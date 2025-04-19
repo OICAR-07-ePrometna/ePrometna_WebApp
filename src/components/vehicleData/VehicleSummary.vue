@@ -1,491 +1,332 @@
 <template>
-    <div>
-        <h2>Podaci o vozilu</h2>
-        <v-container>
-            <v-row>
-                <!-- First Big Column -->
-                <v-col cols="12" md="6">
-                    <!-- Single Fields -->
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['J']"
-                    >
-                        <template #prepend-inner>
-                            <span>J:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['D.1']"
-                    >
-                        <template #prepend-inner>
-                            <span>D.1:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['D.2']"
-                    >
-                        <template #prepend-inner>
-                            <span>D.2:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['D.3']"
-                    >
-                        <template #prepend-inner>
-                            <span>D.3:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['E']"
-                    >
-                        <template #prepend-inner>
-                            <span>E:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(2)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(2):</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(3)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(3):</span>
-                        </template>
-                    </v-text-field>
+  <div>
+    <h2>Podaci o vozilu</h2>
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.vehicleCategory"
+            :readonly="type?.vehicleCategory">
+            <template #prepend-inner>
+              <span>J:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.mark" :readonly="type?.mark">
+            <template #prepend-inner>
+              <span>D.1:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.homologationType"
+            :readonly="type?.homologationType">
+            <template #prepend-inner>
+              <span>D.2:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.tradeName"
+            :readonly="type?.tradeName">
+            <template #prepend-inner>
+              <span>D.3:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.chassisNumber"
+            :readonly="type?.chassisNumber">
+            <template #prepend-inner>
+              <span>E:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.bodyShape"
+            :readonly="type?.bodyShape">
+            <template #prepend-inner>
+              <span>(2):</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.vehicleUse"
+            :readonly="type?.vehicleUse">
+            <template #prepend-inner>
+              <span>(3):</span>
+            </template>
+          </v-text-field>
 
-                    <!-- Paired Fields -->
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['B']"
-                            >
-                                <template #prepend-inner>
-                                    <span>B:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(4)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(4):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['F.1']"
-                            >
-                                <template #prepend-inner>
-                                    <span>F.1:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['F.2']"
-                            >
-                                <template #prepend-inner>
-                                    <span>F.2:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['G']"
-                            >
-                                <template #prepend-inner>
-                                    <span>G:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(5)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(5):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.dateFirstRegistration"
+                :readonly="type?.dateFirstRegistration">
+                <template #prepend-inner>
+                  <span>B:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2"
+                v-model="summary.firstRegistrationInCroatia" :readonly="type?.firstRegistrationInCroatia">
+                <template #prepend-inner>
+                  <span>(4):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2"
+                v-model="summary.technicallyPermissibleMaximumLadenMass"
+                :readonly="type?.technicallyPermissibleMaximumLadenMass">
+                <template #prepend-inner>
+                  <span>F.1:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2"
+                v-model="summary.permissibleMaximumLadenMass" :readonly="type?.permissibleMaximumLadenMass">
+                <template #prepend-inner>
+                  <span>F.2:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.unladenMass"
+                :readonly="type?.unladenMass">
+                <template #prepend-inner>
+                  <span>G:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.permissiblePayload"
+                :readonly="type?.permissiblePayload">
+                <template #prepend-inner>
+                  <span>(5):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
 
-                    <!-- Back to Single Fields -->
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['K']"
-                    >
-                        <template #prepend-inner>
-                            <span>K:</span>
-                        </template>
-                    </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.typeApprovalNumber"
+            :readonly="type?.typeApprovalNumber">
+            <template #prepend-inner>
+              <span>K:</span>
+            </template>
+          </v-text-field>
 
-                    <!-- More Paired Fields -->
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['P.1']"
-                            >
-                                <template #prepend-inner>
-                                    <span>P.1:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['P.2']"
-                            >
-                                <template #prepend-inner>
-                                    <span>P.2:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['P.3']"
-                    >
-                        <template #prepend-inner>
-                            <span>P.3:</span>
-                        </template>
-                    </v-text-field>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['P.4']"
-                            >
-                                <template #prepend-inner>
-                                    <span>P.4:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['S.1']"
-                            >
-                                <template #prepend-inner>
-                                    <span>S.1:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['R']"
-                    >
-                        <template #prepend-inner>
-                            <span>R:</span>
-                        </template>
-                    </v-text-field>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(6)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(6):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(7)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(7):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(8)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(8):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['T']"
-                            >
-                                <template #prepend-inner>
-                                    <span>T:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['L']"
-                            >
-                                <template #prepend-inner>
-                                    <span>L:</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                            <v-text-field
-                                variant="outlined"
-                                density="compact"
-                                class="mb-2"
-                                v-model="fieldMap['(9)']"
-                            >
-                                <template #prepend-inner>
-                                    <span>(9):</span>
-                                </template>
-                            </v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(13)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(13):</span>
-                        </template>
-                    </v-text-field>
-                </v-col>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.engineCapacity"
+                :readonly="type?.engineCapacity">
+                <template #prepend-inner>
+                  <span>P.1:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.enginePower"
+                :readonly="type?.enginePower">
+                <template #prepend-inner>
+                  <span>P.2:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.fuelOrPowerSource"
+            :readonly="type?.fuelOrPowerSource">
+            <template #prepend-inner>
+              <span>P.3:</span>
+            </template>
+          </v-text-field>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.ratedEngineSpeed"
+                :readonly="type?.ratedEngineSpeed">
+                <template #prepend-inner>
+                  <span>P.4:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.numberOfSeats"
+                :readonly="type?.numberOfSeats">
+                <template #prepend-inner>
+                  <span>S.1:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.colourOfVehicle"
+            :readonly="type?.colourOfVehicle">
+            <template #prepend-inner>
+              <span>R:</span>
+            </template>
+          </v-text-field>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.length"
+                :readonly="type?.length">
+                <template #prepend-inner>
+                  <span>(6):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.width"
+                :readonly="type?.width">
+                <template #prepend-inner>
+                  <span>(7):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.height"
+                :readonly="type?.height">
+                <template #prepend-inner>
+                  <span>(8):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.maximumNetPower"
+                :readonly="type?.maximumNetPower">
+                <template #prepend-inner>
+                  <span>T:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.numberOfAxles"
+                :readonly="type?.numberOfAxles">
+                <template #prepend-inner>
+                  <span>L:</span>
+                </template>
+              </v-text-field>
+            </v-col>
+            <v-col cols="6">
+              <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.numberOfDrivenAxles"
+                :readonly="type?.numberOfDrivenAxles">
+                <template #prepend-inner>
+                  <span>(9):</span>
+                </template>
+              </v-text-field>
+            </v-col>
+          </v-row>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.mb" :readonly="type?.mb">
+            <template #prepend-inner>
+              <span>(13):</span>
+            </template>
+          </v-text-field>
+        </v-col>
 
-                <!-- Second Big Column -->
-                <v-col cols="12" md="6">
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['U.1']"
-                    >
-                        <template #prepend-inner>
-                            <span>U.1:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['U.2']"
-                    >
-                        <template #prepend-inner>
-                            <span>U.2:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['V.7']"
-                    >
-                        <template #prepend-inner>
-                            <span>V.7:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['V.9']"
-                    >
-                        <template #prepend-inner>
-                            <span>V.9:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(11)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(11):</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(12)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(12):</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(14)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(14):</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(15)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(15):</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['D.2']"
-                    >
-                        <template #prepend-inner>
-                            <span>D.2:</span>
-                        </template>
-                    </v-text-field>
-                    <v-text-field
-                        variant="outlined"
-                        density="compact"
-                        class="mb-2"
-                        v-model="fieldMap['(16)']"
-                    >
-                        <template #prepend-inner>
-                            <span>(16):</span>
-                        </template>
-                    </v-text-field>
-                </v-col>
-            </v-row>
-        </v-container>
-    </div>
+        <v-col cols="12" md="6">
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.stationaryNoiseLevel"
+            :readonly="type?.stationaryNoiseLevel">
+            <template #prepend-inner>
+              <span>U.1:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2"
+            v-model="summary.engineSpeedForStationaryNoiseTest" :readonly="type?.engineSpeedForStationaryNoiseTest">
+            <template #prepend-inner>
+              <span>U.2:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.co2Emissions"
+            :readonly="type?.co2Emissions">
+            <template #prepend-inner>
+              <span>V.7:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.ecCategory"
+            :readonly="type?.ecCategory">
+            <template #prepend-inner>
+              <span>V.9:</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.tireSize"
+            :readonly="type?.tireSize">
+            <template #prepend-inner>
+              <span>(11):</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.uniqueModelCode"
+            :readonly="type?.uniqueModelCode">
+            <template #prepend-inner>
+              <span>(12):</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.model"
+            :readonly="type?.model">
+            <template #prepend-inner>
+              <span>(14):</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.additionalTireSizes"
+            :readonly="type?.additionalTireSizes">
+            <template #prepend-inner>
+              <span>(15):</span>
+            </template>
+          </v-text-field>
+          <v-text-field variant="outlined" density="compact" class="mb-2" v-model="summary.vehicleType"
+            :readonly="type?.vehicleType">
+            <template #prepend-inner>
+              <span>(16):</span>
+            </template>
+          </v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
+import { display, edit, create } from '@/models/summeryType';
+import type { VehicleSummary } from '@/models/vehicleDataModels';
+const props = defineProps({
+  data: {
+    type: Object as () => VehicleSummary,
+    required: true,
+  },
+  variant: {
+    type: String as () => "display" | "edit" | "create",
+    default: "display",
+  },
+})
 
-const fieldMap = ref({
-    "J": "",
-    "D.1": "",
-    "D.2": "",
-    "D.3": "",
-    "E": "",
-    "(2)": "",
-    "(3)": "",
-    "B": "",
-    "(4)": "",
-    "F.1": "",
-    "F.2": "",
-    "G": "",
-    "(5)": "",
-    "K": "",
-    "P.1": "",
-    "P.2": "",
-    "P.3": "",
-    "P.4": "",
-    "S.1": "",
-    "R": "",
-    "(6)": "",
-    "(7)": "",
-    "(8)": "",
-    "T": "",
-    "L": "",
-    "(9)": "",
-    "(13)": "",
-    "U.1": "",
-    "U.2": "",
-    "V.7": "",
-    "V.9": "",
-    "(11)": "",
-    "(12)": "",
-    "(14)": "",
-    "(15)": "",
-    "(16)": ""
-});
+const type = computed(() => {
+  switch (props.variant) {
+    case "display":
+      return display
+    case "edit":
+      return edit
+    case "create":
+      return create
+    default:
+      return display
+  }
+})
+
+const summary = ref(props.data)
+const emit = defineEmits(["update:data"])
+
+watch([summary], () => {
+  emit("update:data", summary.value)
+}, { deep: true }) // Added deep watch for nested object changes if necessary
+
 </script>
 
 <style scoped>
 .v-text-field {
-    max-height: 40px;
-    white-space: nowrap;
+  max-height: 40px;
+  /* Consider if density="compact" already handles this */
+  white-space: nowrap;
+  /* Ensure text doesn't wrap */
+}
+
+/* Optional: Style for better alignment */
+.v-text-field :deep(.v-field__prepend-inner) {
+  align-items: center;
+  padding-right: 8px;
 }
 </style>

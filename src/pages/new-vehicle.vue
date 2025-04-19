@@ -1,13 +1,27 @@
+<!-- eslint-disable-->
 <template>
-  <SearchBar :label="SearchOption.driver.label" :tooltip="SearchOption.driver.tooltip"
-    :placeholder="SearchOption.driver.placeholder" :on-click="fu" />
-  <VehicleOwnerSummaryPage :summary="summary" />
-  <VehicleSummaryPage />
-  <!-- TODO: add to page 2  -->
-  <v-divider thickness="2" class="my-2"></v-divider>
-  <RegistrationLogsPage :registrationLogs="registrationLogs" />
-  <div>
-  </div>
+
+  <v-stepper :items="steps" class="fill-all">
+    <template v-slot:item.1>
+      <v-card>
+        <SearchBar :label="SearchOption.driver.label" :tooltip="SearchOption.driver.tooltip"
+          :placeholder="SearchOption.driver.placeholder" :on-click="fu" />
+        <VehicleOwnerSummaryPage :summary="summary" />
+      </v-card>
+    </template>
+
+    <template v-slot:item.2>
+      <VehicleSummaryPage v-if="vehicleData" v-bind:data="vehicleData.summary" variant="edit" />
+      <div v-else>No vehicle data</div>
+    </template>
+
+    <template v-slot:item.3>
+      <RegistrationLogsPage :registrationLogs="registrationLogs" />
+    </template>
+
+  </v-stepper>
+
+
 </template>
 
 <script lang="ts" setup>
@@ -16,9 +30,11 @@ import SearchBar from '@/components/vehicleData/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
-import type { VehicleOwnerSummary, RegistrationLogs } from '@/models/vehicleDataModels';
+import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetials } from '@/models/vehicleDataModels';
 import { SearchOption } from '@/constants/searchOptions'
+import { getVehicle } from '@/services/vehicleService';
 
+const steps = ["Owner", "Car", "Registrations"]
 const currentDate = ref(new Date().toLocaleDateString());
 
 const summary = ref<VehicleOwnerSummary>({
@@ -48,8 +64,19 @@ const registrationLogs = ref<RegistrationLogs[]>([
   }
 ]);
 
+const vehicleData = ref<vehicleDetials | undefined>(undefined)
+
+async function GetVechileDetails() {
+  const rez = await getVehicle("71e99c7a-797d-4e49-9927-dbd6cc7cba95")
+  if (!rez) {
+    return
+  }
+  vehicleData.value = rez
+}
+
 // TODO: this is a placeholder function for actual loading functions
-const fu = () => {
+const fu = async () => {
+  await GetVechileDetails()
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve('Promise resolved');
@@ -58,8 +85,14 @@ const fu = () => {
 };
 
 </script>
+<style lang="css" scoped>
+.fill-all {
+  height: 100%;
+}
+</style>
 
-<!-- 
+
+<!--
 Values
 label="Pretraga vozača" tooltip="Unsite broj vozačke dozvole" placeholder="12345678"
 label="Pretraga prometne" tooltip="Unsite registracijsku oznaku vozila" placeholder="ZG-0000-AA"
