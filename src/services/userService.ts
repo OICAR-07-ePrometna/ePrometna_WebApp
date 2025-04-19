@@ -61,10 +61,10 @@ export async function updateUser(uuid: string, model: User): Promise<User[] | un
   }
 }
 
-export async function deleteUser(uuid: string): Promise<User[] | undefined>{ 
+export async function deleteUser(uuid: string): Promise<{success: boolean} | undefined>{ 
   try {
     const response = await axiosInstance.delete(`${API_URL}/user/${uuid}`)
-
+    
     return response.data
   } catch (error) {
     console.error('Error deleting user', error);
