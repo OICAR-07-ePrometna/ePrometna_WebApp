@@ -114,6 +114,11 @@ export const display: summeryType = {
   vehicleType: true
 }
 
+/**
+ * Configuration for edit mode - only selected fields are editable.
+ * Fields like vehicle category, mark, chassis number, and dates are editable,
+ * while technical specifications remain read-only.
+ */
 export const edit: summeryType = {
   vehicleCategory: true,
   mark: true,
