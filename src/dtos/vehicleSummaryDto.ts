@@ -1,18 +1,4 @@
-import type { User } from '@/models/user';
-import type { VehicleDrivers } from '@/models/vehicleDrivers';
-import type { OwnerHistory } from '@/models/ownerHistory';
-import type { TempData } from '@/models/tempData';
-import type { RegistrationInfo } from '@/models/registrationInfo';
-
-export interface Vehicle {
-    uuid: string;
-    userId: string;
-    owner: User;
-    drivers: VehicleDrivers[];
-    pastOwners: OwnerHistory[];
-    temporaryData: TempData[];
-    registration: RegistrationInfo[];
-
+export interface VehicleSummaryDto {
     vehicleCategory: string;                                        // Kategorija vozila // J
     mark: string;                                                   // Marka // D1
     vehicleModel: string;                                           // Model // (14)

@@ -1,12 +1,11 @@
 import type { UserDto } from "@/dtos/userDto";
+import type { VehicleSummaryDto } from '@/dtos/vehicleSummaryDto';
 
 export interface VehicleDetailsDto {
     uuid: string;
-    vehicleType: string;
-    vehicleModel: string;
-    productionYear: number;
     registration: string;
     owner: UserDto;
     drivers: UserDto[];
     pastOwners: UserDto[];
+    summary: VehicleSummaryDto;
 }

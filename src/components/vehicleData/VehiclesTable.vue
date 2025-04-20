@@ -1,50 +1,51 @@
 <template>
-  <div class="vehicles-container">
-    <h1>Vozila</h1>
+  <v-card title="Vozila" flat>
+    <template v-slot:text>
+      <v-text-field 
+        v-model="search" 
+        label="Pretraži po registraciji" 
+        prepend-inner-icon="mdi-magnify" 
+        variant="outlined" 
+        hide-details
+        single-line
+      ></v-text-field>
+    </template>
 
-    <div v-if="loading" class="loading">
-      Loading vehicles...
+    <div v-if="loading" class="d-flex justify-center align-center pa-4">
+      <v-progress-circular indeterminate color="primary"></v-progress-circular>
     </div>
 
-    <div v-else-if="error" class="error">
+    <div v-else-if="error" class="error pa-4">
       {{ error }}
     </div>
 
-    <div v-else-if="vehicles.length === 0" class="no-vehicles">
+    <div v-else-if="vehicles.length === 0" class="text-center pa-4">
       Trenutno niste vlasnik ili povlašteni korisnik nijednog vozila.
     </div>
 
-    <div v-else class="table-container">
-      <table class="vehicles-table">
-        <thead>
-          <tr>
-            <th>Registracija</th>
-            <th>Marka</th>
-            <th>Model</th>
-            <th>Zadnja registracija</th>
-            <th>Kategorija</th>
-            <th>Vlasnik</th>
-            <th>Dozvoljeno do</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="vehicle in vehicles" :key="vehicle.uuid" @click="viewVehicleDetails(vehicle.uuid)">
-            <td aria-readonly="true">{{ vehicle.registration }}</td>
-            <td>{{ vehicle.vehicleModel }}</td>
-            <td>{{ vehicle.vehicleType }}</td>
-            <td>{{ formatDate(vehicle.lastRegistrationDate ?? null) }}</td>
-            <td>{{ vehicle.category }}</td>
-            <td>{{ getOwnerName(vehicle) }}</td>
-            <td>{{ formatDate(vehicle.validUntil ?? null) }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+    <v-data-table
+      v-else
+      :headers="headers"
+      :items="filteredVehicles"
+      hover
+    >
+      <template v-slot:item="{ item }">
+        <tr @click="viewVehicleDetails(item.uuid)" style="cursor: pointer">
+          <td>{{ item.registration }}</td>
+          <td>{{ item.model }}</td>
+          <td>{{ item.vehicleType }}</td>
+          <td>{{ formatDate(item.lastRegistrationDate ?? null) }}</td>
+          <td>{{ item.category }}</td>
+          <td>{{ getOwnerName(item) }}</td>
+          <td>{{ formatDate(item.validUntil ?? null) }}</td>
+        </tr>
+      </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { getMyVehicles, getVehicleDetails } from '@/services/vehicleService';
 import type { UserVehiclesDto } from '@/dtos/userVehiclesDto';
@@ -53,21 +54,42 @@ import { formatDate } from '@/utils/formatDate';
 const vehicles = ref<UserVehiclesDto[]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
+const search = ref('');
 const router = useRouter();
 
-function getOwnerName(vehicle: UserVehiclesDto): string {
-  if (!vehicle.ownerDetails) {
-    return '-';
-  }
+const filteredVehicles = computed(() => {
+  if (!search.value) return vehicles.value;
+  
+  const searchTerm = search.value.toLowerCase();
+  return vehicles.value.filter(vehicle => 
+    vehicle.registration.toLowerCase().includes(searchTerm)
+  );
+});
 
-  if (vehicle.ownerDetails.firstName === null || vehicle.ownerDetails.lastName === null) {
+const headers = [
+  { key: 'registration', title: 'Registracija' },
+  { key: 'model', title: 'Marka' },
+  { key: 'vehicleType', title: 'Model' },
+  { key: 'lastRegistrationDate', title: 'Zadnja registracija' },
+  { key: 'category', title: 'Kategorija' },
+  { key: 'ownerDetails', title: 'Vlasnik' },
+  { key: 'validUntil', title: 'Dozvoljeno do' }
+];
+
+function getOwnerName(vehicle: UserVehiclesDto): string {
+  if (!vehicle.ownerDetails || !vehicle.ownerDetails.firstName || !vehicle.ownerDetails.lastName) {
     return '-';
   }
 
   const firstName = vehicle.ownerDetails.firstName || '';
   const lastName = vehicle.ownerDetails.lastName || '';
 
-  return firstName && lastName ? `${firstName} ${lastName}` : '-';
+  if (firstName && lastName) {
+    return `${firstName} ${lastName}`;
+  }
+  else {
+    return '-';
+  }
 }
 
 async function fetchVehicles() {
@@ -92,7 +114,7 @@ async function fetchVehicles() {
         console.error(`Error fetching details for vehicle ${vehicle.uuid}:`, err);
       }
     }
-
+    console.log('Fetched vehicles:', userVehicles);
     vehicles.value = userVehicles;
   } catch (err) {
     error.value = 'Failed to load vehicles. Please try again later.';
@@ -103,7 +125,11 @@ async function fetchVehicles() {
 }
 
 function viewVehicleDetails(uuid: string) {
-  router.push(`/vehicles/${uuid}`);
+  if (uuid) {
+    router.push(`/vehicles/${uuid}`);
+  } else {
+    console.error('No UUID provided for vehicle details');
+  }
 }
 
 onMounted(() => {
