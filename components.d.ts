@@ -15,17 +15,14 @@ declare module 'vue' {
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     LoginView: typeof import('./src/components/LoginView.vue')['default']
     Navigation: typeof import('./src/components/Navigation.vue')['default']
-    Page1: typeof import('./src/components/vehicleData/Page1.vue')['default']
-    Page2: typeof import('./src/components/vehicleData/Page2.vue')['default']
-    Page3: typeof import('./src/components/vehicleData/Page3.vue')['default']
     RegistrationLogs: typeof import('./src/components/vehicleData/RegistrationLogs.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
-    UsersTable: typeof import('./src/components/userData/usersTable.vue')['default']
     VehicleOwnerSummary: typeof import('./src/components/vehicleData/VehicleOwnerSummary.vue')['default']
+    VehiclesTable: typeof import('./src/components/vehicleData/VehiclesTable.vue')['default']
     VehicleSummary: typeof import('./src/components/vehicleData/VehicleSummary.vue')['default']
   }
 }

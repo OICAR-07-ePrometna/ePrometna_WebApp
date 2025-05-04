@@ -137,6 +137,12 @@ export const routes = [
       breadcrumbName: "Vozila"
     },
   },
+  {
+    path: '/vehicles/:uuid',
+    name: 'VehicleSummary',
+    component: () => import(/* @vite-ignore */ '@/components/vehicleData/VehicleSummary.vue'),
+    props: true
+  },
   // Routes previously generated from "Akcije" group
   {
     path: '/new-user',

@@ -1,8 +1,8 @@
 <template>
-    <div >
-        hi from vehicles
-    </div>
+    <VehiclesTable />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import '../styles/vehicleTable.css';
+import VehiclesTable from '@/components/vehicleData/VehiclesTable.vue';
 </script>
