@@ -1,5 +1,5 @@
 import type { UserDto } from "@/dtos/userDto";
-import type { VehicleSummaryDto } from '@/dtos/vehicleSummaryDto';
+import type { VehicleSummary } from "@/models/vehicleDataModels";
 
 export interface VehicleDetailsDto {
     uuid: string;
@@ -7,5 +7,5 @@ export interface VehicleDetailsDto {
     owner: UserDto;
     drivers: UserDto[];
     pastOwners: UserDto[];
-    summary: VehicleSummaryDto;
+    summary: VehicleSummary;
 }
