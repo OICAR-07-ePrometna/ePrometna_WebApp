@@ -1,4 +1,3 @@
-O7E-51-DataOverview
 import type { VehicleDto } from '@/dtos/vehicleDto';
 import type { vehicleDetails } from '@/models/vehicleDataModels';
 import type { VehicleDetailsDto } from '@/dtos/vehicleDetailsDto';
@@ -34,5 +33,4 @@ export async function getVehicle(guid: string): Promise<vehicleDetails | undefin
   catch (error) {
     throw error
   }
-O7E-51-DataOverview
 }
