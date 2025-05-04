@@ -33,15 +33,16 @@ axiosInstance.interceptors.request.use(
 // Flag to track if a token refresh is currently in progress
 let isRefreshing = false;
 // Array to hold requests that failed while refreshing token
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let failedQueue: { resolve: (value: unknown) => void; reject: (reason?: any) => void; }[] = [];
 
 // Helper function to process the queue
 const processQueue = (error: unknown, token = null) => {
   failedQueue.forEach(prom => {
     if (error) {
-      prom.reject(error); 
+      prom.reject(error);
     } else {
-      prom.resolve(token); 
+      prom.resolve(token);
     }
   });
   failedQueue = [];
@@ -62,7 +63,7 @@ axiosInstance.interceptors.response.use(
 
       // If a refresh is already in progress, queue the original request
       if (isRefreshing) {
-        return new Promise(function(resolve, reject) {
+        return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         }).then(token => {
           // When refresh is done, retry the original request with the new token
@@ -94,7 +95,7 @@ axiosInstance.interceptors.response.use(
         // IMPORTANT: Use base axios or a different instance if REFRESH_TOKEN_URL is relative
         // to avoid intercepting this request below if it also fails with 401
         const refreshResponse = await axios.post(API_BASE_URL + REFRESH_TOKEN_URL, {
-           refreshToken: refreshToken,
+          refreshToken: refreshToken,
         });
 
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = refreshResponse.data;
@@ -116,7 +117,7 @@ axiosInstance.interceptors.response.use(
         return Promise.reject(refreshError);
 
       } finally {
-         isRefreshing = false;
+        isRefreshing = false;
       }
     }
 

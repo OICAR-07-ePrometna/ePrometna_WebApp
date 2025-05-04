@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
+    ConfirmDialog: typeof import('./src/components/confirmDialog.vue')['default']
     CreateUser: typeof import('./src/components/CreateUser.vue')['default']
     CreateUserForm: typeof import('./src/components/CreateUserForm.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
@@ -17,9 +18,10 @@ declare module 'vue' {
     RegistrationLogs: typeof import('./src/components/vehicleData/RegistrationLogs.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Search: typeof import('./src/components/vehicleData/Search.vue')['default']
+    Search: typeof import('./src/components/Search.vue')['default']
     SnackbarProvider: typeof import('./src/components/SnackbarProvider.vue')['default']
     UserDetails: typeof import('./src/components/UserDetails.vue')['default']
+    UsersTable: typeof import('./src/components/userData/usersTable.vue')['default']
     VehicleOwnerSummary: typeof import('./src/components/vehicleData/VehicleOwnerSummary.vue')['default']
     VehiclesTable: typeof import('./src/components/vehicleData/VehiclesTable.vue')['default']
     VehicleSummary: typeof import('./src/components/vehicleData/VehicleSummary.vue')['default']

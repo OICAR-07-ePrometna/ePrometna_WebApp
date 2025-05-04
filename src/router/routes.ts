@@ -155,6 +155,16 @@ export const routes = [
     },
   },
   {
+    path: '/users',
+    name: 'users',
+    component: () => import(/* @vite-ignore */ '@/pages/users.vue'),
+    meta: {
+      allowedRoles: [UserRole.SuperAdmin],
+      layout: 'default',
+      breadcrumbName: "Korisnici"
+    },
+  },
+  {
     path: '/details',
     name: 'details',
     component: () => import('@/pages/details.vue'),

@@ -1,5 +1,6 @@
 <template>
   <div>
+O7E-51-DataOverview
     <div v-if="loading" class="loading">
       <v-progress-circular indeterminate></v-progress-circular>
       <span>Loading vehicle data...</span>
@@ -302,6 +303,7 @@
 </template>
 
 <script setup lang="ts">
+O7E-51-DataOverview
 import { ref, computed, onMounted, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getVehicleDetails } from '@/services/vehicleService';
@@ -391,6 +393,7 @@ onMounted(() => {
     fetchVehicleDetails();
   }
 });
+
 </script>
 
 <style scoped>
@@ -402,6 +405,7 @@ onMounted(() => {
 .v-text-field :deep(.v-field__prepend-inner) {
   align-items: center;
   padding-right: 8px;
+O7E-51-DataOverview
 }
 
 .loading {

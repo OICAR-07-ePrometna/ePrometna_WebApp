@@ -1,4 +1,5 @@
 interface summeryType {
+O7E-51-DataOverview
     vehicleCategory: boolean; // Kategorija vozila // J
     mark: boolean; // Marka // D1
     homologationType: boolean; // Homologacijski tip // D2
@@ -157,3 +158,4 @@ interface summeryType {
     additionalTireSizes: false,
     vehicleType: true
   }
+
