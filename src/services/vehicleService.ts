@@ -34,3 +34,14 @@ export async function getVehicle(guid: string): Promise<vehicleDetails | undefin
     throw error
   }
 }
+
+
+export async function createVehicle(ownerUuid: string, registration: string, summary: ): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/vehicle/`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching vehicle details for ${ownerUuid}:`, error);
+    throw error;
+  }
+}
