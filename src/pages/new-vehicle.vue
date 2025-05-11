@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import SearchBar from '@/components/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
@@ -34,19 +34,35 @@ import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetails } from '@/mo
 import { SearchOption } from '@/constants/searchOptions'
 import { getVehicle } from '@/services/vehicleService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
+import { getUserByOIB } from '@/services/userService';
+import { isOibValid } from '@/utils/validateOIB';
+import { useAuthStore } from '@/stores/auth';
+import { useRouter } from 'vue-router';
+import { UserRole } from '@/enums/userRole';
+
+const router = useRouter();
+const authStore = useAuthStore();
+const snackbar = useSnackbar();
+
+// Check role on component mount
+onMounted(() => {
+  if (authStore.UserRole !== UserRole.HAK) {
+    snackbar.Error("You don't have permission to access this page");
+    router.push('/');
+  }
+});
 
 const steps = ["Owner", "Car", "Registrations"]
 const currentDate = ref(new Date().toLocaleDateString());
 
-// TODO: Neko to treba fixat
 const owner = ref<VehicleOwnerSummary>({
-  firstName: "IVO",
-  lastName: "IVIC",
-  residence: "ADRESA 12, ZAGREB",
+  firstName: "",
+  lastName: "",
+  residence: "",
   licenceHolderType: "A-VLASNIK",
-  registrationPlate: "ZG-0000-AA",
+  registrationPlate: "",
   dateOfRegistration: currentDate.value,
-  oib: "12345678901",
+  oib: "",
   issuedBy: "PTS H840 ZG",
   issuedDate: currentDate.value,
 });
@@ -68,7 +84,6 @@ const registrationLogs = ref<RegistrationLogs[]>([
 ]);
 
 const vehicleData = ref<vehicleDetails | undefined>(undefined)
-const snackbar = useSnackbar()
 
 async function GetVechileDetails() {
   try {
@@ -81,9 +96,43 @@ async function GetVechileDetails() {
   }
 }
 
-// TODO: this is a placeholder function for actual loading functions
-const fu = async () => {
-  await GetVechileDetails()
+// Function to search user by OIB and update owner summary
+const searchUserByOIB = async (oib: string) => {
+  if (!isOibValid(oib)) {
+    snackbar.Error("Invalid OIB format");
+    return;
+  }
+
+  try {
+    const user = await getUserByOIB(oib);
+    if (user) {
+      owner.value = {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        residence: user.residence,
+        licenceHolderType: user.role === 'firma' ? 'P-VLASNIK' : 'A-VLASNIK',
+        registrationPlate: "", // This will be filled when vehicle is registered
+        dateOfRegistration: currentDate.value,
+        oib: user.oib,
+        issuedBy: "PTS H840 ZG",
+        issuedDate: currentDate.value,
+      };
+      snackbar.Success("User found successfully");
+    }
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      snackbar.Error("Your session has expired. Please log in again.");
+      router.push('/login');
+    } else {
+      snackbar.Error("Error finding user");
+      console.error("Error searching user:", error);
+    }
+  }
+};
+
+// Update the search function to use OIB search
+const fu = async (query: string) => {
+  await searchUserByOIB(query);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve('Promise resolved');

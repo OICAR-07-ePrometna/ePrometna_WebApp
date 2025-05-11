@@ -73,3 +73,13 @@ export async function deleteUser(uuid: string): Promise<{ success: boolean } | u
   }
 }
 
+export async function getUserByOIB(oib: string): Promise<User | undefined> {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/user/oib/${oib}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching user by OIB:', error);
+    throw error;
+  }
+}
+
