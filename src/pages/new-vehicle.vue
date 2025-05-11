@@ -1,22 +1,55 @@
 <!-- eslint-disable-->
 <template>
 
-  <v-stepper :items="steps" class="fill-all">
+  <v-stepper ref="stepper" :items="steps" class="fill-all">
     <template v-slot:item.1>
       <v-card>
         <SearchBar :label="SearchOption.driver.label" :tooltip="SearchOption.driver.tooltip"
-          :placeholder="SearchOption.driver.placeholder" :on-click="fu" />
+          :placeholder="SearchOption.driver.placeholder" :on-click="searchUserByOIB" />
         <VehicleOwnerSummaryPage :summary="owner" />
       </v-card>
     </template>
 
     <template v-slot:item.2>
-      <VehicleSummaryPage v-if="vehicleData" v-bind:data="vehicleData.summary" variant="edit" />
+      <VehicleSummaryPage 
+        v-if="vehicleData" 
+        v-bind:data="vehicleData.summary" 
+        variant="create"
+        @update:data="handleVehicleDataUpdate" 
+      />
       <div v-else>No vehicle data</div>
     </template>
 
-    <template v-slot:item.3>
-      <RegistrationLogsPage :registrationLogs="registrationLogs" />
+    <template v-slot:actions>
+      <v-row>
+        <v-col>
+          <v-btn
+            variant="text"
+            @click="stepper?.prev()"
+            :disabled="stepper?.currentStep === 1"
+          >
+            Previous
+          </v-btn>
+        </v-col>
+        <v-col cols="auto">
+          <v-btn
+            variant="text"
+            @click="stepper?.next()"
+            :disabled="stepper?.currentStep === steps.length"
+          >
+            Next
+          </v-btn>
+        </v-col>
+        <v-col cols="auto" class="ml-auto">
+          <v-btn
+            color="primary"
+            @click="saveNewVehicle"
+            :disabled="!vehicleData.owner.uuid || !vehicleData.registration"
+          >
+            Save Vehicle
+          </v-btn>
+        </v-col>
+      </v-row>
     </template>
 
   </v-stepper>
@@ -25,24 +58,25 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import SearchBar from '@/components/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
 import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetails } from '@/models/vehicleDataModels';
 import { SearchOption } from '@/constants/searchOptions'
-import { getVehicle } from '@/services/vehicleService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import { getUserByOIB } from '@/services/userService';
 import { isOibValid } from '@/utils/validateOIB';
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import { UserRole } from '@/enums/userRole';
+import { createVehicle } from '@/services/vehicleService';
 
 const router = useRouter();
 const authStore = useAuthStore();
 const snackbar = useSnackbar();
+const stepper = ref();
 
 // Check role on component mount
 onMounted(() => {
@@ -52,7 +86,7 @@ onMounted(() => {
   }
 });
 
-const steps = ["Owner", "Car", "Registrations"]
+const steps = ["Owner", "Car"]
 const currentDate = ref(new Date().toLocaleDateString());
 
 const owner = ref<VehicleOwnerSummary>({
@@ -67,34 +101,60 @@ const owner = ref<VehicleOwnerSummary>({
   issuedDate: currentDate.value,
 });
 
-// TODO: OVO je idalje mock
-const registrationLogs = ref<RegistrationLogs[]>([
-  {
-    dateOfValidation: new Date(),
-    expirationDate: new Date(2026, 4, 20),
-    mileage: '300000',
-    note: 'Nema'
+const vehicleData = ref<vehicleDetails>({
+  uuid: '',
+  registration: '',
+  owner: {
+    uuid: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    oib: '',
+    residence: '',
+    role: UserRole.Osoba,
+    birthDate: ''
   },
-  {
-    dateOfValidation: new Date(2024, 4, 20),
-    expirationDate: new Date(2025, 4, 20),
-    mileage: '150000',
-    note: 'Nema'
+  drivers: [],
+  pastOwners: [],
+  summary: {
+    vehicleCategory: '',
+    mark: '',
+    homologationType: '',
+    tradeName: '',
+    chassisNumber: '',
+    bodyShape: '',
+    vehicleUse: '',
+    dateFirstRegistration: '',
+    firstRegistrationInCroatia: '',
+    technicallyPermissibleMaximumLadenMass: '',
+    permissibleMaximumLadenMass: '',
+    unladenMass: '',
+    permissiblePayload: '',
+    typeApprovalNumber: '',
+    engineCapacity: '',
+    enginePower: '',
+    fuelOrPowerSource: '',
+    ratedEngineSpeed: '',
+    numberOfSeats: '',
+    colourOfVehicle: '',
+    length: '',
+    width: '',
+    height: '',
+    maximumNetPower: '',
+    numberOfAxles: '',
+    numberOfDrivenAxles: '',
+    mb: '',
+    stationaryNoiseLevel: '',
+    engineSpeedForStationaryNoiseTest: '',
+    co2Emissions: '',
+    ecCategory: '',
+    tireSize: '',
+    uniqueModelCode: '',
+    model: '',
+    additionalTireSizes: '',
+    vehicleType: ''
   }
-]);
-
-const vehicleData = ref<vehicleDetails | undefined>(undefined)
-
-async function GetVechileDetails() {
-  try {
-    const rez = await getVehicle("71e99c7a-797d-4e49-9927-dbd6cc7cba95")
-    vehicleData.value = rez;
-    snackbar.Success("Success fetching vehicel")
-  } catch (error) {
-    snackbar.Error("Error fetching vehicle")
-    console.error("Error fetching vehicle data:", error);
-  }
-}
+});
 
 // Function to search user by OIB and update owner summary
 const searchUserByOIB = async (oib: string) => {
@@ -116,6 +176,17 @@ const searchUserByOIB = async (oib: string) => {
         oib: user.oib,
         issuedBy: "PTS H840 ZG",
         issuedDate: currentDate.value,
+      };
+      // Update vehicleData with owner information
+      vehicleData.value.owner = {
+        uuid: user.uuid,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        oib: user.oib,
+        residence: user.residence,
+        role: user.role as UserRole,
+        birthDate: user.birthDate
       };
       snackbar.Success("User found successfully");
     }
@@ -139,6 +210,52 @@ const fu = async (query: string) => {
     }, 2000);
   });
 };
+
+// Add function to handle vehicle data updates
+const handleVehicleDataUpdate = (data: any) => {
+  if (vehicleData.value) {
+    vehicleData.value.summary = data;
+  }
+};
+
+// Add function to save the new vehicle
+const saveNewVehicle = async () => {
+  try {
+    if (!vehicleData.value.owner.uuid) {
+      snackbar.Error("Please select an owner first");
+      return;
+    }
+
+    if (!vehicleData.value.registration) {
+      snackbar.Error("Please enter a registration plate number");
+      return;
+    }
+
+    const response = await createVehicle(
+      vehicleData.value.owner.uuid,
+      vehicleData.value.registration,
+      vehicleData.value.summary
+    );
+
+    snackbar.Success("Vehicle created successfully");
+    router.push('/vehicles'); // Navigate to vehicles list after successful creation
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      snackbar.Error("Your session has expired. Please log in again.");
+      router.push('/login');
+    } else {
+      snackbar.Error("Error creating vehicle");
+      console.error("Error creating vehicle:", error);
+    }
+  }
+};
+
+// Watch for changes in owner's registration plate and update vehicleData
+watch(() => owner.value.registrationPlate, (newValue) => {
+  if (vehicleData.value) {
+    vehicleData.value.registration = newValue;
+  }
+});
 
 </script>
 <style lang="css" scoped>

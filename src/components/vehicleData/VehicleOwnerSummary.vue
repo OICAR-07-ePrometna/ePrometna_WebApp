@@ -58,8 +58,7 @@
           <v-text-field
             variant="underlined"
             density="compact"
-            :value="summary.registrationPlate"
-            readonly
+            v-model="summary.registrationPlate"
           >
             <template #prepend-inner>
               <span>A:</span>
