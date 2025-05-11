@@ -325,7 +325,9 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(["update:data"]);
+const emit = defineEmits<{
+  'update:data': [value: VehicleSummary]
+}>();
 const route = useRoute();
 const vehicleUuid = computed(() => props.uuid || (route.params.uuid as string));
 const loading = ref(true);

@@ -1,5 +1,5 @@
 import type { VehicleDto } from '@/dtos/vehicleDto';
-import type { vehicleDetails } from '@/models/vehicleDataModels';
+import type { vehicleDetails, VehicleSummary } from '@/models/vehicleDataModels';
 import type { VehicleDetailsDto } from '@/dtos/vehicleDetailsDto';
 import axiosInstance from '@/services/axios';
 
@@ -32,5 +32,16 @@ export async function getVehicle(guid: string): Promise<vehicleDetails | undefin
   }
   catch (error) {
     throw error
+  }
+}
+
+export interface CreateVehicleDto { ownerUuid: string; registration: string; summary: VehicleSummary }
+export async function createVehicle(dto: CreateVehicleDto): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/vehicle/`, dto);
+    return response.data;
+  } catch (error) {
+    console.error(`Error creating vehicle`, error);
+    throw error;
   }
 }
