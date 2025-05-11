@@ -75,8 +75,14 @@ export async function deleteUser(uuid: string): Promise<{ success: boolean } | u
 
 export async function getUserByOIB(oib: string): Promise<User | undefined> {
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/oib/${oib}`);
-    return response.data;
+        const response = await axiosInstance.get(`${API_URL}/user/oib/${encodeURIComponent(oib)}`, { validateStatus: s => [200,404].includes(s) });
+    
+        if (response.status === 404 || !response.data) return undefined;
+    
+        return {
+          ...response.data,
+          birthDate: response.data.birthDate ? formatDate(new Date(response.data.birthDate)) : ''
+        } as User;
   } catch (error) {
     console.error('Error fetching user by OIB:', error);
     throw error;

@@ -26,7 +26,7 @@
           <v-btn
             variant="text"
             @click="stepper?.prev()"
-            :disabled="stepper?.currentStep === 1"
+            :disabled="stepper && stepper.currentStep === 1"
           >
             Previous
           </v-btn>
@@ -35,7 +35,7 @@
           <v-btn
             variant="text"
             @click="stepper?.next()"
-            :disabled="stepper?.currentStep === steps.length"
+            :disabled="stepper && stepper.currentStep === steps.length"
           >
             Next
           </v-btn>
@@ -58,12 +58,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue';
 import SearchBar from '@/components/Search.vue';
 import VehicleOwnerSummaryPage from '@/components/vehicleData/VehicleOwnerSummary.vue';
 import VehicleSummaryPage from '@/components/vehicleData/VehicleSummary.vue';
-import RegistrationLogsPage from '@/components/vehicleData/RegistrationLogs.vue';
-import type { VehicleOwnerSummary, RegistrationLogs, vehicleDetails } from '@/models/vehicleDataModels';
+import type { VehicleOwnerSummary, vehicleDetails, VehicleSummary } from '@/models/vehicleDataModels';
 import { SearchOption } from '@/constants/searchOptions'
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import { getUserByOIB } from '@/services/userService';
@@ -157,6 +155,7 @@ const vehicleData = ref<vehicleDetails>({
 });
 
 // Function to search user by OIB and update owner summary
+
 const searchUserByOIB = async (oib: string) => {
   if (!isOibValid(oib)) {
     snackbar.Error("Invalid OIB format");
@@ -212,7 +211,7 @@ const fu = async (query: string) => {
 };
 
 // Add function to handle vehicle data updates
-const handleVehicleDataUpdate = (data: any) => {
+const handleVehicleDataUpdate = (data: VehicleSummary) => {
   if (vehicleData.value) {
     vehicleData.value.summary = data;
   }
@@ -231,14 +230,14 @@ const saveNewVehicle = async () => {
       return;
     }
 
-    const response = await createVehicle(
-      vehicleData.value.owner.uuid,
-      vehicleData.value.registration,
-      vehicleData.value.summary
-    );
+    const response = await createVehicle({
+      ownerUuid: vehicleData.value.owner.uuid,
+      registration: vehicleData.value.registration,
+      summary: vehicleData.value.summary
+    });
 
     snackbar.Success("Vehicle created successfully");
-    router.push('/vehicles'); // Navigate to vehicles list after successful creation
+    router.push(`/vehicles/${response.uuid}`); // Navigate to the new vehicle's detail page
   } catch (error: any) {
     if (error.response?.status === 401) {
       snackbar.Error("Your session has expired. Please log in again.");
@@ -251,11 +250,15 @@ const saveNewVehicle = async () => {
 };
 
 // Watch for changes in owner's registration plate and update vehicleData
-watch(() => owner.value.registrationPlate, (newValue) => {
-  if (vehicleData.value) {
-    vehicleData.value.registration = newValue;
-  }
-});
+watch(
+  () => owner.value.registrationPlate,
+  (newValue) => {
+    if (vehicleData.value) {
+      vehicleData.value.registration = newValue;
+    }
+  },
+  { immediate: true }
+);
 
 </script>
 <style lang="css" scoped>

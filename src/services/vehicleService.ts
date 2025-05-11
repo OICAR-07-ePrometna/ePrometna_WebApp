@@ -35,13 +35,10 @@ export async function getVehicle(guid: string): Promise<vehicleDetails | undefin
   }
 }
 
-export async function createVehicle(ownerUuid: string, registration: string, summary: VehicleSummary): Promise<VehicleDetailsDto> {
+export interface CreateVehicleDto { ownerUuid: string; registration: string; summary: VehicleSummary }
+export async function createVehicle(dto: CreateVehicleDto): Promise<VehicleDetailsDto> {
   try {
-    const response = await axiosInstance.post(`${API_URL}/vehicle/`, {
-      ownerUuid,
-      registration,
-      summary
-    });
+    const response = await axiosInstance.post(`${API_URL}/vehicle/`, dto);
     return response.data;
   } catch (error) {
     console.error(`Error creating vehicle`, error);
