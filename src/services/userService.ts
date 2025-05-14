@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:8090/api';
 
 export async function createUser(user: User, password: string): Promise<User | undefined> {
   const userDto = createNewUserDto(user, password);
-  userDto.BirthDate = formatDate(userDto.BirthDate);
+  userDto.birthDate = formatDate(userDto.birthDate);
 
   try {
     const response = await axiosInstance.post(`${API_URL}/user/`, userDto);
