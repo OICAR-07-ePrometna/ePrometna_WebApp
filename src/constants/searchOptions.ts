@@ -14,6 +14,11 @@ export const SearchOption = {
       tooltip: "Unsite registracijsku oznaku vozila", 
       placeholder: "ZG-0000-AA"
     },
+    vehicleVin: {
+      label: "Pretraga vozila",
+      tooltip: "Unsite vin vozila", 
+      placeholder: "JH4DC4360SS001610"
+    },
     officer: {
       label: "Pretraga službenika",
       tooltip: "Unsite ime i prezime službenika", 

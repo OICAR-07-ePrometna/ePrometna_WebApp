@@ -25,6 +25,17 @@ export async function getVehicleDetails(uuid: string): Promise<VehicleDetailsDto
     throw error;
   }
 }
+
+export async function getVehicleByVin(vin: string): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/vehicle/vin/${vin}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching vehicle details for VIN ${vin}:`, error);
+    throw error;
+  }
+}
+
 export async function getVehicle(guid: string): Promise<vehicleDetails | undefined> {
   try {
     const rez = await axiosInstance.get(`/${SERVICE}/${guid}`)
