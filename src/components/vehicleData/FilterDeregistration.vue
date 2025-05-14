@@ -102,6 +102,7 @@
                 color="error"
                 variant="tonal"
                 block
+                @click="handleDeleteVehicle"
               >
                 Obriši vozilo
               </v-btn>
@@ -114,11 +115,15 @@
 </template>
 
 <script setup lang="ts">
+import { deleteVehicle } from '@/services/vehicleService';
+import { useSnackbar } from '@/components/SnackbarProvider.vue';
+
 interface VehicleData {
   model: string;
   mark: string;
   registration: string;
   chassisNumber: string;
+  uuid: string;
 }
 
 interface DriverData {
@@ -126,10 +131,28 @@ interface DriverData {
   lastName: string;
 }
 
-defineProps<{
+const props = defineProps<{
   vehicleData: VehicleData;
   driverData: DriverData;
 }>();
+
+const emit = defineEmits<{
+  (e: 'vehicleDeleted'): void;
+}>();
+
+const snackbar = useSnackbar();
+
+async function handleDeleteVehicle() {
+  try {
+    await deleteVehicle(props.vehicleData.uuid);
+    snackbar.Success(`Vozilo je uspješno obrisano`);
+    emit('vehicleDeleted');
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom brisanja vozila';
+    snackbar.Error(errorMessage);
+    console.error("Error deleting vehicle:", error);
+  }
+}
 </script>
 
 <style scoped>

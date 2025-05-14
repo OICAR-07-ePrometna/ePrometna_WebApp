@@ -56,3 +56,12 @@ export async function createVehicle(dto: CreateVehicleDto): Promise<VehicleDetai
     throw error;
   }
 }
+
+export async function deleteVehicle(uuid: string): Promise<void> {
+  try {
+    await axiosInstance.delete(`${SERVICE}/${uuid}`);
+  } catch (error) {
+    console.error(`Error deleting vehicle`, error);
+    throw error;
+  }
+}
