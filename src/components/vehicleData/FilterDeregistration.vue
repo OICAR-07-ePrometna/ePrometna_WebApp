@@ -16,7 +16,7 @@
                 readonly
               >
                 <template #prepend-inner>
-                  <span>Marka:</span>
+                  <span>Model:</span>
                 </template>
               </v-text-field>
               
@@ -94,6 +94,7 @@
                 color="primary"
                 variant="tonal"
                 block
+                :disabled="deregistrationLoading"
                 @click="handleDeregisterVehicle"
               >
                 Odjavi vozilo
@@ -104,6 +105,7 @@
                 color="error"
                 variant="tonal"
                 block
+                :disabled="deleteLoading"
                 @click="handleDeleteVehicle"
               >
                 Obriši vozilo
@@ -144,9 +146,12 @@ const emit = defineEmits<{
 }>();
 
 const snackbar = useSnackbar();
+const deregistrationLoading = ref(false);
+const deleteLoading = ref(false);
 
 async function handleDeregisterVehicle() {
   try {
+    deregistrationLoading.value = true;
     await deregisterVehicle(props.vehicleData.uuid);
     snackbar.Success(`Vozilo je uspješno odjavljeno`);
     emit('vehicleDeregistered');
@@ -154,11 +159,14 @@ async function handleDeregisterVehicle() {
     const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom odjave vozila';
     snackbar.Error(errorMessage);
     console.error("Error deregistering vehicle:", error);
+  } finally {
+    deregistrationLoading.value = false;
   }
 }
 
 async function handleDeleteVehicle() {
   try {
+    deleteLoading.value = true;
     await deleteVehicle(props.vehicleData.uuid);
     snackbar.Success(`Vozilo je uspješno obrisano`);
     emit('vehicleDeleted');
@@ -166,6 +174,8 @@ async function handleDeleteVehicle() {
     const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom brisanja vozila';
     snackbar.Error(errorMessage);
     console.error("Error deleting vehicle:", error);
+  } finally {
+    deleteLoading.value = false;
   }
 }
 </script>

@@ -11,8 +11,8 @@
             <FilterDeregistration 
                 :vehicle-data="vehicleInfo"
                 :driver-data="driverInfo"
-                @vehicle-deleted="handleVehicleDeleted"
-                @vehicle-deregistered="handleVehicleDeregistered"
+                @vehicle-deleted="clear"
+                @vehicle-deregistered="clear"
             />
         </div>
     </div>
@@ -33,11 +33,11 @@ const snackbar = useSnackbar();
 
 const vehicleInfo = computed(() => {
     return {
-        model: vehicleData.value?.summary?.model || '',
-        mark: vehicleData.value?.summary?.mark || '',
-        registration: vehicleData.value?.registration || '',
-        chassisNumber: vehicleData.value?.summary?.chassisNumber || '',
-        uuid: vehicleData.value?.uuid || ''
+        model: vehicleData.value?.summary?.model ?? '',
+        mark: vehicleData.value?.summary?.mark ?? '',
+        registration: vehicleData.value?.registration ?? '',
+        chassisNumber: vehicleData.value?.summary?.chassisNumber ?? '',
+        uuid: vehicleData.value?.uuid ?? ''
     };
 });
 
@@ -60,17 +60,11 @@ async function searchVehicleByVin(vin: string) {
     }
 }
 
-const handleVehicleDeleted = () => {
+const clear = () => {
     vehicleData.value = undefined;
     if (searchBarRef.value) {
         searchBarRef.value.searchQuery = '';
     }
 };
 
-const handleVehicleDeregistered = () => {
-    vehicleData.value = undefined;
-    if (searchBarRef.value) {
-        searchBarRef.value.searchQuery = '';
-    }
-};
 </script>
