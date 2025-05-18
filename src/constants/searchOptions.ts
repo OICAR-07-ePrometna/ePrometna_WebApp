@@ -23,5 +23,10 @@ export const SearchOption = {
       label: "Pretraga službenika",
       tooltip: "Unsite ime i prezime službenika", 
       placeholder: "Ivo Ivić"
+    },
+    personOib: {
+      label: "Pretraga osobe",
+      tooltip: "Unsite OIB osobe", 
+      placeholder: "12345678901"
     }
   };
