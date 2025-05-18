@@ -36,7 +36,8 @@
                 variant="underlined"
                 density="compact"
                 class="mb-2"
-                :model-value="vehicleData.registration"
+                :model-value="vehicleData.registration || 'Vozilo odjavljeno'"
+                :class="{ 'deregistered': !vehicleData.registration }"
                 readonly
               >
                 <template #prepend-inner>
@@ -93,6 +94,7 @@
                 color="primary"
                 variant="tonal"
                 block
+                @click="handleDeregisterVehicle"
               >
                 Odjavi vozilo
               </v-btn>
@@ -115,7 +117,7 @@
 </template>
 
 <script setup lang="ts">
-import { deleteVehicle } from '@/services/vehicleService';
+import { deleteVehicle, deregisterVehicle } from '@/services/vehicleService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 
 interface VehicleData {
@@ -138,9 +140,22 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'vehicleDeleted'): void;
+  (e: 'vehicleDeregistered'): void;
 }>();
 
 const snackbar = useSnackbar();
+
+async function handleDeregisterVehicle() {
+  try {
+    await deregisterVehicle(props.vehicleData.uuid);
+    snackbar.Success(`Vozilo je uspješno odjavljeno`);
+    emit('vehicleDeregistered');
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom odjave vozila';
+    snackbar.Error(errorMessage);
+    console.error("Error deregistering vehicle:", error);
+  }
+}
 
 async function handleDeleteVehicle() {
   try {
@@ -171,5 +186,10 @@ async function handleDeleteVehicle() {
   font-weight: 500;
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
+}
+
+.deregistered {
+  color: red;
+  font-weight: 500;
 }
 </style>

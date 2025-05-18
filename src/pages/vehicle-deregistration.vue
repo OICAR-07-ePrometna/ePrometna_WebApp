@@ -12,6 +12,7 @@
                 :vehicle-data="vehicleInfo"
                 :driver-data="driverInfo"
                 @vehicle-deleted="handleVehicleDeleted"
+                @vehicle-deregistered="handleVehicleDeregistered"
             />
         </div>
     </div>
@@ -60,6 +61,13 @@ async function searchVehicleByVin(vin: string) {
 }
 
 const handleVehicleDeleted = () => {
+    vehicleData.value = undefined;
+    if (searchBarRef.value) {
+        searchBarRef.value.searchQuery = '';
+    }
+};
+
+const handleVehicleDeregistered = () => {
     vehicleData.value = undefined;
     if (searchBarRef.value) {
         searchBarRef.value.searchQuery = '';

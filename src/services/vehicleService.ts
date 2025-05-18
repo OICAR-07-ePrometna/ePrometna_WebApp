@@ -65,3 +65,13 @@ export async function deleteVehicle(uuid: string): Promise<void> {
     throw error;
   }
 }
+
+export async function deregisterVehicle(uuid: string): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/vehicle/deregister/${uuid}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deregistering vehicle`, error);
+    throw error;
+  }
+}
