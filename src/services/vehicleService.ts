@@ -25,6 +25,17 @@ export async function getVehicleDetails(uuid: string): Promise<VehicleDetailsDto
     throw error;
   }
 }
+
+export async function getVehicleByVin(vin: string): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/vehicle/vin/${vin}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching vehicle details for VIN ${vin}:`, error);
+    throw error;
+  }
+}
+
 export async function getVehicle(guid: string): Promise<vehicleDetails | undefined> {
   try {
     const rez = await axiosInstance.get(`/${SERVICE}/${guid}`)
@@ -42,6 +53,25 @@ export async function createVehicle(dto: CreateVehicleDto): Promise<VehicleDetai
     return response.data;
   } catch (error) {
     console.error(`Error creating vehicle`, error);
+    throw error;
+  }
+}
+
+export async function deleteVehicle(uuid: string): Promise<void> {
+  try {
+    await axiosInstance.delete(`${SERVICE}/${uuid}`);
+  } catch (error) {
+    console.error(`Error deleting vehicle`, error);
+    throw error;
+  }
+}
+
+export async function deregisterVehicle(uuid: string): Promise<VehicleDetailsDto> {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/vehicle/deregister/${uuid}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deregistering vehicle`, error);
     throw error;
   }
 }

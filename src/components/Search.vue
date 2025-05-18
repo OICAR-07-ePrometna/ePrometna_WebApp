@@ -50,8 +50,11 @@ async function search() {
     finally {
         loading.value = false
     }
-
 }
+
+defineExpose({
+    searchQuery
+});
 </script>
 
 <style scoped lang="css">
