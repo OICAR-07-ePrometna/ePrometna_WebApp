@@ -42,12 +42,13 @@ export interface NavigationLink {
       Links: [
         {
           Name: "Pregled službenika",
-          AllowRoles: [UserRole.Admin],
+          AllowRoles: [UserRole.MupAdmin],
           Route: '/officer-overview'
         },
         {
           Name: "Novi službenik",
-          AllowRoles: [UserRole.Admin],
+          //Kad neko optimizira forme za policiju i usere (police token field preciznije) nek makne superadmina odavde
+          AllowRoles: [UserRole.MupAdmin, UserRole.SuperAdmin],
           Route: '/new-officer'
         },
       ]

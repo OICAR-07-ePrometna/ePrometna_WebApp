@@ -45,19 +45,28 @@
       @click:append-inner="visible = !visible" @focus="clearError('password')" @update:modelValue="updatePassword"
       required class="mb-4 error-top"></v-text-field>
 
-    <v-select v-model="localUser.role" label="Role" :items="filteredRoles" item-title="title" item-value="value"
-      variant="outlined" density="compact" prepend-inner-icon="mdi-shield-account-outline"
-      :error-messages="errors.role ? [errors.role] : []" @focus="clearError('role')"
-      @update:modelValue="updateUser('role', $event)" required class="mb-5 error-top"></v-select>
+    <v-select 
+      v-model="localUser.role" 
+      label="Role" 
+      :items="[{ title: 'Policija', value: 'policija' }]"
+      item-title="title" 
+      item-value="value"
+      variant="outlined" 
+      density="compact" 
+      prepend-inner-icon="mdi-shield-account-outline"
+      :error-messages="errors.role ? [errors.role] : []"
+      readonly
+      disabled
+      class="mb-5 error-top">
+    </v-select>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import type { User } from '@/models/user';
 import type { FormErrors } from '@/models/formErrors';
 import { formatDate, isAtLeastEighteen } from '@/utils/formatDate';
-import { USER_ROLES } from '@/constants/userRoles';
 
 const props = defineProps<{
   user: User;
@@ -92,8 +101,6 @@ const firstValidDoB = computed(() => {
 
 const birthDateInput = ref(firstValidDoB.value);
 const birthDateFormatted = ref(formatDate(new Date(firstValidDoB.value)));
-
-const roles = USER_ROLES;
 
 function updateUser(field: keyof User, value: any) {
   const newUser = { ...localUser.value, [field]: value };
@@ -135,7 +142,7 @@ watch(() => props.user.birthDate, (newValue) => {
   }
 });
 
-const filteredRoles = computed(() => 
-  roles.filter(role => role.value !== 'policija')
-);
+onMounted(() => {
+  updateUser('role', 'policija');
+});
 </script>

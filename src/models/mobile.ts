@@ -1,5 +1,3 @@
-import type { UserRole } from '@/enums/userRole';
-
 export interface User {
   uuid: string;
   firstName: string;
@@ -8,6 +6,6 @@ export interface User {
   residence: string;
   birthDate: string;
   email: string;
-  role: UserRole;
-  policeToken?: string;
+  role: string;
+  police_token?: string | null;
 }

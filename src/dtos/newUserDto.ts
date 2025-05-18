@@ -10,6 +10,7 @@ export interface NewUserDto {
     Email: string;
     Password: string;
     Role: string;
+    PoliceToken?: string;
 }
 
 export function createNewUserDto(
@@ -24,6 +25,7 @@ export function createNewUserDto(
         BirthDate: formatDate(user.birthDate),
         Email: user.email,
         Password: password,
-        Role: user.role
+        Role: user.role,
+        PoliceToken: user.policeToken
     };
 }

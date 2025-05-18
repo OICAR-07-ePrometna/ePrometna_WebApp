@@ -8,4 +8,5 @@ export interface FormErrors {
     email: string;
     password: string;
     role: string;
+     policeToken: string;
   }
