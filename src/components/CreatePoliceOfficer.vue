@@ -28,12 +28,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, watch } from 'vue';
 import type { User } from '@/models/user';
 import { UserRole } from '@/enums/userRole';
 import UserForm from '@/components/CreatePoliceOfficerForm.vue';
 import type { FormErrors } from '@/models/formErrors';
-import { isOibValid } from '@/utils/validateOIB';
 import { isEmailValid } from '@/utils/validateEmail';
 import { createUser } from '@/services/userService';
 
@@ -73,26 +72,30 @@ const updateErrors = (field: keyof FormErrors, value: string) => {
 
 const validateForm = (): boolean => {
   let isValid = true;
+  
+  Object.keys(errors).forEach(key => {
+    errors[key as keyof FormErrors] = '';
+  });
 
-  if (!user.value.firstName.trim()) {
+  if (!user.value.firstName?.trim()) {
     errors.firstName = 'First name is required';
     isValid = false;
   }
 
-  if (!user.value.lastName.trim()) {
+  if (!user.value.lastName?.trim()) {
     errors.lastName = 'Last name is required';
     isValid = false;
   }
 
-  if (!user.value.oib.trim()) {
+  if (!user.value.oib?.trim()) {
     errors.oib = 'OIB is required';
     isValid = false;
-  } else if (!isOibValid(user.value.oib)) {
-    errors.oib = 'Invalid OIB';
+  } else if (user.value.oib.length !== 11) {
+    errors.oib = 'OIB must be exactly 11 digits';
     isValid = false;
   }
 
-  if (!user.value.residence.trim()) {
+  if (!user.value.residence?.trim()) {
     errors.residence = 'Residence is required';
     isValid = false;
   }
@@ -102,7 +105,7 @@ const validateForm = (): boolean => {
     isValid = false;
   }
 
-  if (!user.value.email.trim()) {
+  if (!user.value.email?.trim()) {
     errors.email = 'Email is required';
     isValid = false;
   } else if (!isEmailValid(user.value.email)) {
@@ -118,37 +121,35 @@ const validateForm = (): boolean => {
     isValid = false;
   }
 
-  if (!user.value.policeToken) {
-    errors.policeToken = 'Please generate a token';
-    isValid = false;
-  }
-
   return isValid;
 };
 
 const submitForm = async () => {
   errorMessage.value = '';
   successMessage.value = '';
+  
+  console.log("Submit button clicked");
+  console.log("Current user data:", user.value);
+  console.log("Current password:", password.value);
 
   if (!validateForm()) {
+    console.log("Form validation failed");
     return;
   }
 
   try {
     isSubmitting.value = true;
+    console.log("Submitting user data:", user.value);
+    
     const createdUser = await createUser(user.value, password.value);
     
     console.log("Created user response:", createdUser);
 
     if (createdUser) {
-      const token = createdUser.policeToken || createdUser.policeToken || user.value.policeToken;
+      successMessage.value = `Police officer ${createdUser.firstName} ${createdUser.lastName} created successfully!`;
       
-      successMessage.value = `Police officer ${createdUser.email} created successfully!`;
-      
-      if (token) {
-        successMessage.value += ` Officer's Token: ${token}`;
-      } else {
-        successMessage.value += " Token wasn't returned in response, check db.";
+      if (createdUser.policeToken) {
+        successMessage.value += ` You can now generate a token for this officer in the officers list.`;
       }
       
       resetForm();

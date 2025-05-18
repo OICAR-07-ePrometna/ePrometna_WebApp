@@ -89,6 +89,17 @@ export async function getUserByOIB(oib: string): Promise<User | undefined> {
   }
 }
 
+export async function generatePoliceToken(uuid: string): Promise<string> {
+  try {
+    const response = await axiosInstance.post(`${API_URL}/user/${uuid}/generate-token`);
+    
+    return response.data.token;
+  } catch (error) {
+    console.error('Error generating police token:', error);
+    throw error;
+  }
+}
+
 export async function setPoliceToken(uuid: string, token: string): Promise<void> {
   try {
     await axiosInstance.patch(`${API_URL}/user/${uuid}/police-token`, {
@@ -96,6 +107,30 @@ export async function setPoliceToken(uuid: string, token: string): Promise<void>
     });
   } catch (error) {
     console.error('Error setting police token:', error);
+    throw error;
+  }
+}
+
+export async function getAllPoliceOfficers(): Promise<User[] | undefined> {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/user/police-officers`);
+    
+    const data = Array.isArray(response.data) ? response.data.map((user: any) => ({
+      uuid: user.uuid,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      oib: user.oib,
+      residence: user.residence,
+      birthDate: user.birthDate ? formatDate(new Date(user.birthDate)) : '',
+      email: user.email,
+      role: user.role,
+      policeToken: user.policeToken
+    })) : [];
+    
+    return data;
+  } catch (error: any) {
+    const errorMessage = error.response?.data?.message || 'Unknown error';
+    console.error(`Error fetching police officers: ${errorMessage}`, error);
     throw error;
   }
 }

@@ -1,8 +1,7 @@
 <template>
-    <div>
-        hi from offcier officer overview
-    </div>
+    <OfficersTable />
 </template>
 
 <script lang="ts" setup>
+import OfficersTable from '@/components/OfficersTable.vue';
 </script>
