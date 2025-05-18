@@ -1,13 +1,13 @@
 <template>
   <div>
     <v-card class="mx-auto pa-6 pb-8" elevation="8" max-width="600" rounded="lg">
-      <div class="text-h5 mb-6">Create New User</div>
+      <div class="text-h5 mb-6">Create New Police Officer</div>
 
       <UserForm v-model:user="user" v-model:password="password" :errors="errors" @update:errors="updateErrors" />
 
       <div class="d-flex gap-4 mt-6">
         <v-btn color="primary" size="large" block :loading="isSubmitting" :disabled="isSubmitting" @click="submitForm">
-          {{ isSubmitting ? 'Creating...' : 'Create User' }}
+          {{ isSubmitting ? 'Creating...' : 'Create Police Officer' }}
         </v-btn>
 
         <v-btn color="grey" variant="tonal" size="large" block :disabled="isSubmitting" @click="resetForm">
@@ -31,7 +31,7 @@
 import { ref, reactive } from 'vue';
 import type { User } from '@/models/user';
 import { UserRole } from '@/enums/userRole';
-import UserForm from '@/components/CreateUserForm.vue';
+import UserForm from '@/components/CreatePoliceOfficerForm.vue';
 import type { FormErrors } from '@/models/formErrors';
 import { isOibValid } from '@/utils/validateOIB';
 import { isEmailValid } from '@/utils/validateEmail';
@@ -45,7 +45,8 @@ const user = ref<User>({
   residence: '',
   birthDate: '',
   email: '',
-  role: UserRole.Osoba
+  role: UserRole.Policija,
+  policeToken: ''
 });
 
 const password = ref('');
@@ -53,6 +54,7 @@ const password = ref('');
 const isSubmitting = ref(false);
 const errorMessage = ref('');
 const successMessage = ref('');
+
 const errors = reactive<FormErrors>({
   firstName: '',
   lastName: '',
@@ -69,7 +71,6 @@ const updateErrors = (field: keyof FormErrors, value: string) => {
   errors[field] = value;
 };
 
-//TODO: Try to implement better validation logic later
 const validateForm = (): boolean => {
   let isValid = true;
 
@@ -117,8 +118,8 @@ const validateForm = (): boolean => {
     isValid = false;
   }
 
-  if (!user.value.role) {
-    errors.role = 'Role is required';
+  if (!user.value.policeToken) {
+    errors.policeToken = 'Please generate a token';
     isValid = false;
   }
 
@@ -135,11 +136,21 @@ const submitForm = async () => {
 
   try {
     isSubmitting.value = true;
-
     const createdUser = await createUser(user.value, password.value);
+    
+    console.log("Created user response:", createdUser);
 
     if (createdUser) {
-      successMessage.value = `User ${createdUser.email} created successfully!`;
+      const token = createdUser.policeToken || createdUser.policeToken || user.value.policeToken;
+      
+      successMessage.value = `Police officer ${createdUser.email} created successfully!`;
+      
+      if (token) {
+        successMessage.value += ` Officer's Token: ${token}`;
+      } else {
+        successMessage.value += " Token wasn't returned in response, check db.";
+      }
+      
       resetForm();
     }
   } catch (error: any) {
@@ -160,7 +171,8 @@ const resetForm = () => {
     residence: '',
     birthDate: '',
     email: '',
-    role: UserRole.Osoba
+    role: UserRole.Policija,
+    policeToken: ''
   };
   password.value = '';
 

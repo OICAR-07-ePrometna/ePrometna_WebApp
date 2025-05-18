@@ -81,7 +81,7 @@ export const routes = [
     name: 'officer-overview',
     component: () => import(/* @vite-ignore */ '@/pages/officer-overview.vue'),
     meta: {
-      allowedRoles: [UserRole.Admin],
+      allowedRoles: [UserRole.MupAdmin],
       layout: 'default',
       breadcrumbName: "Pregled službenika"
     },
@@ -91,7 +91,8 @@ export const routes = [
     name: 'new-officer',
     component: () => import(/* @vite-ignore */ '@/pages/new-officer.vue'),
     meta: {
-      allowedRoles: [UserRole.Admin],
+      //Kad neko optimizira forme za policiju i usere (police token field preciznije) nek makne superadmina odavde
+      allowedRoles: [UserRole.MupAdmin, UserRole.SuperAdmin],
       layout: 'default',
       breadcrumbName: "Novi službenik"
     },

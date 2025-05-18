@@ -1,8 +1,8 @@
 <template>
-    <div>
-        hi from new officer 
-    </div>
+    <CreatePoliceOfficer />
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
+import CreatePoliceOfficer from '@/components/CreatePoliceOfficer.vue';
+import '../styles/createUser.css';
 </script>

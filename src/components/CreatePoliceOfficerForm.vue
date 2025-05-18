@@ -45,15 +45,41 @@
       @click:append-inner="visible = !visible" @focus="clearError('password')" @update:modelValue="updatePassword"
       required class="mb-4 error-top"></v-text-field>
 
-    <v-select v-model="localUser.role" label="Role" :items="filteredRoles" item-title="title" item-value="value"
-      variant="outlined" density="compact" prepend-inner-icon="mdi-shield-account-outline"
-      :error-messages="errors.role ? [errors.role] : []" @focus="clearError('role')"
-      @update:modelValue="updateUser('role', $event)" required class="mb-5 error-top"></v-select>
+    <div class="d-flex gap-2 mb-4">
+      <v-text-field v-model="localUser.policeToken" density="compact" label="Police Token" variant="outlined"
+        prepend-inner-icon="mdi-key" :error-messages="errors.policeToken ? [errors.policeToken] : []"
+        @focus="clearError('policeToken')" @update:modelValue="updateUser('policeToken', $event)" class="error-top"
+        readonly></v-text-field>
+      <v-btn
+        color="primary"
+        :disabled="isGenerating"
+        :loading="isGenerating"
+        @click="generateToken"
+        height="40"
+        min-width="140">
+        Generate
+      </v-btn>
+    </div>
+
+    <v-select 
+      v-model="localUser.role" 
+      label="Role" 
+      :items="[{ title: 'Policija', value: 'policija' }]"
+      item-title="title" 
+      item-value="value"
+      variant="outlined" 
+      density="compact" 
+      prepend-inner-icon="mdi-shield-account-outline"
+      :error-messages="errors.role ? [errors.role] : []"
+      readonly
+      disabled
+      class="mb-5 error-top">
+    </v-select>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, computed } from 'vue';
+import { ref, watch, computed, onMounted } from 'vue';
 import type { User } from '@/models/user';
 import type { FormErrors } from '@/models/formErrors';
 import { formatDate, isAtLeastEighteen } from '@/utils/formatDate';
@@ -83,6 +109,7 @@ const localPassword = computed({
 
 const visible = ref(false);
 const dateMenu = ref(false);
+const isGenerating = ref(false);
 
 const firstValidDoB = computed(() => {
   const date = new Date();
@@ -128,6 +155,25 @@ function updateBirthDate(newValue: string) {
   }
 }
 
+//Token for police officers
+function generateToken() {
+  isGenerating.value = true;
+  
+  try {
+    const digits = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let token = '';
+    for (let i = 0; i < 8; i++) {
+      token += digits[Math.floor(Math.random() * digits.length)];
+    }
+    
+    updateUser('policeToken', token);
+  } catch (error) {
+    console.error('Error generating token:', error);
+  } finally {
+    isGenerating.value = false;
+  }
+}
+
 watch(() => props.user.birthDate, (newValue) => {
   if (newValue && newValue !== birthDateInput.value) {
     birthDateInput.value = newValue;
@@ -135,7 +181,7 @@ watch(() => props.user.birthDate, (newValue) => {
   }
 });
 
-const filteredRoles = computed(() => 
-  roles.filter(role => role.value !== 'policija')
-);
+onMounted(() => {
+  updateUser('role', 'policija');
+});
 </script>

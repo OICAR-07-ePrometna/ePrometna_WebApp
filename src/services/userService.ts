@@ -89,3 +89,14 @@ export async function getUserByOIB(oib: string): Promise<User | undefined> {
   }
 }
 
+export async function setPoliceToken(uuid: string, token: string): Promise<void> {
+  try {
+    await axiosInstance.patch(`${API_URL}/user/${uuid}/police-token`, {
+      police_token: token
+    });
+  } catch (error) {
+    console.error('Error setting police token:', error);
+    throw error;
+  }
+}
+
