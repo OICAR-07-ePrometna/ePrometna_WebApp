@@ -1,6 +1,6 @@
 export enum UserRole {
     HAK = 'hak',
-    Admin = 'admin',
+    MupAdmin = 'mupadmin',
     Osoba = 'osoba',
     Firma = 'firma',
     Policija = 'policija',
