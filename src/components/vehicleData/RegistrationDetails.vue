@@ -8,7 +8,10 @@
                 <v-text-field
                     v-model="registrationData.registration"
                     label="Registracijska oznaka"
-                    :rules="[v => !!v || 'Registracijska oznaka je obavezna']"
+                    :rules="[
+                        v => !!v || 'Registracijska oznaka je obavezna',
+                        v => /^(ZG|ST|RI|OS|ZD|SB|PU|VK|VŽ|ŠI|DU|KA|ČK|BJ|GS|KŽ|KT|OG|PO|SK|VT|VU|BM|DA|DE|DJ|IM|KC|KR|MA|NA|NG)-\d{3,4}-[A-PR-V-ZČĆĐŠŽ]{1,2}$/.test(v) || 'Neispravan format registracijske oznake'
+                    ]"
                     required
                 ></v-text-field>
             </v-col>
