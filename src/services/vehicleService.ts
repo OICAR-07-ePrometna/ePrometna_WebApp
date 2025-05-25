@@ -75,3 +75,17 @@ export async function deregisterVehicle(uuid: string): Promise<VehicleDetailsDto
     throw error;
   }
 }
+
+export interface ChangeOwnerDto {
+  vehicleUuid: string;
+  newOwnerUuid: string;
+}
+
+export async function changeOwner(dto: ChangeOwnerDto): Promise<void> {
+  try {
+    await axiosInstance.put(`${API_URL}/vehicle/change-owner`, dto);
+  } catch (error) {
+    console.error('Error changing vehicle owner:', error);
+    throw error;
+  }
+}
