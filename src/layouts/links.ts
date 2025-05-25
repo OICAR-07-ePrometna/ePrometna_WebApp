@@ -57,16 +57,6 @@ export interface NavigationLink {
       Name: "Promet",
       Links: [
         {
-          Name: "Prometna dozvola",
-          AllowRoles: [UserRole.Osoba],
-          Route: '/traffic-license'
-        },
-        {
-          Name: "Vozačka dozvola",
-          AllowRoles: [UserRole.Osoba],
-          Route: '/driver-license' 
-        },
-        {
           Name: "Uređaji",
           AllowRoles: [UserRole.Osoba],
           Route: '/devices'
