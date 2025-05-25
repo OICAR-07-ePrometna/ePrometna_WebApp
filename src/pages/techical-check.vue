@@ -61,7 +61,7 @@ import SearchBar from '@/components/Search.vue';
 import VehicleSummary from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationDetails from '@/components/vehicleData/RegistrationDetails.vue';
 import { SearchOption } from '@/constants/searchOptions';
-import { getVehicleByVin, registerVehicle, type RegistrationDto } from '@/services/vehicleService';
+import { getVehicleByVin, registerVehicle, updateVehicle, type RegistrationDto } from '@/services/vehicleService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import type { VehicleDetailsDto } from '@/dtos/vehicleDetailsDto';
 import type { VehicleSummary as VehicleSummaryType } from '@/models/vehicleDataModels';
@@ -106,7 +106,7 @@ async function handleTechnicalCheck() {
 
     try {
         loading.value = true;
-        // TODO: wait for fran to implement API technical check
+        await updateVehicle(vehicleData.value.uuid, vehicleData.value);
         snackbar.Success('Tehnički pregled uspješno spremljen');
         currentStep.value = 2;
     } catch (error: any) {

@@ -105,3 +105,13 @@ export async function registerVehicle(uuid: string, registrationData: Registrati
         throw error;
     }
 }
+
+export async function updateVehicle(uuid: string, vehicleData: VehicleDetailsDto): Promise<VehicleDetailsDto> {
+    try {
+        const response = await axiosInstance.put(`${API_URL}/vehicle/${uuid}`, vehicleData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating vehicle:', error);
+        throw error;
+    }
+}
