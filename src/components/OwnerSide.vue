@@ -81,7 +81,7 @@ import SearchBar from '@/components/Search.vue';
 import DriverLicence from '@/components/DriverLicence.vue';
 import type { VehicleDetailsDto } from '@/dtos/vehicleDetailsDto';
 import { SearchOption } from '@/constants/searchOptions';
-import { getVehicleByVin } from '@/services/vehicleService';
+import { getVehicleByVin, getVehicleDetails } from '@/services/vehicleService';
 import { getDriverLicense } from '@/services/licenseService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import type { DriverLicenseDto } from '@/dtos/driverLicenseDto';
@@ -93,6 +93,8 @@ const licenseData = ref<DriverLicenseDto | null>(null);
 const isLoadingLicense = ref(false);
 
 const vehicleInfo = computed(() => {
+    console.log('OwnerSide - Computing vehicleInfo with data:', vehicleData.value);
+    console.log('OwnerSide - Registration from data:', vehicleData.value?.registration);
     return {
         model: vehicleData.value?.summary?.model ?? '',
         mark: vehicleData.value?.summary?.mark ?? '',
@@ -112,9 +114,15 @@ const driverInfo = computed(() => {
 
 async function searchVehicleByVin(vin: string) {
     try {
+        // First get the vehicle by VIN to get the UUID
         const vehicle = await getVehicleByVin(vin);
-        console.log('OwnerSide - Vehicle data:', vehicle);
-        vehicleData.value = vehicle;
+        console.log('OwnerSide - Raw vehicle data:', vehicle);
+        console.log('OwnerSide - Registration field:', vehicle.registration);
+        
+        // Then get the full vehicle details using the UUID
+        const vehicleDetails = await getVehicleDetails(vehicle.uuid);
+        console.log('OwnerSide - Full vehicle details:', vehicleDetails);
+        vehicleData.value = vehicleDetails;
         
         if (vehicleData.value?.owner?.uuid) {
             console.log('OwnerSide - Owner UUID:', vehicleData.value.owner.uuid);
