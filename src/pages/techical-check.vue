@@ -8,42 +8,49 @@
             :tooltip="SearchOption.vehicleVin.tooltip"
         />
         <div v-if="vehicleData">
-            <div v-if="!showRegistration">
-                <VehicleSummary 
-                    :data="vehicleData.summary"
-                    variant="edit"
-                    @update:data="handleVehicleDataUpdate"
-                />
-                <v-row class="mt-4">
-                    <v-col cols="12" class="text-center">
-                        <v-btn
-                            color="primary"
-                            size="large"
-                            :loading="loading"
-                            @click="handleTechnicalCheck"
-                        >
-                            Potvrdi tehnički pregled
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </div>
-            <div v-else>
-                <RegistrationDetails
-                    v-model:data="registrationData"
-                />
-                <v-row class="mt-4">
-                    <v-col cols="12" class="text-center">
-                        <v-btn
-                            color="primary"
-                            size="large"
-                            :loading="loading"
-                            @click="handleRegistration"
-                        >
-                            Registriraj vozilo
-                        </v-btn>
-                    </v-col>
-                </v-row>
-            </div>
+            <v-stepper :items="steps" v-model="currentStep">
+                <template v-slot:item.1>
+                    <v-card>
+                        <VehicleSummary 
+                            :data="vehicleData.summary"
+                            variant="edit"
+                            @update:data="handleVehicleDataUpdate"
+                        />
+                        <v-row class="mt-4">
+                            <v-col cols="12" class="text-center">
+                                <v-btn
+                                    color="primary"
+                                    size="large"
+                                    :loading="loading"
+                                    @click="handleTechnicalCheck"
+                                >
+                                    Potvrdi tehnički pregled
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </template>
+
+                <template v-slot:item.2>
+                    <v-card>
+                        <RegistrationDetails
+                            v-model:data="registrationData"
+                        />
+                        <v-row class="mt-4">
+                            <v-col cols="12" class="text-center">
+                                <v-btn
+                                    color="primary"
+                                    size="large"
+                                    :loading="loading"
+                                    @click="handleRegistration"
+                                >
+                                    Registriraj vozilo
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </template>
+            </v-stepper>
         </div>
     </div>
 </template>
@@ -63,7 +70,8 @@ const searchBarRef = ref<InstanceType<typeof SearchBar> | null>(null);
 const vehicleData = ref<VehicleDetailsDto | undefined>(undefined);
 const loading = ref(false);
 const snackbar = useSnackbar();
-const showRegistration = ref(false);
+const currentStep = ref(1);
+const steps = ['Tehnički pregled', 'Registracija'];
 const registrationData = ref<RegistrationDto>({
     note: '',
     passTechnical: true,
@@ -76,7 +84,7 @@ async function searchVehicleByVin(vin: string) {
         loading.value = true;
         const vehicle = await getVehicleByVin(vin);
         vehicleData.value = vehicle;
-        showRegistration.value = false;
+        currentStep.value = 1;
         snackbar.Success(`Pronađeno vozilo s VIN-om: ${vin}`);
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Nije moguće pronaći vozilo s navedenim VIN-om';
@@ -100,7 +108,7 @@ async function handleTechnicalCheck() {
         loading.value = true;
         // TODO: wait for fran to implement API technical check
         snackbar.Success('Tehnički pregled uspješno spremljen');
-        showRegistration.value = true;
+        currentStep.value = 2;
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom spremanja tehničkog pregleda';
         snackbar.Error(errorMessage);
@@ -129,7 +137,7 @@ async function handleRegistration() {
 
 function clear() {
     vehicleData.value = undefined;
-    showRegistration.value = false;
+    currentStep.value = 1;
     registrationData.value = {
         note: '',
         passTechnical: true,
