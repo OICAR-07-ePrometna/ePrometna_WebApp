@@ -89,3 +89,19 @@ export async function changeOwner(dto: ChangeOwnerDto): Promise<void> {
     throw error;
   }
 }
+
+export interface RegistrationDto {
+    note: string;
+    passTechnical: boolean;
+    registration: string;
+    traveledDistance: number;
+}
+
+export async function registerVehicle(uuid: string, registrationData: RegistrationDto): Promise<void> {
+    try {
+        await axiosInstance.put(`${API_URL}/vehicle/registration/${uuid}`, registrationData);
+    } catch (error) {
+        console.error('Error registering vehicle:', error);
+        throw error;
+    }
+}
