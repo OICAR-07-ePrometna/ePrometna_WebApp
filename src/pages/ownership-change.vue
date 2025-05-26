@@ -15,12 +15,7 @@
         <!-- Action Buttons -->
         <v-row class="mt-4">
             <v-col cols="12" class="text-center">
-                <v-btn
-                    color="primary"
-                    size="large"
-                    :disabled="!canSubmit"
-                    @click="handleSubmit"
-                >
+                <v-btn color="primary" size="large" :disabled="!canSubmit" @click="handleSubmit">
                     Potvrdi promjenu vlasništva
                 </v-btn>
             </v-col>
@@ -54,9 +49,9 @@ async function handleSubmit() {
             vehicleUuid: currentOwnerRef.value?.vehicleData?.uuid || '',
             newOwnerUuid: newOwnerRef.value?.personData?.uuid || ''
         });
-        
+
         snackbar.Success('Promjena vlasništva uspješno izvršena');
-        
+
         // Clear both forms
         currentOwnerRef.value?.clear();
         newOwnerRef.value?.clear();
