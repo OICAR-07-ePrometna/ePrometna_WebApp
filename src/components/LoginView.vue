@@ -94,8 +94,8 @@ async function handleLogin() {
   }
   finally {
     loading.value = false
-    startPeriodicRefresh()
   }
+  startPeriodicRefresh()
   router.push('/');
 }
 
