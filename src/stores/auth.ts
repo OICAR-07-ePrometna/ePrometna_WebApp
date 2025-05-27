@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import type { User } from '@/models/user';
+import { stopPeriodicRefresh } from '@/services/axios';
 export const useAuthStore = defineStore('auth', () => {
   const User = computed({
     get: () => {
@@ -30,6 +31,7 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('user')
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    stopPeriodicRefresh()
 
     //NOTE: use this becouse router is undefined
     document.location.replace('/login')

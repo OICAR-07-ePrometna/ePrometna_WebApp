@@ -38,7 +38,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
-import axiosInstance from '@/services/axios';
+import axiosInstance, { startPeriodicRefresh } from '@/services/axios';
 import { getLoggedInUser } from '@/services/userService';
 import { login } from '@/services/authService';
 
@@ -94,6 +94,7 @@ async function handleLogin() {
   }
   finally {
     loading.value = false
+    startPeriodicRefresh()
   }
   router.push('/');
 }
