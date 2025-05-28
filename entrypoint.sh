@@ -1,35 +1,28 @@
 #!/bin/sh
 set -e
 
-echo "[WebApp Entrypoint] Initializing for direct API calls..."
+echo "[WebApp Entrypoint] Initializing Nginx reverse proxy..."
 
-CONFIG_TEMPLATE_FILE="/app/config.template.json"
-CONFIG_OUTPUT_FILE="/usr/share/nginx/html/config.json" # Served by Nginx
-
-if [ -z "${RUNTIME_VITE_API_URL}" ]; then
-	echo "[WebApp Entrypoint] ERROR: RUNTIME_VITE_API_URL environment variable is not set."
-	echo "[WebApp Entrypoint] This should be the full base URL for your backend API (e.g., http://app:8090/api)."
+if [ -z "${BACKEND_URL}" ]; then
+	echo "[WebApp Entrypoint] ERROR: BACKEND_URL environment variable is not set."
+	echo "[WebApp Entrypoint] This should be the base URL for your backend (e.g., http://app:8090)."
 	exit 1
 fi
 
-echo "[WebApp Entrypoint] RUNTIME_VITE_API_URL is: ${RUNTIME_VITE_API_URL}"
-echo "[WebApp Entrypoint] Generating ${CONFIG_OUTPUT_FILE} from ${CONFIG_TEMPLATE_FILE}..."
+echo "[WebApp Entrypoint] BACKEND_URL is: ${BACKEND_URL}"
 
-# Substitute RUNTIME_VITE_API_URL into the template
-envsubst '${RUNTIME_VITE_API_URL}' <"${CONFIG_TEMPLATE_FILE}" >"${CONFIG_OUTPUT_FILE}"
+TEMPLATE_NGINX_CONF="/etc/nginx/conf.d/default.conf.template"
+FINAL_NGINX_CONF="/etc/nginx/conf.d/default.conf"
 
-echo "[WebApp Entrypoint] --- Generated ${CONFIG_OUTPUT_FILE} ---"
-cat "${CONFIG_OUTPUT_FILE}"
-echo "[WebApp Entrypoint] --- End of ${CONFIG_OUTPUT_FILE} ---"
+echo "[WebApp Entrypoint] Generating Nginx configuration from template..."
+envsubst '${BACKEND_URL}' <"${TEMPLATE_NGINX_CONF}" >"${FINAL_NGINX_CONF}"
 
-echo "[WebApp Entrypoint] Validating Nginx configuration..."
-# Use the final nginx.conf directly, not a template for nginx itself in this scenario
-nginx -t -c /etc/nginx/nginx.conf
-# The 'nginx -t' command will print errors to stderr and exit with a non-zero code if invalid.
-# Since 'set -e' is active, the script will exit here if nginx -t fails.
+echo "[WebApp Entrypoint] --- Generated ${FINAL_NGINX_CONF} ---"
+cat "${FINAL_NGINX_CONF}"
+echo "[WebApp Entrypoint] --- End of Nginx configuration ---"
 
-echo "[WebApp Entrypoint] Nginx configuration is valid."
-echo "[WebApp Entrypoint] Starting Nginx..."
+echo "[WebApp Entrypoint] Validating generated Nginx configuration..."
+nginx -t # Validates /etc/nginx/nginx.conf which should include default.conf
 
-# Execute the command passed as arguments to this script (CMD from Dockerfile)
-exec "$@"
+echo "[WebApp Entrypoint] Nginx configuration is valid. Starting Nginx..."
+exec "$@" # Executes CMD from Dockerfile (nginx -g "daemon off;")
