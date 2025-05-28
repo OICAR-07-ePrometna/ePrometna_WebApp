@@ -3,14 +3,14 @@ import { createNewUserDto } from '@/dtos/newUserDto';
 import { formatDate } from '@/utils/formatDate';
 import axiosInstance from '@/services/axios';
 
-const API_URL = 'http://localhost:8090/api';
+const SERVICE = "user"
 
 export async function createUser(user: User, password: string): Promise<User | undefined> {
   const userDto = createNewUserDto(user, password);
   userDto.birthDate = formatDate(userDto.birthDate);
 
   try {
-    const response = await axiosInstance.post(`${API_URL}/user/`, userDto);
+    const response = await axiosInstance.post(`${SERVICE}/`, userDto);
 
     return response.data
 
@@ -22,7 +22,7 @@ export async function createUser(user: User, password: string): Promise<User | u
 
 export async function getLoggedInUser(): Promise<User | undefined> {
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/my-data`);
+    const response = await axiosInstance.get(`${SERVICE}/my-data`);
 
     //NOTE: this abomination is to be left here at all cost
     return response.data
@@ -34,7 +34,7 @@ export async function getLoggedInUser(): Promise<User | undefined> {
 
 export async function searchUsers(query: string): Promise<User[] | undefined> {
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/search?query=${encodeURIComponent(query)}`);
+    const response = await axiosInstance.get(`${SERVICE}/search?query=${encodeURIComponent(query)}`);
 
     const data = Array.isArray(response.data) ? response.data.map((user: User) => ({
       ...user,
@@ -42,7 +42,7 @@ export async function searchUsers(query: string): Promise<User[] | undefined> {
     })) : [];
 
     return data
-  } catch (error : any) {
+  } catch (error: any) {
     const errorMessage = error.response?.data?.message || 'Unknown error';
     console.error(`Error fetching users with query "${query}": ${errorMessage}`, error);
     throw error;
@@ -51,7 +51,7 @@ export async function searchUsers(query: string): Promise<User[] | undefined> {
 
 export async function updateUser(uuid: string, model: User): Promise<User[] | undefined> {
   try {
-    const response = await axiosInstance.put(`${API_URL}/user/${uuid}`,
+    const response = await axiosInstance.put(`${SERVICE}/${uuid}`,
       JSON.stringify(model)
     );
 
@@ -64,7 +64,7 @@ export async function updateUser(uuid: string, model: User): Promise<User[] | un
 
 export async function deleteUser(uuid: string): Promise<{ success: boolean } | undefined> {
   try {
-    const response = await axiosInstance.delete(`${API_URL}/user/${uuid}`)
+    const response = await axiosInstance.delete(`${SERVICE}/${uuid}`)
 
     return response.data
   } catch (error) {
@@ -75,14 +75,14 @@ export async function deleteUser(uuid: string): Promise<{ success: boolean } | u
 
 export async function getUserByOIB(oib: string): Promise<User | undefined> {
   try {
-        const response = await axiosInstance.get(`${API_URL}/user/oib/${encodeURIComponent(oib)}`, { validateStatus: s => [200,404].includes(s) });
-    
-        if (response.status === 404 || !response.data) return undefined;
-    
-        return {
-          ...response.data,
-          birthDate: response.data.birthDate ? formatDate(new Date(response.data.birthDate)) : ''
-        } as User;
+    const response = await axiosInstance.get(`${SERVICE}/oib/${encodeURIComponent(oib)}`, { validateStatus: s => [200, 404].includes(s) });
+
+    if (response.status === 404 || !response.data) return undefined;
+
+    return {
+      ...response.data,
+      birthDate: response.data.birthDate ? formatDate(new Date(response.data.birthDate)) : ''
+    } as User;
   } catch (error) {
     console.error('Error fetching user by OIB:', error);
     throw error;
@@ -91,8 +91,8 @@ export async function getUserByOIB(oib: string): Promise<User | undefined> {
 
 export async function generatePoliceToken(uuid: string): Promise<string> {
   try {
-    const response = await axiosInstance.post(`${API_URL}/user/${uuid}/generate-token`);
-    
+    const response = await axiosInstance.post(`${SERVICE}/${uuid}/generate-token`);
+
     return response.data.token;
   } catch (error) {
     console.error('Error generating police token:', error);
@@ -102,7 +102,7 @@ export async function generatePoliceToken(uuid: string): Promise<string> {
 
 export async function setPoliceToken(uuid: string, token: string): Promise<void> {
   try {
-    await axiosInstance.patch(`${API_URL}/user/${uuid}/police-token`, {
+    await axiosInstance.patch(`${SERVICE}/${uuid}/police-token`, {
       police_token: token
     });
   } catch (error) {
@@ -113,8 +113,8 @@ export async function setPoliceToken(uuid: string, token: string): Promise<void>
 
 export async function getAllPoliceOfficers(): Promise<User[] | undefined> {
   try {
-    const response = await axiosInstance.get(`${API_URL}/user/police-officers`);
-    
+    const response = await axiosInstance.get(`${SERVICE}/police-officers`);
+
     const data = Array.isArray(response.data) ? response.data.map((user: any) => ({
       uuid: user.uuid,
       firstName: user.firstName,
@@ -126,7 +126,7 @@ export async function getAllPoliceOfficers(): Promise<User[] | undefined> {
       role: user.role,
       policeToken: user.policeToken
     })) : [];
-    
+
     return data;
   } catch (error: any) {
     const errorMessage = error.response?.data?.message || 'Unknown error';

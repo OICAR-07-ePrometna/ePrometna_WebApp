@@ -70,7 +70,13 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    allowedHosts: ['.ngrok-free.app']
+    allowedHosts: ['.ngrok-free.app'],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+      },
+    }
   },
   css: {
     preprocessorOptions: {
