@@ -69,8 +69,15 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
+    port: 8091,
     allowedHosts: ['.ngrok-free.app'],
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '/api')
+      }
+    }
   },
   css: {
     preprocessorOptions: {

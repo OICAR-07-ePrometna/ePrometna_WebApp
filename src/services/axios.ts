@@ -2,14 +2,13 @@ import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 import { getAppConfig } from './configServices';
 
-//const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8090/api';
 const REFRESH_TOKEN_URL = '/auth/refresh';
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 
 
 const appConfig = getAppConfig();
 const axiosInstance = axios.create({
-  baseURL: appConfig.VITE_API_URL,
+  baseURL: "http://localhost:8091/api",
   headers: {
     'Content-Type': 'application/json',
   },

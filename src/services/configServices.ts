@@ -5,7 +5,7 @@ export interface AppConfig {
 }
 
 const defaultConfig: AppConfig = {
-  VITE_API_URL: 'http://localhost:8090/api',
+  VITE_API_URL: 'http://localhost:8091/api',
 };
 
 let runtimeConfig: AppConfig = { ...defaultConfig };
