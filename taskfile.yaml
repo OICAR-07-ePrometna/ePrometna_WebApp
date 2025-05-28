@@ -1,0 +1,22 @@
+version: "3"
+
+vars:
+  PROJECT_CODE: ePrometna_WebApp
+  PROJECT_CODE_DOCKER: eprometna-webapp
+
+  # folders
+  BIN_FOLDER: bin
+
+tasks:
+  dev:
+    cmd: npm run dev
+
+  build-docker:
+    platforms: [linux/amd64]
+    env:
+      GOOS: linux
+      GOARCH: amd64
+    cmds:
+      - cmd: docker build -t {{.PROJECT_CODE_DOCKER}}:latest .
+      - cmd: docker save -o {{.PROJECT_CODE_DOCKER}}-latest.tar {{.PROJECT_CODE_DOCKER}}:latest
+  internal: false
