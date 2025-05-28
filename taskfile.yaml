@@ -13,9 +13,6 @@ tasks:
 
   build-docker:
     platforms: [linux/amd64]
-    env:
-      GOOS: linux
-      GOARCH: amd64
     cmds:
       - cmd: docker build -t {{.PROJECT_CODE_DOCKER}}:latest .
       - cmd: docker save -o {{.PROJECT_CODE_DOCKER}}-latest.tar {{.PROJECT_CODE_DOCKER}}:latest
