@@ -24,7 +24,7 @@ export function fetchRuntimeConfig(): Promise<AppConfig> {
     .then(response => {
       if (response.data && response.data.VITE_API_URL) {
         console.log('[ConfigService] Runtime config loaded:', response.data);
-        runtimeConfig = { ...defaultConfig, ...response.data };
+        runtimeConfig = { ...response.data };
       } else {
         console.warn('[ConfigService] Fetched config.json is invalid or missing VITE_API_URL. Using defaults.');
         runtimeConfig = { ...defaultConfig };
