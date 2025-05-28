@@ -1,0 +1,28 @@
+.git
+.gitignore
+
+node_modules
+dist
+npm-debug.log
+
+Dockerfile
+.dockerignore
+README.md
+
+.DS_Store
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.old
+
+# local env files
+.env.local
+.env.*.local
+.env

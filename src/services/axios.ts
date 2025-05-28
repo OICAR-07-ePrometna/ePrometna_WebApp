@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
-const API_BASE_URL = 'http://localhost:8090/api';
+const HOST_URL = "/api";
 const REFRESH_TOKEN_URL = '/auth/refresh';
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 
+
 const axiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: HOST_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -58,7 +59,7 @@ const refreshToken = async () => {
 
   try {
     console.log('Attempting scheduled token refresh...');
-    const refreshResponse = await axios.post(API_BASE_URL + REFRESH_TOKEN_URL, {
+    const refreshResponse = await axios.post(HOST_URL + REFRESH_TOKEN_URL, {
       refreshToken: currentRefreshToken,
     });
 
@@ -95,4 +96,5 @@ export const stopPeriodicRefresh = () => {
     console.log('Token refresh schedule stopped.');
   }
 };
+
 export default axiosInstance;
