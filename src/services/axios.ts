@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
-import { getAppConfig } from './configServices';
 
+const HOST_URL = "http://localhost:8091/api";
 const REFRESH_TOKEN_URL = '/auth/refresh';
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 
 
-const appConfig = getAppConfig();
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8091/api",
+  baseURL: HOST_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -60,7 +59,7 @@ const refreshToken = async () => {
 
   try {
     console.log('Attempting scheduled token refresh...');
-    const refreshResponse = await axios.post(appConfig.VITE_API_URL + REFRESH_TOKEN_URL, {
+    const refreshResponse = await axios.post(HOST_URL + REFRESH_TOKEN_URL, {
       refreshToken: currentRefreshToken,
     });
 
