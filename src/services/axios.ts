@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useAuthStore } from '@/stores/auth';
 
-const HOST_URL = "http://localhost:8091/api";
+const HOST_URL = "/api";
 const REFRESH_TOKEN_URL = '/auth/refresh';
 const TEN_MINUTES_IN_MS = 10 * 60 * 1000;
 

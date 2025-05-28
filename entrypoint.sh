@@ -5,7 +5,7 @@ echo "[WebApp Entrypoint] Initializing Nginx reverse proxy..."
 
 if [ -z "${BACKEND_URL}" ]; then
 	echo "[WebApp Entrypoint] ERROR: BACKEND_URL environment variable is not set."
-	echo "[WebApp Entrypoint] This should be the base URL for your backend (e.g., http://app:8090)."
+	echo "[WebApp Entrypoint] This should be the base URL for your backend (e.g., http://server:8090)."
 	exit 1
 fi
 
