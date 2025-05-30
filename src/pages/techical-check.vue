@@ -11,6 +11,25 @@
             <v-stepper :items="steps" v-model="currentStep">
                 <template v-slot:item.1>
                     <v-card>
+                        <RegistrationLogs 
+                            :registrationLogs="vehicleData?.pastRegistration || []"
+                        />
+                        <v-row class="mt-4">
+                            <v-col cols="12" class="text-center">
+                                <v-btn
+                                    color="primary"
+                                    size="large"
+                                    @click="currentStep = 2"
+                                >
+                                    Nastavi na tehnički pregled
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </template>
+
+                <template v-slot:item.2>
+                    <v-card>
                         <VehicleSummary 
                             :data="vehicleData.summary"
                             variant="edit"
@@ -31,7 +50,7 @@
                     </v-card>
                 </template>
 
-                <template v-slot:item.2>
+                <template v-slot:item.3>
                     <v-card>
                         <RegistrationDetails
                             v-model:data="registrationData"
@@ -60,6 +79,7 @@ import { ref } from 'vue';
 import SearchBar from '@/components/Search.vue';
 import VehicleSummary from '@/components/vehicleData/VehicleSummary.vue';
 import RegistrationDetails from '@/components/vehicleData/RegistrationDetails.vue';
+import RegistrationLogs from '@/components/vehicleData/RegistrationLogs.vue';
 import { SearchOption } from '@/constants/searchOptions';
 import { getVehicleByVin, registerVehicle, updateVehicle, type RegistrationDto } from '@/services/vehicleService';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
@@ -71,7 +91,7 @@ const vehicleData = ref<VehicleDetailsDto | undefined>(undefined);
 const loading = ref(false);
 const snackbar = useSnackbar();
 const currentStep = ref(1);
-const steps = ['Tehnički pregled', 'Registracija'];
+const steps = ['Povijest registracije', 'Tehnički pregled', 'Registracija'];
 const registrationData = ref<RegistrationDto>({
     note: '',
     passTechnical: true,
@@ -108,7 +128,7 @@ async function handleTechnicalCheck() {
         loading.value = true;
         await updateVehicle(vehicleData.value.uuid, vehicleData.value);
         snackbar.Success('Tehnički pregled uspješno spremljen');
-        currentStep.value = 2;
+        currentStep.value = 3;
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Došlo je do greške prilikom spremanja tehničkog pregleda';
         snackbar.Error(errorMessage);
