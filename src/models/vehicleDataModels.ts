@@ -24,10 +24,11 @@ export interface VehicleOwnerSummary {
 }
 
 export interface RegistrationLogs {
-  dateOfValidation: Date;
-  expirationDate: Date;
-  mileage: string;
-  note: string
+  technicalDate: string;
+  traveledDistance: number;
+  registration: string;
+  note: string | null;
+  passTechnical: boolean;
 }
 
 
