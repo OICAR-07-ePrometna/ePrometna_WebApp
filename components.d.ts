@@ -13,6 +13,7 @@ declare module 'vue' {
     CreatePoliceOfficerForm: typeof import('./src/components/CreatePoliceOfficerForm.vue')['default']
     CreateUser: typeof import('./src/components/CreateUser.vue')['default']
     CreateUserForm: typeof import('./src/components/CreateUserForm.vue')['default']
+    Device: typeof import('./src/components/userData/Device.vue')['default']
     DriverLicence: typeof import('./src/components/userData/DriverLicence.vue')['default']
     FilterDeregistration: typeof import('./src/components/vehicleData/FilterDeregistration.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']

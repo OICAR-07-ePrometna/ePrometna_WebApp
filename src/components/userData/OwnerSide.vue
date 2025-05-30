@@ -49,7 +49,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import SearchBar from '@/components/Search.vue';
-import DriverLicence from '@/components/DriverLicence.vue';
+import DriverLicence from '@/components/userData/DriverLicence.vue';
 import type { VehicleDetailsDto } from '@/dtos/vehicleDetailsDto';
 import { SearchOption } from '@/constants/searchOptions';
 import { getVehicleByVin } from '@/services/vehicleService';

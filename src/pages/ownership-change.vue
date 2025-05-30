@@ -25,8 +25,8 @@
 
 <script lang="ts" setup>
 import { ref, computed } from 'vue';
-import OwnerSide from '@/components/OwnerSide.vue';
-import NewOwnerSide from '@/components/NewOwnerSide.vue';
+import OwnerSide from '@/components/userData/OwnerSide.vue';
+import NewOwnerSide from '@/components/userData/NewOwnerSide.vue';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import { changeOwner } from '@/services/vehicleService';
 
