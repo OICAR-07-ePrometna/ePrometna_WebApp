@@ -103,6 +103,8 @@ async function searchVehicleByVin(vin: string) {
     try {
         loading.value = true;
         const vehicle = await getVehicleByVin(vin);
+        console.log('Fetched vehicle data:', JSON.stringify(vehicle, null, 2));
+        console.log('Past registration logs:', JSON.stringify(vehicle?.pastRegistration, null, 2));
         vehicleData.value = vehicle;
         currentStep.value = 1;
         snackbar.Success(`Pronađeno vozilo s VIN-om: ${vin}`);
