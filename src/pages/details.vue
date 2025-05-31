@@ -3,6 +3,6 @@
 </template>
 
 <script setup lang="ts">
-import UserDetails from '@/components/UserDetails.vue';
+import UserDetails from '@/components/userData/UserDetails.vue';
 import '../styles/userDetails.css';
 </script>

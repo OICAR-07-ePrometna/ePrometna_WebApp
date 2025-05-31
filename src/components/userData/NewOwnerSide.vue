@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import SearchBar from '@/components/Search.vue';
-import DriverLicence from '@/components/DriverLicence.vue';
+import DriverLicence from '@/components/userData/DriverLicence.vue';
 import { SearchOption } from '@/constants/searchOptions';
 import { getDriverLicense } from '@/services/licenseService';
 import { getUserByOIB } from '@/services/userService';

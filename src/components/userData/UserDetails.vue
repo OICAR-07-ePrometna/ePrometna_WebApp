@@ -44,9 +44,6 @@ const snackbar = useSnackbar()
 
 onMounted(async () => {
   const rez = authStore.User
-  console.log(rez)
   user.value = rez
-  console.log({ ...user.value })
-  console.log(rez?.email)
 });
 </script>
