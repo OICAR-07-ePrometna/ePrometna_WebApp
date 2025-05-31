@@ -43,6 +43,16 @@
                 readonly
                 class="mb-4"
               ></v-text-field>
+
+              <v-btn
+                color="error"
+                variant="tonal"
+                prepend-icon="mdi-delete"
+                @click="confirmDelete"
+                class="mt-4"
+              >
+                Unregister Device
+              </v-btn>
             </div>
             <div v-else class="text-center">
               <p class="text-body-1">No device registered for this user</p>
@@ -72,6 +82,35 @@ const formattedDate = computed(() => {
   if (!device.value?.CreatedAt) return '';
   return new Date(device.value.CreatedAt).toLocaleString();
 });
+
+const confirmDelete = async () => {
+  if (!confirm('Are you sure you want to unregister this device?')) {
+    return;
+  }
+  
+  try {
+    loading.value = true;
+    error.value = null;
+
+    await axiosInstance.delete('/user/my-device');
+    
+    device.value = null;
+    snackbar.Success('Device unregistered successfully');
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      if (err.response?.status === 401) {
+        error.value = 'Authentication failed';
+        snackbar.Error('Session expired. Please log in again.');
+        authStore.Logout();
+        return;
+      }
+    }
+    error.value = err instanceof Error ? err.message : 'An error occurred';
+    snackbar.Error('Error unregistering device');
+  } finally {
+    loading.value = false;
+  }
+};
 
 const fetchDeviceInfo = async () => {
   try {
