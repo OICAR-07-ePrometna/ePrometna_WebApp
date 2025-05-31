@@ -131,8 +131,6 @@ const fetchDeviceInfo = async () => {
     } else {
       device.value = response.data;
     }
-
-    console.log('Device info response:', response.data);
   } catch (err) {
     if (axios.isAxiosError(err)) {
       if (err.response?.status === 401) {
