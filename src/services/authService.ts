@@ -6,7 +6,7 @@ import axiosInstance from './axios';
 
 export async function login(credentials: LoginDto): Promise<TokenResponse> {
   try {
-    const response = await axiosInstance.post<TokenResponse>('/auth/login', credentials);
+    const response = await axiosInstance.post<TokenResponse>('auth/login', credentials);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
