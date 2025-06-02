@@ -42,22 +42,24 @@
             </div>
         </v-card>
     </v-container>
+    <ConfirmDialog ref="confirmDialog" />
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, shallowRef } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from '@/components/SnackbarProvider.vue';
 import type { Mobile } from '@/models/mobile';
 import axiosInstance from '@/services/axios';
 import axios from 'axios';
+import ConfirmDialog from '@/components/confirmDialog.vue';
 
 const device = ref<Mobile | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 const authStore = useAuthStore();
 const snackbar = useSnackbar();
-const showConfirmDialog = ref(false);
+const confirmDialog = shallowRef<InstanceType<typeof ConfirmDialog>>();
 
 const formattedDate = computed(() => {
     if (!device.value?.CreatedAt) return '';
@@ -65,12 +67,18 @@ const formattedDate = computed(() => {
 });
 
 const confirmDelete = async () => {
-    showConfirmDialog.value = true;
+    const confirmed = await confirmDialog.value?.Open({
+        Title: "Unregister Device",
+        Message: "Are you sure you want to unregister this device? This action cannot be undone.",
+        Options: { noCancel: false }
+    });
+
+    if (confirmed) {
+        await handleConfirmDelete();
+    }
 };
 
 const handleConfirmDelete = async () => {
-    showConfirmDialog.value = false;
-
     try {
         loading.value = true;
         error.value = null;
