@@ -22,3 +22,7 @@ pnpm-debug.log*
 *.sw?
 
 *.tar
+
+# test results 
+test-results/
+playwright-report/

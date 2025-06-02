@@ -17,3 +17,29 @@ tasks:
       - cmd: docker build -t {{.PROJECT_CODE_DOCKER}}:latest .
       - cmd: docker save -o {{.PROJECT_CODE_DOCKER}}-latest.tar {{.PROJECT_CODE_DOCKER}}:latest
   internal: false
+
+  curl:
+    cmds:
+      - cmd: |
+          if ! curl --silent -o --fail /dev/null http://localhost:8090; then
+            echo "backend not running"
+            exit 1
+          fi
+      - cmd: |
+          if ! curl --silent --fail -o /dev/null http://localhost:8091; then
+            echo "frontend not running"
+            exit 1
+            fi
+    internal: false
+
+  test:
+    #    deps: ["curl"]
+    cmds:
+      - cmd: npx playwright test {{.CLI_ARGS}}
+    silent: true
+
+  test-dev:
+    #    deps: ["curl"]
+    description: "Launch Playwright in UI mode for debugging"
+    cmds:
+      - cmd: npx playwright test --ui
