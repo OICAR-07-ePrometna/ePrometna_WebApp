@@ -17,7 +17,7 @@
                 <v-text-field
                   variant="underlined"
                   density="compact"
-                  :value="new Date(item.technicalDate).toLocaleDateString('hr')"
+                  :value="formatTechnicalDate(item.technicalDate)"
                   readonly
                 >
                 <template #prepend-inner>
@@ -86,6 +86,26 @@
       required: true,
     },
   });
+
+  function formatTechnicalDate(date: string): string {
+    if (!date || date === "0001-01-01T00:00:00Z") {
+      return "Nije postavljeno";
+    }
+    try {
+      const dateObj = new Date(date);
+      if (isNaN(dateObj.getTime())) {
+        return "Neispravan datum";
+      }
+      return dateObj.toLocaleDateString('hr-HR', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return "Neispravan datum";
+    }
+  }
   </script>
 
 
