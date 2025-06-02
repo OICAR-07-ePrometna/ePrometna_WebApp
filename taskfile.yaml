@@ -17,3 +17,17 @@ tasks:
       - cmd: docker build -t {{.PROJECT_CODE_DOCKER}}:latest .
       - cmd: docker save -o {{.PROJECT_CODE_DOCKER}}-latest.tar {{.PROJECT_CODE_DOCKER}}:latest
   internal: false
+
+  curl:
+    cmds:
+      - cmd: '[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)" != "404" ] && echo "beckend not running"'
+      - cmd: '[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8091)" != "200" ] && echo "frontend not running"'
+    internal:
+
+  test:
+    cmds:
+      - cmd: npx playwright test {{.CLI_ARGS}}
+    silent: true
+
+  test-dev:
+    cmd: npx playwright test --ui
