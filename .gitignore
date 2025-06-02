@@ -23,4 +23,6 @@ pnpm-debug.log*
 
 *.tar
 
+# test results 
 test-results/
+playwright-report/

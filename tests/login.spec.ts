@@ -2,7 +2,8 @@ import { test, expect } from '@playwright/test';
 
 test('should log in as superadmin', async ({ page }) => {
   // Navigate to the login page
-  await page.goto('http://localhost:8091/login');
+  //await page.goto('http://localhost:8091/login');
+  await page.goto('/login');
 
   // Fill in the email field
   // Replace '#email-input' with the actual selector for your email input field
