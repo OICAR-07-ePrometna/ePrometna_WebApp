@@ -20,14 +20,26 @@ tasks:
 
   curl:
     cmds:
-      - cmd: '[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8090)" != "404" ] && echo "beckend not running"'
-      - cmd: '[ "$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8091)" != "200" ] && echo "frontend not running"'
-    internal:
+      - cmd: |
+          if ! curl --silent -o --fail /dev/null http://localhost:8090; then
+            echo "backend not running"
+            exit 1
+          fi
+      - cmd: |
+          if ! curl --silent --fail -o /dev/null http://localhost:8091; then
+            echo "frontend not running"
+            exit 1
+            fi
+    internal: false
 
   test:
+    #    deps: ["curl"]
     cmds:
       - cmd: npx playwright test {{.CLI_ARGS}}
     silent: true
 
   test-dev:
-    cmd: npx playwright test --ui
+    #    deps: ["curl"]
+    description: "Launch Playwright in UI mode for debugging"
+    cmds:
+      - cmd: npx playwright test --ui
