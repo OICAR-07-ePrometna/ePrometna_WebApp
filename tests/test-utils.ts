@@ -26,6 +26,11 @@ export const defaultOsobaCredentials: LoginCredentials = {
   password: 'Pa$$w0rd'
 };
 
+export const defaultHakCredentials: LoginCredentials = {
+  email: 'hak@test.hr',
+  password: 'Pa$$w0rd'
+};
+
 /**
  * Utility function to handle user login process
  * @param page - Playwright page object
