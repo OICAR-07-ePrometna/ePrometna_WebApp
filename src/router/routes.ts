@@ -153,6 +153,9 @@ export const routes = [
       layout: 'default',
       breadcrumbName: "Tvoji podaci"
     },
+  },
+  {
+    path: '/privacy.txt',
+    name: 'privacy',
   }
-
 ]

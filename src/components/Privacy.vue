@@ -10,7 +10,8 @@
       <br>
       <br>
 
-      Please read our <a class="text-red-accent-2" href="#">Privacy Policy</a> to learn about our privacy practices or
+      Please read our <a class="text-red-accent-2" href="/privacy.txt">Privacy Policy</a> to learn about our privacy
+      practices or
       click "Your Preferences" to exercise control over your data.
     </p>
 
