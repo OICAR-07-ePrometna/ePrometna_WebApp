@@ -36,13 +36,17 @@ defineProps({
   }
 })
 
+const emit = defineEmits(['update:accepted'])
+
+// God forgive me for this abomination
 const checkCookie = (): boolean => {
   const val = Cookies.get(cname)
-  return val == "true"
+  const ret = val == "true"
+  emit('update:accepted', ret)
+  return ret
 }
-const show = ref<boolean>(!checkCookie())
 
-const emit = defineEmits(['update:accepted'])
+const show = ref<boolean>(!checkCookie())
 
 const accept = () => {
   Cookies.set(cname, "true")
