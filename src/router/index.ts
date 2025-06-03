@@ -36,6 +36,10 @@ router.beforeEach((to, from) => {
   const isAuthenticated = auth.IsAuthenticated;
   const userRole = auth.UserRole;
 
+  if (to.meta.allowedRoles === undefined) {
+    return true;
+  }
+
   if (!isAuthenticated) {
     if (to.name === 'login') {
       return true;

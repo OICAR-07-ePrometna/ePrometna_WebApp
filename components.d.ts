@@ -23,6 +23,7 @@ declare module 'vue' {
     NewOwnerSide: typeof import('./src/components/userData/NewOwnerSide.vue')['default']
     OfficersTable: typeof import('./src/components/OfficersTable.vue')['default']
     OwnerSide: typeof import('./src/components/userData/OwnerSide.vue')['default']
+    Privacy: typeof import('./src/components/Privacy.vue')['default']
     RegistrationDetails: typeof import('./src/components/vehicleData/RegistrationDetails.vue')['default']
     RegistrationLogs: typeof import('./src/components/vehicleData/RegistrationLogs.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

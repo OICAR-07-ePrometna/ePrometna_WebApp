@@ -153,6 +153,5 @@ export const routes = [
       layout: 'default',
       breadcrumbName: "Tvoji podaci"
     },
-  }
-
+  },
 ]

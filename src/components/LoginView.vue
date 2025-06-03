@@ -16,21 +16,17 @@
         prepend-inner-icon="mdi-lock-outline" variant="outlined" :error-messages="passwordError ? [passwordError] : []"
         @click:append-inner="visible = !visible" @focus="passwordError = ''"></v-text-field>
 
-      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="loading" @click="handleLogin">
+      <v-btn class="mb-8" color="blue" size="large" variant="tonal" block :loading="loading" @click="handleLogin"
+        :disabled="!tosAccepted">
         Log In
       </v-btn>
 
-      <v-btn class="mt-4" color="grey" variant="text" size="small" block :loading="isPinging" :disabled="isPinging"
-        @click="testConnection">
-        {{ isPinging ? 'Testing...' : 'Test Connection' }}
+      <v-btn class="mt-4" color="grey" variant="text" size="small" block @click="tos.ShowTos()">
+        Show Privacy notice
       </v-btn>
-
-      <v-alert v-if="pingResult" :type="pingSuccess ? 'success' : 'error'" variant="tonal" class="mt-2"
-        density="compact">
-        {{ pingResult }}
-      </v-alert>
     </v-card>
   </div>
+  <Privacy ref="tos" v-model:accepted="tosAccepted" />
 </template>
 
 <script lang="ts" setup>
@@ -38,9 +34,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { useSnackbar } from './SnackbarProvider.vue';
-import axiosInstance, { startPeriodicRefresh } from '@/services/axios';
+import { startPeriodicRefresh } from '@/services/axios';
 import { getLoggedInUser } from '@/services/userService';
 import { login } from '@/services/authService';
+import Privacy from './Privacy.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -51,9 +48,8 @@ const password = ref('');
 const emailError = ref('');
 const passwordError = ref('');
 const visible = ref(false);
-const isPinging = ref(false);
-const pingResult = ref('');
-const pingSuccess = ref(false);
+const tosAccepted = ref(false);
+const tos = ref(Privacy)
 
 const loading = ref(false)
 
@@ -98,21 +94,5 @@ async function handleLogin() {
   startPeriodicRefresh()
   router.push('/');
 }
-
-const testConnection = async () => {
-  isPinging.value = true;
-  pingResult.value = '';
-
-  try {
-    await axiosInstance.get('/test/');
-    pingResult.value = 'Connection successful';
-    pingSuccess.value = true;
-  } catch (error) {
-    pingResult.value = 'Connection failed: ' + (error as any).message;
-    pingSuccess.value = false;
-  } finally {
-    isPinging.value = false;
-  }
-};
 
 </script>
