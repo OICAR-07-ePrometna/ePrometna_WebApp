@@ -49,7 +49,7 @@ const checkCookie = (): boolean => {
 const show = ref<boolean>(!checkCookie())
 
 const accept = () => {
-  Cookies.set(cname, "true")
+  Cookies.set(cname, "true", { secure: true, sameSite: 'strict', expires: 365 })
   emit('update:accepted', true)
   show.value = false
 }
