@@ -27,14 +27,12 @@ test('should pass technical check', async ({ page }) => {
     await page.click('button.v-btn:nth-child(2) > span:nth-child(3)');
 
     // Enter the license plate number
-    await page.click('#input-149');
-    await page.fill('#input-149', 'ZG-1234-AA');
+    await page.getByLabel('Registracijska oznaka').fill('ZG-1234-AA');
 
     // Enter the mileage/kilometer reading
-    await page.click('#input-151');
-    await page.fill('#input-151', '50000');
+    await page.getByLabel('Prijeđena kilometraža').fill('50000');
 
-    // Click the clickable label to confirm technical check pass
+    // Click the technical check pass confirmation
     await page.click('.v-label--clickable');
 
     // Click the final confirmation button in the third window item
