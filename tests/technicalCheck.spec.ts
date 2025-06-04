@@ -5,39 +5,42 @@ import { defaultHakCredentials, loginAsUser } from './test-utils';
 const TEST_VEHICLE_VIN = 'WVWZZZ1KZAW123456';
 
 test('should pass technical check', async ({ page }) => {
-    // Login as regular user with default HAK credentials
-    await loginAsUser(page, defaultHakCredentials);
+  // Login as regular user with default HAK credentials
+  await loginAsUser(page, defaultHakCredentials);
 
-    // Navigate to technical check page by clicking the menu item
-    await page.click('div.v-list-item:nth-child(5) > div:nth-child(3)');
+  // Navigate to technical check page by clicking the menu item
+  await page.click('div.v-list-item:nth-child(5) > div:nth-child(3)');
 
-    // Click on the VIN input field
-    await page.click('#input-28');
+  // Wait for navigation to complete
+  await page.waitForURL('/technical-check');
 
-    // Enter the test vehicle VIN number
-    await page.fill('#input-28', TEST_VEHICLE_VIN);
+  // Click on the VIN input field
+  //await page.click('#input-28');
 
-    // Press Enter to search for the vehicle
-    await page.press('#input-28', 'Enter');
+  // Enter the test vehicle VIN number
+  await page.fill('#input-28', TEST_VEHICLE_VIN);
 
-    // Click the elevated button to proceed with technical check
-    await page.click('.v-btn--elevated');
+  // Press Enter to search for the vehicle
+  await page.press('#input-28', 'Enter');
 
-    // Click the second button in the sequence (likely for confirmation)
-    await page.click('button.v-btn:nth-child(2) > span:nth-child(3)');
+  // Click the elevated button to proceed with technical check
+  await page.click('.v-btn--elevated');
 
-    // Enter the license plate number
-    await page.getByLabel('Registracijska oznaka').fill('ZG-1234-AA');
+  // Click the second button in the sequence (likely for confirmation)
+  await page.click('button.v-btn:nth-child(2) > span:nth-child(3)');
 
-    // Enter the mileage/kilometer reading
-    await page.getByLabel('Prijeđena kilometraža').fill('50000');
+  // Enter the license plate number
+  await page.getByLabel('Registracijska oznaka').fill('ZG-1234-AA');
 
-    // Click the technical check pass confirmation
-    await page.click('.v-label--clickable');
+  // Enter the mileage/kilometer reading
+  await page.getByLabel('Prijeđena kilometraža').fill('50000');
 
-    // Click the final confirmation button in the third window item
-    await page.click('div.v-window-item:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > button:nth-child(1)')
+  // Click the technical check pass confirmation
+  await page.click('.v-label--clickable');
 
-    // Verify that the success message appears in the overlay
-    await expect(page.locator('.v-overlay-container')).toContainText('Vozilo uspješno registrirano');
+  // Click the final confirmation button in the third window item
+  await page.click('div.v-window-item:nth-child(3) > div:nth-child(1) > div:nth-child(3) > div:nth-child(1) > button:nth-child(1)')
+
+  // Verify that the success message appears in the overlay
+  await expect(page.locator('.v-overlay-container')).toContainText('Vozilo uspješno registrirano');
 });
