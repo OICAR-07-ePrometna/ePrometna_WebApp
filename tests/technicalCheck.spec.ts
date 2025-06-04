@@ -3,6 +3,7 @@ import { defaultHakCredentials, loginAsUser } from './test-utils';
 
 // Test vehicle VIN number for technical check
 const TEST_VEHICLE_VIN = 'WVWZZZ1KZAW123456';
+const TEST_PLACEHOLDER = 'JH4DC4360SS001610';
 
 test('should pass technical check', async ({ page }) => {
   // Login as regular user with default HAK credentials
@@ -15,10 +16,10 @@ test('should pass technical check', async ({ page }) => {
   await page.waitForURL('/technical-check');
 
   // Enter the test vehicle VIN number
-  await page.getByPlaceholder('JH4DC4360SS001610').fill(TEST_VEHICLE_VIN);
+  await page.getByPlaceholder(TEST_PLACEHOLDER).fill(TEST_VEHICLE_VIN);
 
   // Press Enter to search for the vehicle
-  await page.getByPlaceholder('JH4DC4360SS001610').press('Enter');
+  await page.getByPlaceholder(TEST_PLACEHOLDER).press('Enter');
 
   // Click the elevated button to proceed with technical check
   await page.click('.v-btn--elevated');
