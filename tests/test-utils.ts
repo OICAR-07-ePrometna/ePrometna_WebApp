@@ -35,7 +35,7 @@ export const defaultHakCredentials: LoginCredentials = {
  * Utility function to handle user login process
  * @param page - Playwright page object
  * @param credentials - User credentials for login
- * 
+ *
  * This function:
  * 1. Navigates to the login page
  * 2. Fills in the login form with provided credentials
@@ -54,6 +54,9 @@ export async function loginAsUser(page: Page, credentials: LoginCredentials) {
   // Fill in the password field
   await page.fill('#input-9', credentials.password);
 
+  // Accept privacy
+  await page.click('button.v-btn:nth-child(3)');
+
   // Click the login button
   await page.click('button.v-btn:nth-child(6)');
 
@@ -63,4 +66,4 @@ export async function loginAsUser(page: Page, credentials: LoginCredentials) {
   // Verify successful login
   await expect(page.locator('.center-container > h1:nth-child(1)')).toHaveText(" Dobrodošli u ePrometna");
   expect(page.url()).toBe('http://localhost:8091/');
-} 
+}
