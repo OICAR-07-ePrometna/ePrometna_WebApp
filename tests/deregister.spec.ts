@@ -3,25 +3,27 @@ import { defaultHakCredentials, loginAsUser } from './test-utils';
 
 // Test vehicle VIN number for deregistration
 const TEST_VEHICLE_VIN = 'WVWZZZ1KZAW123456';
+const TEST_PLACEHOLDER = 'JH4DC4360SS001610';
 
-test('should unregister device', async ({ page }) => {
+
+test('should deregister vehicle', async ({ page }) => {
     // Login as regular user with default HAK credentials
     await loginAsUser(page, defaultHakCredentials);
 
     // Navigate to vehicle deregistration page by clicking the vehicle deregisration menu item
     await page.click('div.v-list-item:nth-child(6) > div:nth-child(3)');
 
-    // Navigate to input field to search for the vehicle
-    await page.click('#input-28');
+      // Wait for navigation to complete
+    await page.waitForURL('/vehicle-deregistration');
 
     // Input the chassis number (VIN) of the test vehicle
-    await page.fill('#input-28', TEST_VEHICLE_VIN);
+    await page.getByPlaceholder(TEST_PLACEHOLDER).fill(TEST_VEHICLE_VIN);
 
     // Press Enter to trigger the search
-    await page.press('#input-28', 'Enter');
+    await page.getByPlaceholder(TEST_PLACEHOLDER).press('Enter');
 
     // Wait for the search results to appear and verify the VIN is displayed correctly
-    await expect(page.locator('#input-37')).toHaveValue(TEST_VEHICLE_VIN);
+    await expect(page.locator('div.v-card-text').locator('input[readonly]').nth(3)).toHaveValue(TEST_VEHICLE_VIN);
 
     // Click the deregister button to initiate the deregistration process
     await page.click('.text-primary > span:nth-child(3)');
