@@ -14,14 +14,11 @@ test('should pass technical check', async ({ page }) => {
   // Wait for navigation to complete
   await page.waitForURL('/technical-check');
 
-  // Click on the VIN input field
-  //await page.click('#input-28');
-
   // Enter the test vehicle VIN number
-  await page.fill('#input-28', TEST_VEHICLE_VIN);
+  await page.getByPlaceholder('JH4DC4360SS001610').fill(TEST_VEHICLE_VIN);
 
   // Press Enter to search for the vehicle
-  await page.press('#input-28', 'Enter');
+  await page.getByPlaceholder('JH4DC4360SS001610').press('Enter');
 
   // Click the elevated button to proceed with technical check
   await page.click('.v-btn--elevated');
