@@ -6,7 +6,7 @@ const TEST_VEHICLE_VIN = 'WVWZZZ1KZAW123456';
 const TEST_PLACEHOLDER = 'JH4DC4360SS001610';
 
 
-test('should unregister device', async ({ page }) => {
+test('should deregister vehicle', async ({ page }) => {
     // Login as regular user with default HAK credentials
     await loginAsUser(page, defaultHakCredentials);
 
