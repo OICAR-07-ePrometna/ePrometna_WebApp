@@ -67,3 +67,45 @@ export async function loginAsUser(page: Page, credentials: LoginCredentials) {
   await expect(page.locator('.center-container > h1:nth-child(1)')).toHaveText(" Dobrodošli u ePrometna");
   expect(page.url()).toBe('http://localhost:8091/');
 }
+
+export const TEST_VEHICLE_INFO = {
+  vehicleType: "Car",
+  model: "A4",
+  mark: "Audi",
+  vehicleCategory: "M1",
+  chassisNumber: "WAUZZZ8K9BA123456",
+  bodyShape: "Sedan",
+  vehicleUse: "Personal",
+  dateFirstRegistration: "2021-03-20",
+  engineCapacity: "1968",
+  enginePower: "150",
+  fuelOrPowerSource: "Diesel",
+  numberOfSeats: "5",
+  colourOfVehicle: "Black",
+  homologationType: "e1*2007/46*0063*00",
+  tradeName: "Audi A4 2.0 TDI",
+  firstRegistrationInCroatia: "2021-03-20",
+  technicallyPermissibleMaximumLadenMass: "2100",
+  permissibleMaximumLadenMass: "2100",
+  unladenMass: "1650",
+  permissiblePayload: "450",
+  typeApprovalNumber: "e1*2007/46*0063*00",
+  ratedEngineSpeed: "4200",
+  length: "4762",
+  width: "1847",
+  height: "1436",
+  maximumNetPower: "110",
+  numberOfAxles: "2",
+  numberOfDrivenAxles: "2",
+  mb: "Audi",
+  stationaryNoiseLevel: "71",
+  engineSpeedForStationaryNoiseTest: "2750",
+  co2Emissions: "114",
+  ecCategory: "M1",
+  tireSize: "225/50R17",
+  uniqueModelCode: "8K",
+  additionalTireSizes: "225/45R18",
+  registration: {
+      registration: "ZG5678BB"
+  }
+};
