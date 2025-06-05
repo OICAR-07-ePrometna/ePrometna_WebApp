@@ -8,7 +8,7 @@ test('should create new vehicle', async ({ page }) => {
     // Login as regular user with default HAK credentials
     await loginAsUser(page, defaultHakCredentials);
 
-    // Navigate to ownership chANGE page by clicking the menu item
+    // Navigate to new vehicle page by clicking the menu item
     await page.click('div.v-list-item:nth-child(4) > div:nth-child(3)');
 
     // Wait for navigation to complete
