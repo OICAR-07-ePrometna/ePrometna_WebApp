@@ -1,0 +1,28 @@
+import { test, expect } from '@playwright/test';
+import { defaultMupAdminCredentials, loginAsUser } from './test-utils';
+
+const TEST_OFFICER_OIB = '22978358568'
+const TEST_NO_TOKEN = 'No token'
+
+test('should generate token for mup officer', async ({ page }) => {
+    // Login as mup admin with default user credentials
+    await loginAsUser(page, defaultMupAdminCredentials);
+
+    // Navigate to officer overview by clicking the menu item
+    await page.click('div.v-list-item:nth-child(3) > div:nth-child(3)')
+
+    // Wait for navigation to complete
+    await page.waitForURL('/officer-overview');
+
+    // expect to find officer
+    await expect(page.locator('.v-table__wrapper > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(2)'))
+        .toContainText(TEST_OFFICER_OIB)
+
+    // click on the token generation button 
+    await page.click('.mdi-plus');
+
+    // expect the token field to be filled with a value different from 'No token'
+
+    expect('.text-grey').not.toBe(TEST_NO_TOKEN);
+    expect('.text-grey').toBeTruthy();
+});
