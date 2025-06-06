@@ -24,6 +24,6 @@ test('should display users vehicles or no vehicles message', async ({ page }) =>
 
     // If vehicle plate is visible, check its content
     if (await vehiclePlate.isVisible()) {
-        await expect(vehiclePlate).toContainText(TEST_VEHICLE_PLATE1||TEST_VEHICLE_PLATE2);
+        +        await expect(vehiclePlate).toContainText(new RegExp(`${TEST_VEHICLE_PLATE1}|${TEST_VEHICLE_PLATE2}`));
     }
 });
