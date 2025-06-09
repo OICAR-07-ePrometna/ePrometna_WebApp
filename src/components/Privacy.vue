@@ -1,26 +1,27 @@
 <template>
   <v-sheet v-show="show" border="md" class="pa-6 text-white mx-auto position" color="background" max-width="400">
-    <h4 class="text-h5 font-weight-bold mb-4">Your Privacy</h4>
+    <h4 class="text-h5 font-weight-bold mb-4"> PRIVOLA ZA OBRADU OSOBNIH PODATAKA </h4>
 
     <p class="mb-8">
-      This business determines the use of personal data collected on our media properties and across the internet. We
-      may collect data that you submit to us directly or data that we collect automatically including from cookies (such
-      as device information or IP address).
-
-      <br>
-      <br>
-
-      Please read our <a class="text-red-accent-2" href="/privacy.txt">Privacy Policy</a> to learn about our privacy
-      practices or
-      click "Your Preferences" to exercise control over your data.
+      Svojom privolom dopuštam prikupljanje, obradu i pohranu mojih osobnih podataka u svrhu korištenja aplikacije
+      ePrometna. Svi podaci koje unosim (ime, prezime, OIB, datum rođenja, adresa, email, lozinka, uloga, vozačka
+      dozvola, uređaji) koristit će se isključivo za potrebe funkcioniranja aplikacije, pružanja usluga i ispunjavanja
+      zakonskih obveza.
+      Podaci neće biti proslijeđeni trećim osobama bez mog izričitog pristanka, osim ako je to nužno radi ispunjavanja
+      zakonskih obveza ili zahtjeva nadležnih tijela.
+      Upoznat/a sam s pravom na pristup svojim podacima, ispravak, brisanje, ograničenje obrade, prijenos podataka i
+      povlačenje privole u bilo kojem trenutku, bez negativnih posljedica za korištenje aplikacije, osim onih koje
+      proizlaze iz zakonskih obveza.
+      Privolu dajem dobrovoljno i svjestan/na sam da je mogu povući u bilo kojem trenutku slanjem zahtjeva putem
+      aplikacije ili na službenu email adresu voditelja obrade.
     </p>
 
     <v-btn @click="accept" class="text-none text-black mb-4" color="primary" size="x-large" variant="flat" block>
-      Accept
+      Prihvati
     </v-btn>
 
     <v-btn @click="decline" class="text-none text-black" color="error" size="x-large" variant="outlined" block>
-      Decline
+      Odbi
     </v-btn>
   </v-sheet>
 </template>
