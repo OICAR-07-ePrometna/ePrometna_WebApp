@@ -21,7 +21,7 @@
     </v-btn>
 
     <v-btn @click="decline" class="text-none text-black" color="error" size="x-large" variant="outlined" block>
-      Odbj
+      Odbij
     </v-btn>
   </v-sheet>
 </template>
